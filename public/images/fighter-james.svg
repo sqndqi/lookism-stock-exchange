@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560" role="img" aria-label="James Lee inspired fighter silhouette">
+  <rect width="420" height="560" rx="28" fill="#07080b"/>
+  <circle cx="210" cy="175" r="138" fill="#ef233c" opacity=".11"/>
+  <path d="M210 58c43 0 72 30 72 74 0 49-30 86-72 86s-72-37-72-86c0-44 29-74 72-74z" fill="#111318"/>
+  <path d="M106 520c17-138 49-224 104-224s87 86 104 224z" fill="#0b0d10"/>
+  <path d="M158 132h104" stroke="#ef233c" stroke-width="4" opacity=".75"/>
+  <path d="M80 454c78 24 183 24 260 0" fill="none" stroke="#ef233c" stroke-opacity=".4" stroke-width="3"/>
+  <path d="M126 520h168" stroke="#d8dee9" stroke-opacity=".28" stroke-width="2"/>
+</svg>

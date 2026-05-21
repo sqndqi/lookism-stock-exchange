@@ -3,7 +3,7 @@ import { Clock3, RadioTower, ShieldAlert } from "lucide-react";
 export function MarketStatusBanner() {
   return (
     <section className="relative z-20 border-y border-crimson/25 bg-crimson/10 backdrop-blur-xl">
-      <div className="mx-auto grid w-[min(1440px,calc(100%-32px))] gap-4 py-4 text-sm md:grid-cols-[1fr_auto_auto] md:items-center">
+      <div className="mx-auto grid w-[min(1180px,calc(100%-32px))] gap-4 py-4 text-sm md:grid-cols-[1fr_auto_auto] md:items-center">
         <div className="flex items-center gap-3">
           <div className="grid h-10 w-10 place-items-center rounded-2xl bg-black/40 text-crimson">
             <ShieldAlert size={19} />

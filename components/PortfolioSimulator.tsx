@@ -55,7 +55,7 @@ export function PortfolioSimulator() {
   }
 
   return (
-    <section id="portfolio" className="relative z-10 mx-auto grid w-[min(1440px,calc(100%-32px))] gap-5 py-24 lg:grid-cols-[.82fr_1.18fr]">
+    <section id="portfolio" className="relative z-10 mx-auto grid w-[min(1180px,calc(100%-32px))] gap-5 py-16 lg:grid-cols-[.82fr_1.18fr]">
       <Card className="overflow-hidden">
         <CardHeader>
           <CardTitle>Dealer Access</CardTitle>
@@ -68,7 +68,7 @@ export function PortfolioSimulator() {
                 <LockKeyhole size={22} />
               </div>
               <div>
-                <p className="font-display text-4xl">VIP PIT 04</p>
+                <p className="text-3xl font-black">VIP Desk</p>
                 <p className="font-mono text-xs uppercase tracking-[0.2em] text-slate-400">Paper trading enabled</p>
               </div>
             </div>
@@ -90,11 +90,11 @@ export function PortfolioSimulator() {
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-md border border-white/10 bg-black/30 p-3 text-right">
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Cash</p>
-              <p className="font-display text-4xl">{formatCurrency(cash)}</p>
+              <p className="text-3xl font-black">{formatCurrency(cash)}</p>
             </div>
             <div className="rounded-md border border-white/10 bg-black/30 p-3 text-right">
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Influence</p>
-              <p className="font-display text-4xl">{formatCurrency(total + cash)}</p>
+              <p className="text-3xl font-black">{formatCurrency(total + cash)}</p>
             </div>
           </div>
         </CardHeader>

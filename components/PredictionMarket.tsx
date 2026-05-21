@@ -6,12 +6,12 @@ import { Badge } from "@/components/ui/badge";
 
 export function PredictionMarket() {
   return (
-    <section id="predictions" className="relative z-10 border-y border-white/10 bg-white/[0.025] py-24">
-      <div className="mx-auto w-[min(1440px,calc(100%-32px))]">
+    <section id="predictions" className="relative z-10 border-y border-white/10 bg-white/[0.02] py-16">
+      <div className="mx-auto w-[min(1180px,calc(100%-32px))]">
         <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-crimson">Reddit prophecy contracts</p>
-            <h2 className="text-shadow-red mt-3 font-display text-6xl uppercase leading-none md:text-8xl">Fight Bets</h2>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-crimson">Prediction contracts</p>
+            <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Fight Bets</h2>
           </div>
           <p className="max-w-xl text-slate-400">
             Better than a static poll: each contract has a liquidity pool, catalyst note, and odds ladder tied to current Lookism discourse.

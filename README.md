@@ -1,6 +1,6 @@
-# LOOKISM STOCK EXCHANGE
+# PTJ-Stocks
 
-Bloomberg x Korean manhwa x cyberpunk Seoul.
+Lowkey Lookism-inspired stocks for PTJ universe characters and crews.
 
 This is a Vercel-ready Next.js 15 dashboard for a fictional Lookism-inspired faction and character market. It ships with cinematic UI, typed mock finance data, animated stock cards, generated silhouette art, prediction contracts, crew missions, a portfolio simulator, Lookism Wiki dossiers, and a Reddit-powered updater script for market signals.
 

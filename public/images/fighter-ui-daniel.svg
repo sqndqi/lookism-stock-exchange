@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560" role="img" aria-label="UI Daniel inspired fighter silhouette">
+  <rect width="420" height="560" rx="28" fill="#07080b"/>
+  <circle cx="210" cy="185" r="125" fill="#9be7ff" opacity=".1"/>
+  <path d="M210 66c45 0 73 31 73 73 0 47-30 82-73 82s-73-35-73-82c0-42 28-73 73-73z" fill="#111318"/>
+  <path d="M113 520c16-142 43-226 97-226s81 84 97 226z" fill="#0b0d10"/>
+  <path d="M162 143h96" stroke="#9be7ff" stroke-width="4" opacity=".7"/>
+  <path d="M105 520c20-98 55-153 105-153s85 55 105 153" fill="none" stroke="#d8dee9" stroke-opacity=".3" stroke-width="2"/>
+  <path d="M64 492h292" stroke="#9be7ff" stroke-opacity=".45" stroke-width="2"/>
+</svg>

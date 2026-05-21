@@ -44,6 +44,7 @@ export function MarketChart({ asset, height = 190 }: { asset: MarketAsset; heigh
             strokeWidth={3}
             fill={`url(#${gradientId})`}
             dot={false}
+            isAnimationActive={false}
           />
         </AreaChart>
       </ResponsiveContainer>

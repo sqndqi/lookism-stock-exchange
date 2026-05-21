@@ -31,6 +31,7 @@ export type MarketAsset = {
   signal: "BUY" | "HOLD" | "SHORT";
   faction: string;
   accent: string;
+  image: string;
   quote: string;
   chart: StockPoint[];
 };
@@ -92,6 +93,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "J High",
     accent: "#7dd3fc",
+    image: "/images/fighter-ui-daniel.svg",
     quote: "Dual-body premium is still underpriced by the street.",
     chart: series(380, [2, 18, 12, 38, 29, 48, 42, 61, 55])
   },
@@ -108,6 +110,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "J High",
     accent: "#93c5fd",
+    image: "/images/fighter-ui-daniel.svg",
     quote: "Original-body comeback premium is rising with UI speculation.",
     chart: series(330, [0, 7, 12, 8, 22, 19, 28, 34, 37])
   },
@@ -124,6 +127,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "White Tiger",
     accent: "#e5e7eb",
+    image: "/images/fighter-gun.svg",
     quote: "Institutional fear remains the strongest moat in the sector.",
     chart: series(455, [4, 21, 28, 44, 39, 52, 71, 66, 83])
   },
@@ -140,6 +144,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "Gapryong Line",
     accent: "#f87171",
+    image: "/images/fighter-generic.svg",
     quote: "Shadow-line scarcity keeps the float tight despite ugly headlines.",
     chart: series(492, [0, 10, 2, 18, 11, 23, 19, 16, 12])
   },
@@ -156,6 +161,7 @@ export const assets: MarketAsset[] = [
     signal: "HOLD",
     faction: "Independent",
     accent: "#facc15",
+    image: "/images/fighter-generic.svg",
     quote: "High chaos beta. Traders love it until settlement day.",
     chart: series(500, [0, -18, 21, 4, 31, -8, 18, -4, -14])
   },
@@ -172,6 +178,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "Big Deal",
     accent: "#60a5fa",
+    image: "/images/fighter-generic.svg",
     quote: "Big Deal leadership premium is back in play after rumor flow.",
     chart: series(250, [2, 9, 8, 16, 21, 19, 28, 33, 31])
   },
@@ -188,6 +195,7 @@ export const assets: MarketAsset[] = [
     signal: "HOLD",
     faction: "Hostel",
     accent: "#cbd5e1",
+    image: "/images/fighter-generic.svg",
     quote: "Defensive holder base, but narrative volume is thin this session.",
     chart: series(220, [0, -3, 4, 2, -5, -1, -6, -4, -5])
   },
@@ -204,6 +212,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "God Dog",
     accent: "#38bdf8",
+    image: "/images/fighter-generic.svg",
     quote: "Copycat upside remains lethal in short windows.",
     chart: series(280, [1, 8, 4, 18, 21, 17, 25, 33, 29])
   },
@@ -220,6 +229,7 @@ export const assets: MarketAsset[] = [
     signal: "HOLD",
     faction: "Burn Knuckles",
     accent: "#38bdf8",
+    image: "/images/fighter-generic.svg",
     quote: "Clean fundamentals, low scandal beta, steady retail accumulation.",
     chart: series(176, [1, 3, 5, 4, 8, 7, 9, 12, 11])
   },
@@ -236,6 +246,7 @@ export const assets: MarketAsset[] = [
     signal: "HOLD",
     faction: "J High",
     accent: "#a5b4fc",
+    image: "/images/fighter-generic.svg",
     quote: "Training-arc recovery story is still attracting momentum funds.",
     chart: series(162, [1, 2, 6, 5, 9, 11, 10, 15, 14])
   },
@@ -252,6 +263,7 @@ export const assets: MarketAsset[] = [
     signal: "SHORT",
     faction: "Workers",
     accent: "#fb7185",
+    image: "/images/fighter-generic.svg",
     quote: "High ego beta. Great liquidity, brutal drawdowns.",
     chart: series(270, [0, -8, -2, -15, -10, -24, -18, -28, -22])
   },
@@ -268,6 +280,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "Gangbuk",
     accent: "#60a5fa",
+    image: "/images/fighter-generic.svg",
     quote: "Loyalty premium is outperforming the street economy index.",
     chart: series(160, [0, 6, 9, 14, 12, 20, 19, 26, 24])
   },
@@ -284,6 +297,7 @@ export const assets: MarketAsset[] = [
     signal: "SHORT",
     faction: "Workers",
     accent: "#fb7185",
+    image: "/images/fighter-generic.svg",
     quote: "Regulatory pressure and executive risk keep the tape unstable.",
     chart: series(250, [0, -8, -2, -17, -14, -22, -19, -31, -28])
   },
@@ -300,6 +314,7 @@ export const assets: MarketAsset[] = [
     signal: "HOLD",
     faction: "Hostel",
     accent: "#94a3b8",
+    image: "/images/fighter-generic.svg",
     quote: "Family-based fundamentals. Low float, loyal holders.",
     chart: series(135, [1, 2, 4, 3, 5, 6, 4, 8, 7])
   },
@@ -316,6 +331,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "Legend",
     accent: "#c084fc",
+    image: "/images/fighter-james.svg",
     quote: "Legend multiple remains expensive, but the chart refuses to break.",
     chart: series(510, [3, 12, 18, 24, 21, 29, 33, 41, 36])
   },
@@ -332,6 +348,7 @@ export const assets: MarketAsset[] = [
     signal: "SHORT",
     faction: "Elite",
     accent: "#f8fafc",
+    image: "/images/fighter-generic.svg",
     quote: "Governance discount is widening after boardroom rumors.",
     chart: series(380, [0, -12, -20, -18, -33, -27, -41, -44, -43])
   },
@@ -348,6 +365,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "White Tiger",
     accent: "#e2e8f0",
+    image: "/images/fighter-gun.svg",
     quote: "Mercenary cashflow gives this desk rare defensive strength.",
     chart: series(276, [1, 4, 8, 13, 12, 17, 21, 19, 20])
   },
@@ -364,6 +382,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "J High",
     accent: "#22d3ee",
+    image: "/images/fighter-generic.svg",
     quote: "Youth pipeline and training arc momentum keep buyers active.",
     chart: series(182, [2, 4, 8, 7, 12, 15, 13, 18, 17])
   }
@@ -384,7 +403,8 @@ export const characterRoster = [
     fightingStyle: "Copy / UI",
     masteryType: "Instinct",
     currentArc: "Second body crisis",
-    signatureColor: "#9be7ff"
+    signatureColor: "#9be7ff",
+    image: "/images/fighter-ui-daniel.svg"
   },
   {
     name: "Gun Park",
@@ -400,7 +420,8 @@ export const characterRoster = [
     fightingStyle: "Kyokushin / UI",
     masteryType: "Endurance",
     currentArc: "TUI discourse",
-    signatureColor: "#d8dee9"
+    signatureColor: "#d8dee9",
+    image: "/images/fighter-gun.svg"
   },
   {
     name: "James Lee",
@@ -416,7 +437,8 @@ export const characterRoster = [
     fightingStyle: "Speed / precision",
     masteryType: "Speed",
     currentArc: "Legend premium",
-    signatureColor: "#ef233c"
+    signatureColor: "#ef233c",
+    image: "/images/fighter-james.svg"
   },
   {
     name: "Kitae Kim",
@@ -432,7 +454,8 @@ export const characterRoster = [
     fightingStyle: "Brutal pressure",
     masteryType: "Power",
     currentArc: "Shadow liquidity",
-    signatureColor: "#ef4444"
+    signatureColor: "#ef4444",
+    image: "/images/fighter-generic.svg"
   },
   {
     name: "Goo Kim",
@@ -448,7 +471,8 @@ export const characterRoster = [
     fightingStyle: "Weapon genius",
     masteryType: "Technique",
     currentArc: "Chaos beta",
-    signatureColor: "#f8fafc"
+    signatureColor: "#f8fafc",
+    image: "/images/fighter-generic.svg"
   },
   {
     name: "Johan Seong",
@@ -464,7 +488,8 @@ export const characterRoster = [
     fightingStyle: "Copy",
     masteryType: "Vision",
     currentArc: "Copycat premium",
-    signatureColor: "#9be7ff"
+    signatureColor: "#9be7ff",
+    image: "/images/fighter-generic.svg"
   },
   {
     name: "Jake Kim",
@@ -480,7 +505,8 @@ export const characterRoster = [
     fightingStyle: "Boxing / conviction",
     masteryType: "Leadership",
     currentArc: "Big Deal rebound",
-    signatureColor: "#60a5fa"
+    signatureColor: "#60a5fa",
+    image: "/images/fighter-generic.svg"
   },
   {
     name: "Samuel Seo",
@@ -496,7 +522,8 @@ export const characterRoster = [
     fightingStyle: "Dirty boxing",
     masteryType: "Heat mode",
     currentArc: "Ego drawdown",
-    signatureColor: "#ef233c"
+    signatureColor: "#ef233c",
+    image: "/images/fighter-generic.svg"
   },
   {
     name: "Eli Jang",
@@ -512,7 +539,8 @@ export const characterRoster = [
     fightingStyle: "Wild technique",
     masteryType: "Animal instinct",
     currentArc: "Defensive base",
-    signatureColor: "#d8dee9"
+    signatureColor: "#d8dee9",
+    image: "/images/fighter-generic.svg"
   },
   {
     name: "Vasco",
@@ -528,7 +556,8 @@ export const characterRoster = [
     fightingStyle: "Muay Thai",
     masteryType: "Conviction",
     currentArc: "Clean accumulation",
-    signatureColor: "#9be7ff"
+    signatureColor: "#9be7ff",
+    image: "/images/fighter-generic.svg"
   },
   {
     name: "Zack Lee",
@@ -544,7 +573,8 @@ export const characterRoster = [
     fightingStyle: "Boxing",
     masteryType: "Endurance",
     currentArc: "Recovery bid",
-    signatureColor: "#d8dee9"
+    signatureColor: "#d8dee9",
+    image: "/images/fighter-generic.svg"
   },
   {
     name: "Jay Hong",
@@ -560,7 +590,8 @@ export const characterRoster = [
     fightingStyle: "Systema / weapons",
     masteryType: "Technique",
     currentArc: "Quiet whale",
-    signatureColor: "#f8fafc"
+    signatureColor: "#f8fafc",
+    image: "/images/fighter-generic.svg"
   }
 ];
 

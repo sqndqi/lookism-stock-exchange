@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { formatCurrency, signedPercent } from "@/lib/utils";
 
@@ -19,6 +20,7 @@ type Character = {
   masteryType: string;
   currentArc: string;
   signatureColor: string;
+  image: string;
 };
 
 export function CharacterCard({ character, index }: { character: Character; index: number }) {
@@ -34,41 +36,42 @@ export function CharacterCard({ character, index }: { character: Character; inde
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5, delay: index * 0.035 }}
-      whileHover={{ y: -14, rotateX: 3, rotateY: -3 }}
-      className="group manga-border relative min-h-[520px] overflow-hidden rounded-[30px] bg-gradient-to-b from-white/12 via-white/[0.045] to-black/70 p-5"
+      whileHover={{ y: -4 }}
+      className="group manga-border relative min-h-[430px] overflow-hidden rounded-2xl bg-white/[0.035] p-4"
     >
-      <div className="absolute inset-0 bg-scanline opacity-10" />
-      <div className="absolute inset-x-0 top-0 h-1 shadow-[0_0_34px_rgba(239,35,60,.85)]" style={{ background: character.signatureColor }} />
-      <div className="aura-ring absolute left-1/2 top-24 h-72 w-72 -translate-x-1/2 rounded-full opacity-0 transition duration-700 group-hover:opacity-90" />
-      <div className="absolute bottom-24 left-1/2 h-[56%] w-[52%] -translate-x-1/2 rounded-t-full bg-black transition-transform duration-700 group-hover:scale-110" />
-      <div className="absolute bottom-[42%] left-1/2 grid h-28 w-28 -translate-x-1/2 place-items-center rounded-full border border-white/15 bg-black/70 text-5xl font-black text-white/85 shadow-[0_0_44px_rgba(0,0,0,.8)] backdrop-blur-xl transition-transform duration-700 group-hover:scale-110">
-        {initials}
+      <div className="absolute inset-x-0 top-0 h-1" style={{ background: character.signatureColor }} />
+      <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black">
+        <Image src={character.image} alt={`${character.name} stock portrait`} width={420} height={560} className="h-52 w-full object-cover opacity-90 transition duration-300 group-hover:opacity-100" />
+        <div className="absolute left-3 top-3 rounded-full border border-white/10 bg-black/70 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-white">
+          {initials}
+        </div>
       </div>
-      <div className="relative z-10 flex items-center justify-between">
-        <span className="rounded-full border border-white/15 bg-white/[0.06] px-3 py-1 font-mono text-xs uppercase tracking-[0.22em] text-ice">
+      <div className="relative z-10 mt-4 flex items-center justify-between">
+        <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-mono text-xs uppercase tracking-[0.14em] text-ice">
           #{character.rank} {character.rarity}
         </span>
         <span className={positive ? "text-profit" : "text-danger"}>
           {positive ? <ArrowUpRight size={20} /> : <ArrowDownRight size={20} />}
         </span>
       </div>
-      <div className="relative z-10 mt-56">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-slate-400">{character.ticker} / {character.faction} / {character.generation}</p>
-        <h3 className="mt-2 font-display text-6xl uppercase leading-[0.86] text-shadow-ice">{character.name}</h3>
-        <div className="mt-5 grid grid-cols-2 gap-3 text-xs uppercase tracking-[0.14em] text-slate-300">
-          <div className="rounded-2xl border border-white/10 bg-black/30 p-3">
+      <div className="relative z-10 mt-4">
+        <p className="font-mono text-xs uppercase tracking-[0.16em] text-slate-400">{character.ticker} / {character.faction}</p>
+        <h3 className="mt-2 text-3xl font-black uppercase leading-none">{character.name}</h3>
+        <p className="mt-1 text-sm text-slate-400">{character.generation}</p>
+        <div className="mt-4 grid grid-cols-2 gap-2 text-xs uppercase tracking-[0.1em] text-slate-300">
+          <div className="rounded-xl border border-white/10 bg-black/25 p-3">
             <span className="block text-slate-500">Style</span>
             <strong className="mt-1 block text-white">{character.fightingStyle}</strong>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-black/30 p-3">
+          <div className="rounded-xl border border-white/10 bg-black/25 p-3">
             <span className="block text-slate-500">Mastery</span>
             <strong className="mt-1 block text-white">{character.masteryType}</strong>
           </div>
         </div>
         <div className="mt-4 flex items-end justify-between">
           <div>
-            <p className="text-sm text-slate-400">Aura price</p>
-            <p className="font-display text-4xl">{formatCurrency(character.price)}</p>
+            <p className="text-sm text-slate-400">Price</p>
+            <p className="text-2xl font-black">{formatCurrency(character.price)}</p>
           </div>
           <p className={positive ? "text-profit" : "text-danger"}>{signedPercent(character.change)}</p>
         </div>
@@ -88,7 +91,7 @@ export function CharacterCard({ character, index }: { character: Character; inde
             </div>
           ))}
         </div>
-        <p className="mt-4 rounded-2xl border border-white/10 bg-white/[0.045] p-3 text-xs uppercase tracking-[0.16em] text-slate-300">
+        <p className="mt-4 rounded-xl border border-white/10 bg-white/[0.035] p-3 text-xs uppercase tracking-[0.12em] text-slate-300">
           Current arc: <span className="text-white">{character.currentArc}</span>
         </p>
       </div>

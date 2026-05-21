@@ -25,7 +25,7 @@ export function CrewMissions() {
   }
 
   return (
-    <section id="crews" className="relative z-10 mx-auto grid w-[min(1440px,calc(100%-32px))] gap-5 py-24 lg:grid-cols-[.95fr_1.05fr]">
+    <section id="crews" className="relative z-10 mx-auto grid w-[min(1180px,calc(100%-32px))] gap-5 py-16 lg:grid-cols-[.95fr_1.05fr]">
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between gap-4">
@@ -35,7 +35,7 @@ export function CrewMissions() {
             </div>
             <div className="rounded-md border border-white/10 bg-black/25 p-3 text-right">
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Cash</p>
-              <p className="font-display text-4xl">{formatCurrency(cash)}</p>
+              <p className="text-3xl font-black">{formatCurrency(cash)}</p>
             </div>
           </div>
         </CardHeader>
@@ -78,9 +78,9 @@ export function CrewMissions() {
         <CardContent className="space-y-3">
           {crews.map((crew, index) => (
             <div key={crew.name} className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-md border border-white/10 bg-white/[0.035] p-4">
-              <div className="font-display text-4xl text-crimson">#{index + 1}</div>
+              <div className="text-3xl font-black text-crimson">#{index + 1}</div>
               <div>
-                <p className="font-display text-3xl">{crew.name}</p>
+                <p className="text-2xl font-black">{crew.name}</p>
                 <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">
                   {crew.members.toLocaleString()} members / {formatCurrency(crew.equity)} equity
                 </p>

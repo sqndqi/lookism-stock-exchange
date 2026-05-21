@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "LOOKISM STOCK EXCHANGE",
-  description: "A cinematic Korean manhwa-inspired fictional stock market for Lookism factions and characters.",
+  title: "PTJ-Stocks",
+  description: "A lowkey Lookism-inspired fictional stock board for PTJ universe characters and crews.",
   openGraph: {
-    title: "LOOKISM STOCK EXCHANGE",
-    description: "Bloomberg x Korean Manhwa x Cyberpunk Seoul",
+    title: "PTJ-Stocks",
+    description: "Lookism-inspired character and crew stocks",
     type: "website"
   }
 };

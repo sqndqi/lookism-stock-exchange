@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { ArrowDownRight, ArrowUpRight, Gauge } from "lucide-react";
 import type { MarketAsset } from "@/lib/market-data";
 import { formatCompact, formatCurrency, signedPercent } from "@/lib/utils";
@@ -18,17 +19,16 @@ export function StockCard({ asset, index }: { asset: MarketAsset; index: number 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.55, delay: index * 0.04 }}
-      whileHover={{ y: -8, scale: 1.01 }}
+      whileHover={{ y: -4 }}
     >
-      <Card className="group relative h-full overflow-hidden p-6">
-        <div className="absolute inset-x-0 top-0 h-1.5" style={{ background: asset.accent }} />
-        <div className="absolute -right-16 -top-16 h-44 w-44 rounded-full opacity-25 blur-3xl" style={{ background: asset.accent }} />
-        <div className="absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100" style={{ background: `radial-gradient(circle at 70% 15%, ${asset.accent}26, transparent 42%)` }} />
-        <div className="relative z-10 flex items-start justify-between gap-4">
-          <div>
+      <Card className="group relative h-full overflow-hidden p-4">
+        <div className="absolute inset-x-0 top-0 h-1" style={{ background: asset.accent }} />
+        <div className="relative z-10 flex items-start gap-4">
+          <Image src={asset.image} alt={`${asset.name} stock image`} width={420} height={560} className="h-24 w-20 rounded-xl border border-white/10 bg-black object-cover" />
+          <div className="min-w-0 flex-1">
             <Badge className="border-white/10 bg-white/5 text-slate-300">{asset.category}</Badge>
-            <h3 className="mt-4 font-display text-5xl uppercase leading-none tracking-wide">{asset.name}</h3>
-            <p className="font-mono text-xs uppercase tracking-[0.22em] text-slate-500">{asset.symbol} / {asset.faction}</p>
+            <h3 className="mt-3 text-2xl font-black uppercase leading-none tracking-tight">{asset.name}</h3>
+            <p className="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-slate-500">{asset.symbol} / {asset.faction}</p>
           </div>
           <div className={`rounded-2xl border px-3 py-2 font-mono text-xs ${positive ? "border-ice/30 bg-ice/10 text-ice" : "border-crimson/30 bg-crimson/10 text-crimson"}`}>
             {positive ? <ArrowUpRight className="mb-1" size={16} /> : <ArrowDownRight className="mb-1" size={16} />}
@@ -37,15 +37,15 @@ export function StockCard({ asset, index }: { asset: MarketAsset; index: number 
         </div>
         <div className="relative z-10 mt-6 grid grid-cols-[1fr_auto] items-end gap-4">
           <div>
-            <p className="text-sm uppercase tracking-[0.18em] text-slate-500">Aura price</p>
-            <p className="font-display text-6xl leading-none">{formatCurrency(asset.price)}</p>
+            <p className="text-sm uppercase tracking-[0.14em] text-slate-500">Price</p>
+            <p className="text-4xl font-black leading-none">{formatCurrency(asset.price)}</p>
           </div>
-          <div className="text-right font-mono text-xs uppercase tracking-[0.18em] text-slate-400">
+          <div className="text-right font-mono text-xs uppercase tracking-[0.14em] text-slate-400">
             <p>Influence {formatCompact(asset.marketCap)}</p>
             <p>Heat {formatCompact(asset.volume)}</p>
           </div>
         </div>
-        <MarketChart asset={asset} height={150} />
+        <MarketChart asset={asset} height={110} />
         <div className="relative z-10 mt-4 grid grid-cols-2 gap-3 text-sm">
           <div className="rounded-2xl border border-white/10 bg-black/25 p-3">
             <div className="flex items-center gap-2 text-slate-400"><Gauge size={15} /> Power</div>
@@ -54,7 +54,7 @@ export function StockCard({ asset, index }: { asset: MarketAsset; index: number 
             </div>
           </div>
           <div className="rounded-2xl border border-white/10 bg-black/25 p-3">
-            <p className="text-slate-400">Aura volatility</p>
+            <p className="text-slate-400">Volatility</p>
             <p className="mt-1 font-display text-3xl">{asset.volatility}</p>
           </div>
         </div>

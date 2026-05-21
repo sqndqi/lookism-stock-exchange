@@ -8,11 +8,11 @@ export function Dashboard() {
   const lead = assets.find((asset) => asset.symbol === "JMS") ?? assets[0];
 
   return (
-    <section id="market" className="relative z-10 mx-auto w-[min(1440px,calc(100%-32px))] py-24">
+    <section id="market" className="relative z-10 mx-auto w-[min(1180px,calc(100%-32px))] py-16">
       <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-ice">Black-market combat terminal</p>
-          <h2 className="text-shadow-red mt-3 font-display text-6xl uppercase leading-none md:text-8xl">Aura Exchange</h2>
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-ice">Market board</p>
+          <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Aura Exchange</h2>
         </div>
         <p className="max-w-xl text-slate-400">
           Track influence, fight heat, crew dominance, aura volatility, and monster movement across the Seoul underground.
@@ -25,7 +25,7 @@ export function Dashboard() {
             <item.icon className="mb-5 text-crimson" size={22} />
             <p className="font-mono text-xs uppercase tracking-[0.22em] text-slate-500">{item.label}</p>
             <div className="mt-2 flex items-end justify-between">
-              <strong className="font-display text-5xl">{item.value}</strong>
+              <strong className="text-3xl font-black">{item.value}</strong>
               <span className={item.delta.startsWith("+") ? "text-profit" : "text-danger"}>{item.delta}</span>
             </div>
           </Card>
@@ -41,7 +41,7 @@ export function Dashboard() {
           <CardContent>
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="font-display text-7xl">{formatCurrency(lead.price)}</p>
+                <p className="text-5xl font-black">{formatCurrency(lead.price)}</p>
                 <p className="text-ice">{signedPercent(lead.change)} aura surge</p>
               </div>
               <div className="grid grid-cols-3 gap-3 text-center">
