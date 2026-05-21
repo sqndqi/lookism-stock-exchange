@@ -39,10 +39,12 @@ export function Navbar() {
           <span className="hidden font-display text-2xl tracking-wide sm:block">LOOKISM STOCK EXCHANGE</span>
         </a>
         <div className="hidden items-center gap-6 text-xs font-bold uppercase tracking-[0.22em] text-slate-300 lg:flex">
+          <a className="transition hover:text-cyanline" href="#intel">Intel</a>
           <a className="transition hover:text-cyanline" href="#market">Market</a>
           <a className="transition hover:text-cyanline" href="#characters">Characters</a>
+          <a className="transition hover:text-cyanline" href="#predictions">Predictions</a>
+          <a className="transition hover:text-cyanline" href="#crews">Crews</a>
           <a className="transition hover:text-cyanline" href="#portfolio">Portfolio</a>
-          <a className="transition hover:text-cyanline" href="#news">News</a>
         </div>
         <div className="flex items-center gap-2">
           <Button aria-label="Search" variant="ghost" size="sm"><Search size={16} /></Button>
@@ -58,4 +60,3 @@ export function Navbar() {
     </header>
   );
 }
-

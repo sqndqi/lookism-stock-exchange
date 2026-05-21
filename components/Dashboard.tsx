@@ -5,7 +5,7 @@ import { StockCard } from "@/components/StockCard";
 import { MarketChart } from "@/components/MarketChart";
 
 export function Dashboard() {
-  const lead = assets[7];
+  const lead = assets.find((asset) => asset.symbol === "JMS") ?? assets[0];
 
   return (
     <section id="market" className="relative z-10 mx-auto w-[min(1440px,calc(100%-32px))] py-24">
@@ -85,4 +85,3 @@ export function Dashboard() {
     </section>
   );
 }
-

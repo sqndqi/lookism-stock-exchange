@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { BriefcaseBusiness, LockKeyhole, Plus, Wallet } from "lucide-react";
+import { BriefcaseBusiness, LockKeyhole, Minus, Plus, Wallet } from "lucide-react";
 import { assets } from "@/lib/market-data";
 import { formatCurrency } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -15,11 +15,12 @@ type Holding = {
 
 export function PortfolioSimulator() {
   const [holdings, setHoldings] = useState<Holding[]>([
-    { symbol: "DNL", shares: 3 },
+    { symbol: "BDNL", shares: 3 },
     { symbol: "BDL", shares: 9 }
   ]);
   const [selected, setSelected] = useState("GUN");
   const [loading, setLoading] = useState(false);
+  const [cash, setCash] = useState(5000);
 
   const total = useMemo(
     () =>
@@ -31,8 +32,11 @@ export function PortfolioSimulator() {
   );
 
   function buy() {
+    const asset = assets.find((item) => item.symbol === selected);
+    if (!asset || cash < asset.price) return;
     setLoading(true);
     window.setTimeout(() => {
+      setCash((value) => value - asset.price);
       setHoldings((current) => {
         const existing = current.find((item) => item.symbol === selected);
         if (existing) {
@@ -42,6 +46,12 @@ export function PortfolioSimulator() {
       });
       setLoading(false);
     }, 450);
+  }
+
+  function short() {
+    const asset = assets.find((item) => item.symbol === selected);
+    if (!asset) return;
+    setCash((value) => value + asset.price * 0.15);
   }
 
   return (
@@ -64,7 +74,7 @@ export function PortfolioSimulator() {
             </div>
             <div className="mt-6 grid gap-3">
               <input className="h-12 rounded-md border border-white/10 bg-black/30 px-4 text-sm outline-none transition focus:border-cyanline" value="trader@ptj.market" readOnly />
-              <input className="h-12 rounded-md border border-white/10 bg-black/30 px-4 text-sm outline-none transition focus:border-cyanline" value="••••••••••" readOnly />
+              <input className="h-12 rounded-md border border-white/10 bg-black/30 px-4 text-sm outline-none transition focus:border-cyanline" value="**********" readOnly />
               <Button>Authenticate desk</Button>
             </div>
           </div>
@@ -77,13 +87,19 @@ export function PortfolioSimulator() {
             <CardTitle>Portfolio Simulator</CardTitle>
             <p className="text-sm text-slate-400">Buy fake positions and watch the terminal rebalance instantly.</p>
           </div>
-          <div className="rounded-md border border-white/10 bg-black/30 p-3 text-right">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Equity</p>
-            <p className="font-display text-4xl">{formatCurrency(total)}</p>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-md border border-white/10 bg-black/30 p-3 text-right">
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Cash</p>
+              <p className="font-display text-4xl">{formatCurrency(cash)}</p>
+            </div>
+            <div className="rounded-md border border-white/10 bg-black/30 p-3 text-right">
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Equity</p>
+              <p className="font-display text-4xl">{formatCurrency(total + cash)}</p>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 md:grid-cols-[1fr_auto]">
+          <div className="grid gap-4 md:grid-cols-[1fr_auto_auto]">
             <select
               className="h-12 rounded-md border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-cyanline"
               value={selected}
@@ -94,6 +110,7 @@ export function PortfolioSimulator() {
               ))}
             </select>
             <Button onClick={buy}><Plus size={17} /> Buy 1 Share</Button>
+            <Button onClick={short} variant="ghost"><Minus size={17} /> Short</Button>
           </div>
 
           <div className="mt-6 grid gap-3">
@@ -125,4 +142,3 @@ export function PortfolioSimulator() {
     </section>
   );
 }
-

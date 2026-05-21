@@ -7,6 +7,7 @@ import { formatCompact, formatCurrency, signedPercent } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MarketChart } from "@/components/MarketChart";
+import { Button } from "@/components/ui/button";
 
 export function StockCard({ asset, index }: { asset: MarketAsset; index: number }) {
   const positive = asset.change >= 0;
@@ -57,8 +58,11 @@ export function StockCard({ asset, index }: { asset: MarketAsset; index: number 
           </div>
         </div>
         <p className="mt-4 min-h-12 text-sm leading-6 text-slate-400">{asset.quote}</p>
+        <div className="mt-5 grid grid-cols-2 gap-3">
+          <Button variant="ghost" size="sm">Details</Button>
+          <Button size="sm">Trade</Button>
+        </div>
       </Card>
     </motion.article>
   );
 }
-

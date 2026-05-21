@@ -1,4 +1,17 @@
-import { Activity, Building2, Flame, Shield, Swords, TrendingDown, TrendingUp, Users } from "lucide-react";
+import {
+  Activity,
+  BadgeCheck,
+  Building2,
+  Flame,
+  Goal,
+  Shield,
+  Swords,
+  TrendingDown,
+  TrendingUp,
+  Trophy,
+  Users
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export type StockPoint = {
   t: string;
@@ -29,6 +42,29 @@ export type NewsItem = {
   time: string;
 };
 
+export type WikiDossier = {
+  name: string;
+  group: string;
+  role: string;
+  marketUse: string;
+  sourcePath: string;
+};
+
+export type PredictionContract = {
+  question: string;
+  pool: number;
+  closes: string;
+  options: Array<{ label: string; odds: number }>;
+  catalyst: string;
+};
+
+export type Mission = {
+  title: string;
+  reward: number;
+  progress: number;
+  icon: LucideIcon;
+};
+
 export const marketPulse = [
   { label: "Market Heat", value: "91.8", icon: Flame, delta: "+8.4%" },
   { label: "Faction Volume", value: "2.7B", icon: Activity, delta: "+14.2%" },
@@ -44,8 +80,8 @@ const series = (base: number, moves: number[]) =>
 
 export const assets: MarketAsset[] = [
   {
-    symbol: "DNL",
-    name: "Daniel Park",
+    symbol: "BDNL",
+    name: "Daniel Park (Big)",
     category: "Character",
     price: 428.72,
     change: 9.82,
@@ -58,6 +94,22 @@ export const assets: MarketAsset[] = [
     accent: "#7dd3fc",
     quote: "Dual-body premium is still underpriced by the street.",
     chart: series(380, [2, 18, 12, 38, 29, 48, 42, 61, 55])
+  },
+  {
+    symbol: "LDNL",
+    name: "Daniel Park (Small)",
+    category: "Character",
+    price: 367.11,
+    change: 4.01,
+    marketCap: 7900000000,
+    volume: 76000000,
+    power: 94,
+    volatility: 92,
+    signal: "BUY",
+    faction: "J High",
+    accent: "#93c5fd",
+    quote: "Original-body comeback premium is rising with UI speculation.",
+    chart: series(330, [0, 7, 12, 8, 22, 19, 28, 34, 37])
   },
   {
     symbol: "GUN",
@@ -76,6 +128,22 @@ export const assets: MarketAsset[] = [
     chart: series(455, [4, 21, 28, 44, 39, 52, 71, 66, 83])
   },
   {
+    symbol: "KTAE",
+    name: "Kitae Kim",
+    category: "Character",
+    price: 504.07,
+    change: 1.4,
+    marketCap: 12200000000,
+    volume: 101000000,
+    power: 100,
+    volatility: 89,
+    signal: "BUY",
+    faction: "Gapryong Line",
+    accent: "#f87171",
+    quote: "Shadow-line scarcity keeps the float tight despite ugly headlines.",
+    chart: series(492, [0, 10, 2, 18, 11, 23, 19, 16, 12])
+  },
+  {
     symbol: "GOO",
     name: "Goo Kim",
     category: "Character",
@@ -92,6 +160,38 @@ export const assets: MarketAsset[] = [
     chart: series(500, [0, -18, 21, 4, 31, -8, 18, -4, -14])
   },
   {
+    symbol: "JKE",
+    name: "Jake Kim",
+    category: "Character",
+    price: 282.72,
+    change: 7.23,
+    marketCap: 5900000000,
+    volume: 62000000,
+    power: 91,
+    volatility: 78,
+    signal: "BUY",
+    faction: "Big Deal",
+    accent: "#60a5fa",
+    quote: "Big Deal leadership premium is back in play after rumor flow.",
+    chart: series(250, [2, 9, 8, 16, 21, 19, 28, 33, 31])
+  },
+  {
+    symbol: "ELI",
+    name: "Eli Jang",
+    category: "Character",
+    price: 214.44,
+    change: -1.86,
+    marketCap: 4100000000,
+    volume: 31000000,
+    power: 86,
+    volatility: 69,
+    signal: "HOLD",
+    faction: "Hostel",
+    accent: "#cbd5e1",
+    quote: "Defensive holder base, but narrative volume is thin this session.",
+    chart: series(220, [0, -3, 4, 2, -5, -1, -6, -4, -5])
+  },
+  {
     symbol: "JHL",
     name: "Johan Seong",
     category: "Character",
@@ -106,6 +206,54 @@ export const assets: MarketAsset[] = [
     accent: "#38bdf8",
     quote: "Copycat upside remains lethal in short windows.",
     chart: series(280, [1, 8, 4, 18, 21, 17, 25, 33, 29])
+  },
+  {
+    symbol: "VAS",
+    name: "Vasco",
+    category: "Character",
+    price: 188.34,
+    change: 2.94,
+    marketCap: 3300000000,
+    volume: 27000000,
+    power: 84,
+    volatility: 55,
+    signal: "HOLD",
+    faction: "Burn Knuckles",
+    accent: "#38bdf8",
+    quote: "Clean fundamentals, low scandal beta, steady retail accumulation.",
+    chart: series(176, [1, 3, 5, 4, 8, 7, 9, 12, 11])
+  },
+  {
+    symbol: "ZACK",
+    name: "Zack Lee",
+    category: "Character",
+    price: 176.19,
+    change: 3.37,
+    marketCap: 3000000000,
+    volume: 25000000,
+    power: 83,
+    volatility: 61,
+    signal: "HOLD",
+    faction: "J High",
+    accent: "#a5b4fc",
+    quote: "Training-arc recovery story is still attracting momentum funds.",
+    chart: series(162, [1, 2, 6, 5, 9, 11, 10, 15, 14])
+  },
+  {
+    symbol: "SML",
+    name: "Samuel Seo",
+    category: "Character",
+    price: 247.8,
+    change: -4.8,
+    marketCap: 4800000000,
+    volume: 53000000,
+    power: 88,
+    volatility: 93,
+    signal: "SHORT",
+    faction: "Workers",
+    accent: "#fb7185",
+    quote: "High ego beta. Great liquidity, brutal drawdowns.",
+    chart: series(270, [0, -8, -2, -15, -10, -24, -18, -28, -22])
   },
   {
     symbol: "BDL",
@@ -188,6 +336,22 @@ export const assets: MarketAsset[] = [
     chart: series(380, [0, -12, -20, -18, -33, -27, -41, -44, -43])
   },
   {
+    symbol: "WTJC",
+    name: "White Tiger Job Center",
+    category: "Faction",
+    price: 296.44,
+    change: 5.06,
+    marketCap: 7200000000,
+    volume: 88000000,
+    power: 96,
+    volatility: 62,
+    signal: "BUY",
+    faction: "White Tiger",
+    accent: "#e2e8f0",
+    quote: "Mercenary cashflow gives this desk rare defensive strength.",
+    chart: series(276, [1, 4, 8, 13, 12, 17, 21, 19, 20])
+  },
+  {
     symbol: "JHI",
     name: "J High Industries",
     category: "Faction",
@@ -242,7 +406,107 @@ export const factionRanks = [
   { name: "God Dog", score: 70, icon: TrendingDown, change: "-2.4%" }
 ];
 
+export const wikiDossiers: WikiDossier[] = [
+  {
+    name: "Daniel Park",
+    group: "J High School",
+    role: "dual-body thesis asset",
+    marketUse: "Core index constituent for body-swap, UI, and protagonist catalysts.",
+    sourcePath: "Daniel_Park"
+  },
+  {
+    name: "Gun Park",
+    group: "Most visited character",
+    role: "fear-volatility benchmark",
+    marketUse: "Used as the market's violence premium and power-scaling hedge.",
+    sourcePath: "Gun_Park"
+  },
+  {
+    name: "James Lee",
+    group: "1st Generation",
+    role: "legend index anchor",
+    marketUse: "High multiple asset when first-generation lore enters the feed.",
+    sourcePath: "James_Lee"
+  },
+  {
+    name: "Tom Lee",
+    group: "0th Generation",
+    role: "old-guard institutional desk",
+    marketUse: "Defensive veteran exposure during Fist Gang discourse.",
+    sourcePath: "Tom_Lee"
+  },
+  {
+    name: "Kitae Kim",
+    group: "Gapryong line",
+    role: "shadow liquidity shock",
+    marketUse: "Moves hard when Reddit theories mention bloodline or endgame power.",
+    sourcePath: "Kitae_Kim"
+  },
+  {
+    name: "Zack Lee / Vasco / Jay Hong",
+    group: "J High basket",
+    role: "training arc ETF",
+    marketUse: "Tracks school-side development, teamwork, and comeback chatter.",
+    sourcePath: "J_High_School"
+  }
+];
+
+export const predictionContracts: PredictionContract[] = [
+  {
+    question: "Will Daniel stay in UI mode through the next major reveal?",
+    pool: 31520,
+    closes: "Chapter review window",
+    catalyst: "Reddit is actively discussing UI Daniel, second-body reveals, and who finds little Daniel.",
+    options: [
+      { label: "Full UI hold", odds: 42 },
+      { label: "Breaks before reveal", odds: 38 },
+      { label: "Interrupted by third party", odds: 20 }
+    ]
+  },
+  {
+    question: "Does Gun receive a new upscale before Goo discourse cools?",
+    pool: 18440,
+    closes: "48h",
+    catalyst: "Recent subreddit titles are centered on Gun, Goo, TUI scaling, and plot re-entry.",
+    options: [
+      { label: "Gun upscales", odds: 51 },
+      { label: "Goo recovers", odds: 29 },
+      { label: "No clear winner", odds: 20 }
+    ]
+  },
+  {
+    question: "Will James Lee regain top legend momentum this week?",
+    pool: 22780,
+    closes: "Weekly close",
+    catalyst: "James scaling memes and theory posts are keeping volume elevated.",
+    options: [
+      { label: "Legend bid returns", odds: 46 },
+      { label: "Kitae steals volume", odds: 34 },
+      { label: "Flat close", odds: 20 }
+    ]
+  }
+];
+
+export const missions: Mission[] = [
+  { title: "Daily check-in", reward: 300, progress: 100, icon: BadgeCheck },
+  { title: "Vote on one prediction contract", reward: 125, progress: 66, icon: Goal },
+  { title: "Build a 5-stock crew basket", reward: 500, progress: 40, icon: Users },
+  { title: "Beat the chapter-review halt spread", reward: 750, progress: 25, icon: Trophy }
+];
+
 export const news: NewsItem[] = [
+  {
+    title: "Second-body reveal chatter pushes Daniel basket into auction imbalance",
+    tag: "Reddit Wire",
+    impact: "BDNL +9.82%",
+    time: "Live"
+  },
+  {
+    title: "TUI Gun versus Goo discourse drives volatility desk volume",
+    tag: "Power Scaling",
+    impact: "GUN +12.44%",
+    time: "Live"
+  },
   {
     title: "Gangbuk liquidity spikes after Big Deal block trade",
     tag: "Underground Economy",
@@ -274,4 +538,3 @@ export const tickerTape = [...assets, ...assets.slice(0, 6)].map((asset) => ({
   price: asset.price,
   change: asset.change
 }));
-
