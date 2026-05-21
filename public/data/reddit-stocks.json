@@ -1,41 +1,41 @@
 {
-  "generatedAt": "2026-05-21T18:33:20.285Z",
+  "generatedAt": "2026-05-21T18:51:34.972Z",
   "subreddit": "r/lookismcomic",
   "sourceUrls": [
     "https://www.reddit.com/r/lookismcomic/hot.json?limit=50",
     "https://www.reddit.com/r/lookismcomic/new.json?limit=50",
     "https://www.reddit.com/r/lookismcomic/top.json?limit=50&t=week"
   ],
-  "postsScanned": 138,
+  "postsScanned": 137,
   "market": [
     {
       "name": "James Lee",
-      "price": 108.64,
-      "change": 8.64,
-      "changePercent": 8.64,
-      "mentions": 90,
-      "sentiment": 0.21,
+      "price": 109.12,
+      "change": 9.12,
+      "changePercent": 9.12,
+      "mentions": 91,
+      "sentiment": 0.22,
       "trend": "up",
       "reason": "Movement is mostly driven by attention volume rather than clear sentiment.",
       "citedPosts": [
         {
           "title": "Only possible explanation of James using only 1 Mastery initially",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tdxlvq/only_possible_explanation_of_james_using_only_1/",
-          "ups": 837,
+          "ups": 834,
           "comments": 21,
           "sentiment": 0
         },
         {
           "title": "WE LOST 3 LEGENDS...",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tdrbxg/we_lost_3_legends/",
-          "ups": 439,
+          "ups": 442,
           "comments": 54,
           "sentiment": -2
         },
         {
           "title": "Kitae thinks james lee is below tomlee? LMAO",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tjlus6/kitae_thinks_james_lee_is_below_tomlee_lmao/",
-          "ups": 321,
+          "ups": 328,
           "comments": 100,
           "sentiment": 0
         }
@@ -43,25 +43,25 @@
     },
     {
       "name": "Daniel Park",
-      "price": 107.24,
-      "change": 7.24,
-      "changePercent": 7.24,
-      "mentions": 81,
-      "sentiment": 0.26,
+      "price": 107.53,
+      "change": 7.53,
+      "changePercent": 7.53,
+      "mentions": 77,
+      "sentiment": 0.28,
       "trend": "up",
       "reason": "Movement is mostly driven by attention volume rather than clear sentiment.",
       "citedPosts": [
         {
           "title": "In the past Daniel wished his original body was gone, now he's going on a rampage when faced with the realization that it might really be gone.",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1teu2qy/in_the_past_daniel_wished_his_original_body_was/",
-          "ups": 676,
+          "ups": 679,
           "comments": 17,
           "sentiment": 0
         },
         {
           "title": "Is Kitae Kim bleeding from his a*s? 💀",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tfj0qm/is_kitae_kim_bleeding_from_his_as/",
-          "ups": 514,
+          "ups": 511,
           "comments": 83,
           "sentiment": 0
         },
@@ -75,11 +75,44 @@
       ]
     },
     {
+      "name": "Gitae Kim",
+      "price": 105.22,
+      "change": 5.22,
+      "changePercent": 5.22,
+      "mentions": 50,
+      "sentiment": 0.27,
+      "trend": "up",
+      "reason": "Movement is mostly driven by attention volume rather than clear sentiment.",
+      "citedPosts": [
+        {
+          "title": "Is Kitae Kim bleeding from his a*s? 💀",
+          "url": "https://www.reddit.com/r/lookismcomic/comments/1tfj0qm/is_kitae_kim_bleeding_from_his_as/",
+          "ups": 511,
+          "comments": 83,
+          "sentiment": 0
+        },
+        {
+          "title": "Kitae thinks james lee is below tomlee? LMAO",
+          "url": "https://www.reddit.com/r/lookismcomic/comments/1tjlus6/kitae_thinks_james_lee_is_below_tomlee_lmao/",
+          "ups": 328,
+          "comments": 100,
+          "sentiment": 0
+        },
+        {
+          "title": "This guy genuinely “failed” at everything",
+          "url": "https://www.reddit.com/r/lookismcomic/comments/1tiler5/this_guy_genuinely_failed_at_everything/",
+          "ups": 249,
+          "comments": 33,
+          "sentiment": 0
+        }
+      ]
+    },
+    {
       "name": "Tom Lee",
-      "price": 104.08,
-      "change": 4.08,
-      "changePercent": 4.08,
-      "mentions": 37,
+      "price": 103.71,
+      "change": 3.71,
+      "changePercent": 3.71,
+      "mentions": 42,
       "sentiment": 0.29,
       "trend": "up",
       "reason": "Movement is mostly driven by attention volume rather than clear sentiment.",
@@ -87,14 +120,14 @@
         {
           "title": "WE LOST 3 LEGENDS...",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tdrbxg/we_lost_3_legends/",
-          "ups": 439,
+          "ups": 442,
           "comments": 54,
           "sentiment": -2
         },
         {
           "title": "As if we didn’t already have enough questions, PTJ dropped another one.",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1teh4xf/as_if_we_didnt_already_have_enough_questions_ptj/",
-          "ups": 344,
+          "ups": 339,
           "comments": 79,
           "sentiment": 0
         },
@@ -108,43 +141,10 @@
       ]
     },
     {
-      "name": "Gitae Kim",
-      "price": 103.94,
-      "change": 3.94,
-      "changePercent": 3.94,
-      "mentions": 47,
-      "sentiment": 0.27,
-      "trend": "up",
-      "reason": "Movement is mostly driven by attention volume rather than clear sentiment.",
-      "citedPosts": [
-        {
-          "title": "Is Kitae Kim bleeding from his a*s? 💀",
-          "url": "https://www.reddit.com/r/lookismcomic/comments/1tfj0qm/is_kitae_kim_bleeding_from_his_as/",
-          "ups": 514,
-          "comments": 83,
-          "sentiment": 0
-        },
-        {
-          "title": "Kitae thinks james lee is below tomlee? LMAO",
-          "url": "https://www.reddit.com/r/lookismcomic/comments/1tjlus6/kitae_thinks_james_lee_is_below_tomlee_lmao/",
-          "ups": 321,
-          "comments": 100,
-          "sentiment": 0
-        },
-        {
-          "title": "This guy genuinely “failed” at everything",
-          "url": "https://www.reddit.com/r/lookismcomic/comments/1tiler5/this_guy_genuinely_failed_at_everything/",
-          "ups": 254,
-          "comments": 33,
-          "sentiment": 0
-        }
-      ]
-    },
-    {
       "name": "Jay Hong",
-      "price": 103.41,
-      "change": 3.41,
-      "changePercent": 3.41,
+      "price": 103.39,
+      "change": 3.39,
+      "changePercent": 3.39,
       "mentions": 5,
       "sentiment": 1,
       "trend": "up",
@@ -153,21 +153,21 @@
         {
           "title": "Yeah,The Second body isn't daniel alone. Definitely some dual personality going on.",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tjnea4/yeahthe_second_body_isnt_daniel_alone_definitely/",
-          "ups": 66,
+          "ups": 70,
           "comments": 23,
           "sentiment": 0
         },
         {
           "title": "What's wrong with Daniel's second body?",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tjs4h0/whats_wrong_with_daniels_second_body/",
-          "ups": 11,
+          "ups": 13,
           "comments": 6,
           "sentiment": 3
         },
         {
           "title": "Who was Controlling Daniels body during the chap?",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tjriw5/who_was_controlling_daniels_body_during_the_chap/",
-          "ups": 7,
+          "ups": 8,
           "comments": 3,
           "sentiment": 0
         }
@@ -175,9 +175,9 @@
     },
     {
       "name": "Gun Park",
-      "price": 102.71,
-      "change": 2.71,
-      "changePercent": 2.71,
+      "price": 102.64,
+      "change": 2.64,
+      "changePercent": 2.64,
       "mentions": 15,
       "sentiment": 0.73,
       "trend": "up",
@@ -186,21 +186,21 @@
         {
           "title": "To be honest, Gun really accepted his fate of death here.",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tg82ao/to_be_honest_gun_really_accepted_his_fate_of/",
-          "ups": 473,
+          "ups": 469,
           "comments": 67,
           "sentiment": 1
         },
         {
           "title": "PTJ has completely Butchered GUN's fighting style by Making him a pure brute who only relies on his Stats instead of his martial arts and it's only going to get worse.",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1teqwb8/ptj_has_completely_butchered_guns_fighting_style/",
-          "ups": 314,
+          "ups": 312,
           "comments": 50,
           "sentiment": 3
         },
         {
           "title": "James Lee's path- \"Divine Intervention\"",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1te091f/james_lees_path_divine_intervention/",
-          "ups": 226,
+          "ups": 228,
           "comments": 12,
           "sentiment": 3
         }
@@ -208,9 +208,9 @@
     },
     {
       "name": "Johan Seong",
-      "price": 102.1,
-      "change": 2.1,
-      "changePercent": 2.1,
+      "price": 102.08,
+      "change": 2.08,
+      "changePercent": 2.08,
       "mentions": 7,
       "sentiment": 0.86,
       "trend": "up",
@@ -226,52 +226,14 @@
         {
           "title": "James Lee's path- \"Divine Intervention\"",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1te091f/james_lees_path_divine_intervention/",
-          "ups": 226,
+          "ups": 228,
           "comments": 12,
           "sentiment": 3
         },
         {
           "title": "What's wrong with Daniel's second body?",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tjs4h0/whats_wrong_with_daniels_second_body/",
-          "ups": 11,
-          "comments": 6,
-          "sentiment": 3
-        }
-      ]
-    },
-    {
-      "name": "Samuel Seo",
-      "price": 101.71,
-      "change": 1.71,
-      "changePercent": 1.71,
-      "mentions": 1,
-      "sentiment": 1,
-      "trend": "up",
-      "reason": "Bullish chatter and engagement are pushing attention up.",
-      "citedPosts": [
-        {
-          "title": "What's wrong with Daniel's second body?",
-          "url": "https://www.reddit.com/r/lookismcomic/comments/1tjs4h0/whats_wrong_with_daniels_second_body/",
-          "ups": 11,
-          "comments": 6,
-          "sentiment": 3
-        }
-      ]
-    },
-    {
-      "name": "Zack Lee",
-      "price": 101.41,
-      "change": 1.41,
-      "changePercent": 1.41,
-      "mentions": 5,
-      "sentiment": 0.6,
-      "trend": "up",
-      "reason": "Bullish chatter and engagement are pushing attention up.",
-      "citedPosts": [
-        {
-          "title": "What's wrong with Daniel's second body?",
-          "url": "https://www.reddit.com/r/lookismcomic/comments/1tjs4h0/whats_wrong_with_daniels_second_body/",
-          "ups": 11,
+          "ups": 13,
           "comments": 6,
           "sentiment": 3
         }
@@ -279,26 +241,19 @@
     },
     {
       "name": "Vasco",
-      "price": 101.15,
-      "change": 1.15,
-      "changePercent": 1.15,
-      "mentions": 13,
-      "sentiment": 0.57,
+      "price": 101.82,
+      "change": 1.82,
+      "changePercent": 1.82,
+      "mentions": 11,
+      "sentiment": 0.67,
       "trend": "up",
       "reason": "Bullish chatter and engagement are pushing attention up.",
       "citedPosts": [
         {
           "title": "Vasco 2T ???",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tjlk91/vasco_2t/",
-          "ups": 65,
+          "ups": 72,
           "comments": 24,
-          "sentiment": 0
-        },
-        {
-          "title": "Vasco run!!! 😭😭 Man just stop!!! 😭",
-          "url": "https://www.reddit.com/r/lookismcomic/comments/1tjlgoa/vasco_run_man_just_stop/",
-          "ups": 38,
-          "comments": 10,
           "sentiment": 0
         },
         {
@@ -307,6 +262,51 @@
           "ups": 42,
           "comments": 3,
           "sentiment": 0
+        },
+        {
+          "title": "I genuinely hate it when important characters unlock masteries off screen",
+          "url": "https://www.reddit.com/r/lookismcomic/comments/1tjmrxn/i_genuinely_hate_it_when_important_characters/",
+          "ups": 32,
+          "comments": 11,
+          "sentiment": 2
+        }
+      ]
+    },
+    {
+      "name": "Samuel Seo",
+      "price": 101.7,
+      "change": 1.7,
+      "changePercent": 1.7,
+      "mentions": 1,
+      "sentiment": 1,
+      "trend": "up",
+      "reason": "Bullish chatter and engagement are pushing attention up.",
+      "citedPosts": [
+        {
+          "title": "What's wrong with Daniel's second body?",
+          "url": "https://www.reddit.com/r/lookismcomic/comments/1tjs4h0/whats_wrong_with_daniels_second_body/",
+          "ups": 13,
+          "comments": 6,
+          "sentiment": 3
+        }
+      ]
+    },
+    {
+      "name": "Zack Lee",
+      "price": 101.4,
+      "change": 1.4,
+      "changePercent": 1.4,
+      "mentions": 5,
+      "sentiment": 0.6,
+      "trend": "up",
+      "reason": "Bullish chatter and engagement are pushing attention up.",
+      "citedPosts": [
+        {
+          "title": "What's wrong with Daniel's second body?",
+          "url": "https://www.reddit.com/r/lookismcomic/comments/1tjs4h0/whats_wrong_with_daniels_second_body/",
+          "ups": 13,
+          "comments": 6,
+          "sentiment": 3
         }
       ]
     },
@@ -316,28 +316,28 @@
       "change": 1.11,
       "changePercent": 1.11,
       "mentions": 6,
-      "sentiment": 0.37,
+      "sentiment": 0.38,
       "trend": "up",
       "reason": "Bullish chatter and engagement are pushing attention up.",
       "citedPosts": [
         {
           "title": "Could it be that Jake kim has both conviction ??",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1thdoyd/could_it_be_that_jake_kim_has_both_conviction/",
-          "ups": 265,
+          "ups": 264,
           "comments": 47,
           "sentiment": 0
         },
         {
           "title": "This guy genuinely “failed” at everything",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tiler5/this_guy_genuinely_failed_at_everything/",
-          "ups": 254,
+          "ups": 249,
           "comments": 33,
           "sentiment": 0
         },
         {
           "title": "What's wrong with Daniel's second body?",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tjs4h0/whats_wrong_with_daniels_second_body/",
-          "ups": 11,
+          "ups": 13,
           "comments": 6,
           "sentiment": 3
         }
@@ -345,32 +345,32 @@
     },
     {
       "name": "Elite",
-      "price": 98.38,
-      "change": -1.62,
-      "changePercent": -1.62,
+      "price": 98.37,
+      "change": -1.63,
+      "changePercent": -1.63,
       "mentions": 5,
-      "sentiment": 0.11,
+      "sentiment": 0.12,
       "trend": "down",
       "reason": "Movement is mostly driven by attention volume rather than clear sentiment.",
       "citedPosts": [
         {
           "title": "As if we didn’t already have enough questions, PTJ dropped another one.",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1teh4xf/as_if_we_didnt_already_have_enough_questions_ptj/",
-          "ups": 344,
+          "ups": 339,
           "comments": 79,
           "sentiment": 0
         },
         {
           "title": "They’re All with Tung now🥹✌️",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1te0kzl/theyre_all_with_tung_now/",
-          "ups": 216,
+          "ups": 215,
           "comments": 12,
           "sentiment": 0
         },
         {
           "title": "The strongest",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tjs7ut/the_strongest/",
-          "ups": 6,
+          "ups": 8,
           "comments": 2,
           "sentiment": 1
         }
@@ -378,9 +378,9 @@
     },
     {
       "name": "Goo Kim",
-      "price": 98.23,
-      "change": -1.77,
-      "changePercent": -1.77,
+      "price": 98.22,
+      "change": -1.78,
+      "changePercent": -1.78,
       "mentions": 2,
       "sentiment": 0,
       "trend": "down",
@@ -389,7 +389,7 @@
         {
           "title": "Why Goo Kim Is Literally Frieza of Lookism 🥀",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1ti756g/why_goo_kim_is_literally_frieza_of_lookism/",
-          "ups": 301,
+          "ups": 299,
           "comments": 24,
           "sentiment": 0
         }
@@ -441,9 +441,9 @@
     },
     {
       "name": "Seongji Yuk",
-      "price": 92.21,
-      "change": -7.79,
-      "changePercent": -7.79,
+      "price": 92.2,
+      "change": -7.8,
+      "changePercent": -7.8,
       "mentions": 1,
       "sentiment": -1,
       "trend": "down",
@@ -452,7 +452,7 @@
         {
           "title": "WE LOST 3 LEGENDS...",
           "url": "https://www.reddit.com/r/lookismcomic/comments/1tdrbxg/we_lost_3_legends/",
-          "ups": 439,
+          "ups": 442,
           "comments": 54,
           "sentiment": -2
         }

@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const charactersPath = path.join(root, "data", "characters.json");
-const outputPath = path.join(root, "docs", "data", "stocks.json");
+const outputPath = path.join(root, "public", "data", "reddit-stocks.json");
 
 const subreddit = "lookismcomic";
 const sourceUrls = [
@@ -78,7 +78,7 @@ async function fetchRedditPosts() {
   for (const url of sourceUrls) {
     const response = await fetch(url, {
       headers: {
-        "User-Agent": "lookism-character-stocks/0.1 by github-pages-bot"
+        "User-Agent": "lookism-stock-exchange/1.0 by fictional-market-dashboard"
       }
     });
 
@@ -204,7 +204,7 @@ async function main() {
     )}\n`
   );
 
-  console.log(`Updated ${market.length} character stocks from ${posts.length} Reddit posts.`);
+  console.log(`Updated ${market.length} Reddit-driven stocks from ${posts.length} posts.`);
 }
 
 main().catch((error) => {

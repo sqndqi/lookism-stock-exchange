@@ -1,4 +1,4 @@
-name: Update character stocks
+name: Update Reddit market signals
 
 on:
   workflow_dispatch:
@@ -22,13 +22,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: "npm"
 
-      - name: Update stock data
-        run: npm run update
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Update market data
+        run: npm run update:reddit
 
       - name: Commit updated data
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Update Lookism character stocks"
-          file_pattern: docs/data/stocks.json
+          commit_message: "Update Reddit market signals"
+          file_pattern: public/data/reddit-stocks.json
 

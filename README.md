@@ -1,52 +1,46 @@
-# Lookism Character Stocks
+# LOOKISM STOCK EXCHANGE
 
-A GitHub Pages dashboard that turns conversation from `r/lookismcomic` into fake market movement for Lookism characters.
+Bloomberg x Korean manhwa x cyberpunk Seoul.
 
-This is not financial advice. It is a noisy fandom sentiment toy.
+This is a Vercel-ready Next.js 15 dashboard for a fictional Lookism-inspired faction and character market. It ships with cinematic UI, typed mock finance data, animated stock cards, generated silhouette art, a portfolio simulator, and a Reddit-powered updater script for market signals.
 
-## What It Does
+> Fan-made project. Character and faction names are used as fictional market labels. Visual assets are original silhouettes/textures, not ripped webtoon art.
 
-- Checks recent Reddit posts from `r/lookismcomic`
-- Looks for character mentions and common hype/downplay language
-- Converts attention, engagement, and sentiment into fake stock prices
-- Publishes a dashboard from the `docs/` folder
-- Runs automatically with GitHub Actions every 6 hours
+## Stack
 
-## Local Run
+- Next.js 15 App Router
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Shadcn-style UI primitives
+- Lucide Icons
+- Recharts
+
+## Run Locally
 
 ```bash
 npm install
-npm run update
-npm run serve
+npm run dev
 ```
 
-Then open `http://localhost:4173`.
+Open `http://localhost:3000`.
 
-## GitHub Pages
+## Production Build
 
-After pushing this repo to GitHub:
+```bash
+npm run build
+npm start
+```
 
-1. Go to repository **Settings**
-2. Open **Pages**
-3. Set source to **Deploy from a branch**
-4. Choose branch `main` and folder `/docs`
+## Reddit Market Updater
 
-The dashboard reads `docs/data/stocks.json`, which the workflow updates automatically.
+```bash
+npm run update:reddit
+```
 
-## Automation
+The script scans recent `r/lookismcomic` posts and writes data to `public/data/reddit-stocks.json`. The GitHub Actions workflow runs it every 6 hours and commits updated data.
 
-The workflow lives at `.github/workflows/update-stocks.yml`.
+## Deploy
 
-It can run on a schedule, on manual dispatch, or after pushes to `main`. The workflow commits updated stock data back into the repo when Reddit data changes.
-
-## Tuning
-
-Edit `data/characters.json` to add more characters or aliases.
-
-Edit `src/update-stocks.mjs` to change:
-
-- scoring weights
-- bullish and bearish terms
-- subreddit source
-- update frequency logic
+Push this repository to GitHub and import it into Vercel. No custom build settings are required.
 

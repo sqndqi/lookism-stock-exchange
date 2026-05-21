@@ -1,0 +1,128 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { BriefcaseBusiness, LockKeyhole, Plus, Wallet } from "lucide-react";
+import { assets } from "@/lib/market-data";
+import { formatCurrency } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+
+type Holding = {
+  symbol: string;
+  shares: number;
+};
+
+export function PortfolioSimulator() {
+  const [holdings, setHoldings] = useState<Holding[]>([
+    { symbol: "DNL", shares: 3 },
+    { symbol: "BDL", shares: 9 }
+  ]);
+  const [selected, setSelected] = useState("GUN");
+  const [loading, setLoading] = useState(false);
+
+  const total = useMemo(
+    () =>
+      holdings.reduce((sum, holding) => {
+        const asset = assets.find((item) => item.symbol === holding.symbol);
+        return sum + (asset?.price ?? 0) * holding.shares;
+      }, 0),
+    [holdings]
+  );
+
+  function buy() {
+    setLoading(true);
+    window.setTimeout(() => {
+      setHoldings((current) => {
+        const existing = current.find((item) => item.symbol === selected);
+        if (existing) {
+          return current.map((item) => (item.symbol === selected ? { ...item, shares: item.shares + 1 } : item));
+        }
+        return [...current, { symbol: selected, shares: 1 }];
+      });
+      setLoading(false);
+    }, 450);
+  }
+
+  return (
+    <section id="portfolio" className="relative z-10 mx-auto grid w-[min(1440px,calc(100%-32px))] gap-5 py-24 lg:grid-cols-[.82fr_1.18fr]">
+      <Card className="overflow-hidden">
+        <CardHeader>
+          <CardTitle>Member Login</CardTitle>
+          <p className="text-sm text-slate-400">Fictional trading terminal access. No auth backend required.</p>
+        </CardHeader>
+        <CardContent>
+          <div className="rounded-lg border border-cyanline/20 bg-cyanline/10 p-5">
+            <div className="flex items-center gap-3">
+              <div className="grid h-12 w-12 place-items-center rounded-md bg-black/40 text-cyanline">
+                <LockKeyhole size={22} />
+              </div>
+              <div>
+                <p className="font-display text-3xl">VIP DESK 04</p>
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-slate-400">Paper trading enabled</p>
+              </div>
+            </div>
+            <div className="mt-6 grid gap-3">
+              <input className="h-12 rounded-md border border-white/10 bg-black/30 px-4 text-sm outline-none transition focus:border-cyanline" value="trader@ptj.market" readOnly />
+              <input className="h-12 rounded-md border border-white/10 bg-black/30 px-4 text-sm outline-none transition focus:border-cyanline" value="••••••••••" readOnly />
+              <Button>Authenticate desk</Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-start justify-between gap-4">
+          <div>
+            <CardTitle>Portfolio Simulator</CardTitle>
+            <p className="text-sm text-slate-400">Buy fake positions and watch the terminal rebalance instantly.</p>
+          </div>
+          <div className="rounded-md border border-white/10 bg-black/30 p-3 text-right">
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Equity</p>
+            <p className="font-display text-4xl">{formatCurrency(total)}</p>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-[1fr_auto]">
+            <select
+              className="h-12 rounded-md border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-cyanline"
+              value={selected}
+              onChange={(event) => setSelected(event.target.value)}
+            >
+              {assets.map((asset) => (
+                <option key={asset.symbol} value={asset.symbol}>{asset.name} ({asset.symbol})</option>
+              ))}
+            </select>
+            <Button onClick={buy}><Plus size={17} /> Buy 1 Share</Button>
+          </div>
+
+          <div className="mt-6 grid gap-3">
+            {loading && <Skeleton className="h-16" />}
+            {holdings.map((holding) => {
+              const asset = assets.find((item) => item.symbol === holding.symbol);
+              if (!asset) return null;
+              return (
+                <div key={holding.symbol} className="flex items-center justify-between rounded-md border border-white/10 bg-black/20 p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="grid h-10 w-10 place-items-center rounded-md bg-cyanline/10 text-cyanline">
+                      <BriefcaseBusiness size={18} />
+                    </div>
+                    <div>
+                      <p className="font-semibold">{asset.name}</p>
+                      <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">{holding.shares} shares / {asset.symbol}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p>{formatCurrency(asset.price * holding.shares)}</p>
+                    <p className="flex items-center justify-end gap-1 text-profit"><Wallet size={14} /> Settled</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+    </section>
+  );
+}
+
