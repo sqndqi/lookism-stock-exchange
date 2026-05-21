@@ -58,23 +58,23 @@ export function PortfolioSimulator() {
     <section id="portfolio" className="relative z-10 mx-auto grid w-[min(1440px,calc(100%-32px))] gap-5 py-24 lg:grid-cols-[.82fr_1.18fr]">
       <Card className="overflow-hidden">
         <CardHeader>
-          <CardTitle>Member Login</CardTitle>
-          <p className="text-sm text-slate-400">Fictional trading terminal access. No auth backend required.</p>
+          <CardTitle>Dealer Access</CardTitle>
+          <p className="text-sm text-slate-400">Luxury guest desk for paper trades inside the Seoul underground.</p>
         </CardHeader>
         <CardContent>
-          <div className="rounded-lg border border-cyanline/20 bg-cyanline/10 p-5">
+          <div className="rounded-[26px] border border-crimson/25 bg-crimson/10 p-5">
             <div className="flex items-center gap-3">
-              <div className="grid h-12 w-12 place-items-center rounded-md bg-black/40 text-cyanline">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-black/40 text-crimson">
                 <LockKeyhole size={22} />
               </div>
               <div>
-                <p className="font-display text-3xl">VIP DESK 04</p>
+                <p className="font-display text-4xl">VIP PIT 04</p>
                 <p className="font-mono text-xs uppercase tracking-[0.2em] text-slate-400">Paper trading enabled</p>
               </div>
             </div>
             <div className="mt-6 grid gap-3">
-              <input className="h-12 rounded-md border border-white/10 bg-black/30 px-4 text-sm outline-none transition focus:border-cyanline" value="trader@ptj.market" readOnly />
-              <input className="h-12 rounded-md border border-white/10 bg-black/30 px-4 text-sm outline-none transition focus:border-cyanline" value="**********" readOnly />
+              <input className="h-12 rounded-2xl border border-white/10 bg-black/30 px-4 text-sm outline-none transition focus:border-crimson" value="dealer@ptj.black" readOnly />
+              <input className="h-12 rounded-2xl border border-white/10 bg-black/30 px-4 text-sm outline-none transition focus:border-crimson" value="**********" readOnly />
               <Button>Authenticate desk</Button>
             </div>
           </div>
@@ -84,8 +84,8 @@ export function PortfolioSimulator() {
       <Card>
         <CardHeader className="flex flex-row items-start justify-between gap-4">
           <div>
-            <CardTitle>Portfolio Simulator</CardTitle>
-            <p className="text-sm text-slate-400">Buy fake positions and watch the terminal rebalance instantly.</p>
+            <CardTitle>Crew Holdings</CardTitle>
+            <p className="text-sm text-slate-400">Buy, short, and rebalance fake fighter positions like a crew broker.</p>
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="rounded-md border border-white/10 bg-black/30 p-3 text-right">
@@ -93,7 +93,7 @@ export function PortfolioSimulator() {
               <p className="font-display text-4xl">{formatCurrency(cash)}</p>
             </div>
             <div className="rounded-md border border-white/10 bg-black/30 p-3 text-right">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Equity</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Influence</p>
               <p className="font-display text-4xl">{formatCurrency(total + cash)}</p>
             </div>
           </div>
@@ -101,7 +101,7 @@ export function PortfolioSimulator() {
         <CardContent>
           <div className="grid gap-4 md:grid-cols-[1fr_auto_auto]">
             <select
-              className="h-12 rounded-md border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-cyanline"
+              className="h-12 rounded-2xl border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson"
               value={selected}
               onChange={(event) => setSelected(event.target.value)}
             >
@@ -121,7 +121,7 @@ export function PortfolioSimulator() {
               return (
                 <div key={holding.symbol} className="flex items-center justify-between rounded-md border border-white/10 bg-black/20 p-4">
                   <div className="flex items-center gap-3">
-                    <div className="grid h-10 w-10 place-items-center rounded-md bg-cyanline/10 text-cyanline">
+                    <div className="grid h-10 w-10 place-items-center rounded-2xl bg-crimson/10 text-crimson">
                       <BriefcaseBusiness size={18} />
                     </div>
                     <div>
@@ -131,7 +131,7 @@ export function PortfolioSimulator() {
                   </div>
                   <div className="text-right">
                     <p>{formatCurrency(asset.price * holding.shares)}</p>
-                    <p className="flex items-center justify-end gap-1 text-profit"><Wallet size={14} /> Settled</p>
+                    <p className="flex items-center justify-end gap-1 text-ice"><Wallet size={14} /> Locked</p>
                   </div>
                 </div>
               );

@@ -5,7 +5,7 @@ export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
   return (
     <div
       className={cn(
-        "rounded-lg border border-white/10 bg-white/[0.045] shadow-panel backdrop-blur-xl",
+        "luxury-panel overflow-hidden rounded-[28px]",
         className
       )}
       {...props}
@@ -14,14 +14,13 @@ export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
 }
 
 export function CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("p-5 pb-2", className)} {...props} />;
+  return <div className={cn("relative z-10 p-6 pb-3", className)} {...props} />;
 }
 
 export function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-  return <h3 className={cn("font-display text-2xl uppercase tracking-wide text-white", className)} {...props} />;
+  return <h3 className={cn("font-display text-4xl uppercase tracking-wide text-white", className)} {...props} />;
 }
 
 export function CardContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("p-5", className)} {...props} />;
+  return <div className={cn("relative z-10 p-6", className)} {...props} />;
 }
-

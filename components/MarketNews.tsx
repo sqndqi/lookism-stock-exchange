@@ -8,8 +8,8 @@ export function MarketNews() {
       <div className="mx-auto grid w-[min(1440px,calc(100%-32px))] gap-5 lg:grid-cols-[1.25fr_.75fr]">
         <Card>
           <CardHeader>
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-cyanline">PTJ business wire</p>
-            <CardTitle className="text-6xl md:text-7xl">Market News</CardTitle>
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-crimson">PTJ rumor wire</p>
+            <CardTitle className="text-shadow-red text-6xl md:text-7xl">Underground Intel</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4">
             {news.map((item) => (
@@ -18,8 +18,8 @@ export function MarketNews() {
                   <Badge>{item.tag}</Badge>
                   <span className="font-mono text-xs uppercase tracking-[0.2em] text-slate-500">{item.time}</span>
                 </div>
-                <h3 className="mt-4 font-display text-4xl uppercase leading-none transition group-hover:text-cyanline">{item.title}</h3>
-                <p className="mt-4 font-mono text-sm uppercase tracking-[0.18em] text-profit">{item.impact}</p>
+                <h3 className="mt-4 font-display text-4xl uppercase leading-none transition group-hover:text-ice">{item.title}</h3>
+                <p className="mt-4 font-mono text-sm uppercase tracking-[0.18em] text-ice">{item.impact}</p>
               </article>
             ))}
           </CardContent>
@@ -56,4 +56,3 @@ export function MarketNews() {
     </section>
   );
 }
-

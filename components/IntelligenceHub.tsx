@@ -30,8 +30,8 @@ export function IntelligenceHub() {
     <section id="intel" className="relative z-10 mx-auto w-[min(1440px,calc(100%-32px))] py-24">
       <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-cyanline">Source intelligence</p>
-          <h2 className="mt-3 font-display text-6xl uppercase leading-none md:text-8xl">Reddit x Wiki Desk</h2>
+          <p className="font-mono text-xs uppercase tracking-[0.28em] text-ice">Source intelligence</p>
+          <h2 className="text-shadow-ice mt-3 font-display text-6xl uppercase leading-none md:text-8xl">Reddit x Wiki Desk</h2>
         </div>
         <p className="max-w-xl text-slate-400">
           A live research layer combining r/lookismcomic chatter with Lookism Wiki taxonomy, then converting the noise into market language.
@@ -59,7 +59,7 @@ export function IntelligenceHub() {
                   </div>
                   <div className="text-right">
                     <p className="font-mono text-sm">{formatCurrency(stock.price)}</p>
-                    <p className={stock.changePercent >= 0 ? "text-profit" : "text-danger"}>
+                    <p className={stock.changePercent >= 0 ? "text-ice" : "text-crimson"}>
                       {signedPercent(stock.changePercent)}
                     </p>
                   </div>
@@ -99,7 +99,7 @@ export function IntelligenceHub() {
                   className="rounded-md border border-white/10 bg-white/[0.035] p-4 transition hover:border-cyanline/50 hover:bg-cyanline/10"
                 >
                   <p className="font-display text-3xl">{dossier.name}</p>
-                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-cyanline">{dossier.group}</p>
+                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-ice">{dossier.group}</p>
                   <p className="mt-3 text-sm text-slate-400">{dossier.role}</p>
                   <p className="mt-2 text-sm text-slate-300">{dossier.marketUse}</p>
                 </a>
@@ -133,4 +133,3 @@ export function IntelligenceHub() {
     </section>
   );
 }
-

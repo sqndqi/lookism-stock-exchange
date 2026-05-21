@@ -7,11 +7,11 @@ export function CharacterGrid() {
       <div className="mx-auto w-[min(1440px,calc(100%-32px))]">
         <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-cyanline">Character equities</p>
-            <h2 className="mt-3 font-display text-6xl uppercase leading-none md:text-8xl">Power Cards</h2>
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-ice">Collectible combat profiles</p>
+            <h2 className="text-shadow-ice mt-3 font-display text-6xl uppercase leading-none md:text-8xl">Rising Legends</h2>
           </div>
           <p className="max-w-xl text-slate-400">
-            Original silhouette cards with manga-panel borders, glow accents, and momentum pricing for the main Lookism names.
+            Mythic and legendary fighter cards with aura level, generation, mastery type, crew affiliation, current arc, and signature color pressure.
           </p>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -23,4 +23,3 @@ export function CharacterGrid() {
     </section>
   );
 }
-

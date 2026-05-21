@@ -15,17 +15,21 @@ const config: Config = {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"]
       },
       colors: {
-        abyss: "#07090d",
-        ink: "#0d1118",
-        chrome: "#d8e4ef",
-        electric: "#38bdf8",
-        cyanline: "#7dd3fc",
-        danger: "#fb7185",
-        profit: "#5ee88f"
+        abyss: "#030405",
+        ink: "#0b0d10",
+        graphite: "#111318",
+        chrome: "#d8dee9",
+        silver: "#d8dee9",
+        electric: "#9be7ff",
+        ice: "#9be7ff",
+        cyanline: "#9be7ff",
+        crimson: "#ef233c",
+        danger: "#ef233c",
+        profit: "#d8dee9"
       },
       boxShadow: {
-        glow: "0 0 34px rgba(56, 189, 248, 0.28)",
-        panel: "0 24px 80px rgba(0, 0, 0, 0.45)"
+        glow: "0 0 40px rgba(239, 35, 60, 0.32)",
+        panel: "0 32px 120px rgba(0, 0, 0, 0.68)"
       },
       backgroundImage: {
         grid: "linear-gradient(rgba(125,211,252,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(125,211,252,.08) 1px, transparent 1px)",
@@ -56,4 +60,3 @@ const config: Config = {
 };
 
 export default config;
-

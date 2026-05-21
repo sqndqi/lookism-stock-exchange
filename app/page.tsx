@@ -1,6 +1,7 @@
 import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { CharacterGrid } from "@/components/CharacterGrid";
 import { CrewMissions } from "@/components/CrewMissions";
+import { CursorGlow } from "@/components/CursorGlow";
 import { Dashboard } from "@/components/Dashboard";
 import { Footer } from "@/components/Footer";
 import { Hero } from "@/components/Hero";
@@ -16,6 +17,7 @@ export default function Home() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-abyss text-white">
       <AnimatedBackground />
+      <CursorGlow />
       <Navbar />
       <Hero />
       <MarketStatusBanner />

@@ -11,18 +11,18 @@ export function Dashboard() {
     <section id="market" className="relative z-10 mx-auto w-[min(1440px,calc(100%-32px))] py-24">
       <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.28em] text-cyanline">Live fictional terminal</p>
-          <h2 className="mt-3 font-display text-6xl uppercase leading-none md:text-8xl">Market Dashboard</h2>
+          <p className="font-mono text-xs uppercase tracking-[0.28em] text-ice">Black-market combat terminal</p>
+          <h2 className="text-shadow-red mt-3 font-display text-6xl uppercase leading-none md:text-8xl">Aura Exchange</h2>
         </div>
         <p className="max-w-xl text-slate-400">
-          Track faction liquidity, character power premiums, volatility shocks, and fake institutional flows from the Seoul street economy.
+          Track influence, fight heat, crew dominance, aura volatility, and monster movement across the Seoul underground.
         </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-4">
         {marketPulse.map((item) => (
           <Card key={item.label} className="p-5">
-            <item.icon className="mb-5 text-cyanline" size={22} />
+            <item.icon className="mb-5 text-crimson" size={22} />
             <p className="font-mono text-xs uppercase tracking-[0.22em] text-slate-500">{item.label}</p>
             <div className="mt-2 flex items-end justify-between">
               <strong className="font-display text-5xl">{item.value}</strong>
@@ -35,14 +35,14 @@ export function Dashboard() {
       <div className="mt-5 grid gap-5 lg:grid-cols-[1.3fr_.7fr]">
         <Card className="overflow-hidden">
           <CardHeader>
-            <CardTitle>Legend Index</CardTitle>
-            <p className="font-mono text-xs uppercase tracking-[0.22em] text-slate-500">JMS Seoul Composite / Intraday</p>
+            <CardTitle>Generation Control Index</CardTitle>
+            <p className="font-mono text-xs uppercase tracking-[0.22em] text-slate-500">JMS legend composite / aura tracking</p>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div>
                 <p className="font-display text-7xl">{formatCurrency(lead.price)}</p>
-                <p className="text-profit">{signedPercent(lead.change)} after-hours momentum</p>
+                <p className="text-ice">{signedPercent(lead.change)} aura surge</p>
               </div>
               <div className="grid grid-cols-3 gap-3 text-center">
                 {["BUY", "POWER 100", "BETA .63"].map((text) => (
@@ -58,7 +58,7 @@ export function Dashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Watchlist</CardTitle>
+            <CardTitle>Current Monsters</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {assets.slice(0, 6).map((asset) => (

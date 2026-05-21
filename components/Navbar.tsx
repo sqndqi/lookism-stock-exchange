@@ -33,10 +33,10 @@ export function Navbar() {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-abyss/70 backdrop-blur-xl">
       <nav className="mx-auto flex h-16 w-[min(1440px,calc(100%-32px))] items-center justify-between">
         <a href="#top" className="flex items-center gap-3">
-          <span className="grid h-9 w-9 place-items-center rounded-md border border-cyanline/40 bg-cyanline/10 font-display text-2xl text-cyanline shadow-glow">
+          <span className="grid h-10 w-10 place-items-center rounded-2xl border border-crimson/40 bg-crimson/10 font-display text-2xl text-crimson shadow-glow">
             PTJ
           </span>
-          <span className="hidden font-display text-2xl tracking-wide sm:block">LOOKISM STOCK EXCHANGE</span>
+          <span className="hidden font-display text-3xl tracking-wide sm:block">UNDERGROUND EXCHANGE</span>
         </a>
         <div className="hidden items-center gap-6 text-xs font-bold uppercase tracking-[0.22em] text-slate-300 lg:flex">
           <a className="transition hover:text-cyanline" href="#intel">Intel</a>

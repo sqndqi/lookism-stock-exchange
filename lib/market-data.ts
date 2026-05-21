@@ -66,10 +66,10 @@ export type Mission = {
 };
 
 export const marketPulse = [
-  { label: "Market Heat", value: "91.8", icon: Flame, delta: "+8.4%" },
-  { label: "Faction Volume", value: "2.7B", icon: Activity, delta: "+14.2%" },
-  { label: "Risk Index", value: "64", icon: Shield, delta: "-2.1%" },
-  { label: "Active Traders", value: "128K", icon: Users, delta: "+21.0%" }
+  { label: "Aura Surge", value: "91.8", icon: Flame, delta: "+8.4%" },
+  { label: "Crew Flow", value: "2.7B", icon: Activity, delta: "+14.2%" },
+  { label: "Threat Index", value: "64", icon: Shield, delta: "-2.1%" },
+  { label: "Active Crews", value: "128K", icon: Users, delta: "+21.0%" }
 ];
 
 const series = (base: number, moves: number[]) =>
@@ -370,33 +370,199 @@ export const assets: MarketAsset[] = [
 ];
 
 export const characterRoster = [
-  "Daniel Park",
-  "Gun Park",
-  "Goo Kim",
-  "Johan Seong",
-  "Jake Kim",
-  "Eli Jang",
-  "Vasco",
-  "Zack Lee",
-  "James Lee",
-  "Samuel Seo",
-  "Vin Jin",
-  "Jay Hong"
-].map((name, index) => ({
-  name,
-  ticker: name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .padEnd(3, "X")
-    .slice(0, 3)
-    .toUpperCase(),
-  rank: index + 1,
-  price: 120 + index * 37 + (index % 3) * 24,
-  change: index % 4 === 0 ? -2.6 - index : 3.2 + index * 0.7,
-  power: 74 + ((12 - index) % 8) * 3,
-  faction: ["J High", "White Tiger", "Workers", "Big Deal", "Hostel", "Legend"][index % 6]
-}));
+  {
+    name: "UI Daniel",
+    ticker: "UID",
+    rank: 1,
+    price: 612,
+    change: 18.4,
+    power: 100,
+    faction: "J High",
+    rarity: "Mythic",
+    aura: 99,
+    generation: "Anomaly",
+    fightingStyle: "Copy / UI",
+    masteryType: "Instinct",
+    currentArc: "Second body crisis",
+    signatureColor: "#9be7ff"
+  },
+  {
+    name: "Gun Park",
+    ticker: "GUN",
+    rank: 2,
+    price: 588,
+    change: 12.8,
+    power: 100,
+    faction: "White Tiger",
+    rarity: "Mythic",
+    aura: 98,
+    generation: "2nd Gen Monster",
+    fightingStyle: "Kyokushin / UI",
+    masteryType: "Endurance",
+    currentArc: "TUI discourse",
+    signatureColor: "#d8dee9"
+  },
+  {
+    name: "James Lee",
+    ticker: "DG",
+    rank: 3,
+    price: 545,
+    change: 5.7,
+    power: 100,
+    faction: "Legend",
+    rarity: "Mythic",
+    aura: 97,
+    generation: "1st Generation",
+    fightingStyle: "Speed / precision",
+    masteryType: "Speed",
+    currentArc: "Legend premium",
+    signatureColor: "#ef233c"
+  },
+  {
+    name: "Kitae Kim",
+    ticker: "KTAE",
+    rank: 4,
+    price: 504,
+    change: 1.4,
+    power: 99,
+    faction: "Gapryong Line",
+    rarity: "Mythic",
+    aura: 96,
+    generation: "Bloodline",
+    fightingStyle: "Brutal pressure",
+    masteryType: "Power",
+    currentArc: "Shadow liquidity",
+    signatureColor: "#ef4444"
+  },
+  {
+    name: "Goo Kim",
+    ticker: "GOO",
+    rank: 5,
+    price: 486,
+    change: -3.2,
+    power: 98,
+    faction: "Independent",
+    rarity: "Legendary",
+    aura: 94,
+    generation: "2nd Gen Monster",
+    fightingStyle: "Weapon genius",
+    masteryType: "Technique",
+    currentArc: "Chaos beta",
+    signatureColor: "#f8fafc"
+  },
+  {
+    name: "Johan Seong",
+    ticker: "JHN",
+    rank: 6,
+    price: 309,
+    change: 4.6,
+    power: 92,
+    faction: "God Dog",
+    rarity: "Legendary",
+    aura: 89,
+    generation: "2nd Generation",
+    fightingStyle: "Copy",
+    masteryType: "Vision",
+    currentArc: "Copycat premium",
+    signatureColor: "#9be7ff"
+  },
+  {
+    name: "Jake Kim",
+    ticker: "JKE",
+    rank: 7,
+    price: 283,
+    change: 7.2,
+    power: 91,
+    faction: "Big Deal",
+    rarity: "Legendary",
+    aura: 88,
+    generation: "2nd Generation",
+    fightingStyle: "Boxing / conviction",
+    masteryType: "Leadership",
+    currentArc: "Big Deal rebound",
+    signatureColor: "#60a5fa"
+  },
+  {
+    name: "Samuel Seo",
+    ticker: "SML",
+    rank: 8,
+    price: 248,
+    change: -4.8,
+    power: 88,
+    faction: "Workers",
+    rarity: "Epic",
+    aura: 84,
+    generation: "2nd Generation",
+    fightingStyle: "Dirty boxing",
+    masteryType: "Heat mode",
+    currentArc: "Ego drawdown",
+    signatureColor: "#ef233c"
+  },
+  {
+    name: "Eli Jang",
+    ticker: "ELI",
+    rank: 9,
+    price: 214,
+    change: -1.8,
+    power: 86,
+    faction: "Hostel",
+    rarity: "Epic",
+    aura: 82,
+    generation: "2nd Generation",
+    fightingStyle: "Wild technique",
+    masteryType: "Animal instinct",
+    currentArc: "Defensive base",
+    signatureColor: "#d8dee9"
+  },
+  {
+    name: "Vasco",
+    ticker: "VAS",
+    rank: 10,
+    price: 188,
+    change: 2.9,
+    power: 84,
+    faction: "Burn Knuckles",
+    rarity: "Epic",
+    aura: 78,
+    generation: "J High",
+    fightingStyle: "Muay Thai",
+    masteryType: "Conviction",
+    currentArc: "Clean accumulation",
+    signatureColor: "#9be7ff"
+  },
+  {
+    name: "Zack Lee",
+    ticker: "ZCK",
+    rank: 11,
+    price: 176,
+    change: 3.3,
+    power: 83,
+    faction: "J High",
+    rarity: "Epic",
+    aura: 77,
+    generation: "J High",
+    fightingStyle: "Boxing",
+    masteryType: "Endurance",
+    currentArc: "Recovery bid",
+    signatureColor: "#d8dee9"
+  },
+  {
+    name: "Jay Hong",
+    ticker: "JAY",
+    rank: 12,
+    price: 164,
+    change: 2.1,
+    power: 79,
+    faction: "J High",
+    rarity: "Rare",
+    aura: 74,
+    generation: "J High",
+    fightingStyle: "Systema / weapons",
+    masteryType: "Technique",
+    currentArc: "Quiet whale",
+    signatureColor: "#f8fafc"
+  }
+];
 
 export const factionRanks = [
   { name: "White Tiger", score: 98, icon: Swords, change: "+4.2%" },

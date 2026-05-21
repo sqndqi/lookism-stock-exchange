@@ -4,18 +4,18 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-semibold uppercase tracking-[0.16em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyanline disabled:pointer-events-none disabled:opacity-50",
+  "group relative inline-flex items-center justify-center gap-2 overflow-hidden whitespace-nowrap rounded-2xl text-sm font-black uppercase tracking-[0.18em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        default: "bg-cyanline text-abyss shadow-glow hover:bg-white",
-        ghost: "border border-white/10 bg-white/[0.04] text-white hover:border-cyanline/60 hover:bg-cyanline/10",
-        danger: "bg-danger text-white hover:bg-red-400"
+        default: "border border-crimson/50 bg-gradient-to-r from-crimson via-red-500 to-white text-black shadow-[0_0_36px_rgba(239,35,60,.28)] hover:scale-[1.02] hover:shadow-[0_0_60px_rgba(239,35,60,.42)]",
+        ghost: "border border-white/12 bg-white/[0.055] text-white backdrop-blur-xl hover:border-ice/60 hover:bg-ice/10 hover:text-ice",
+        danger: "border border-crimson/50 bg-crimson text-white hover:bg-red-400"
       },
       size: {
-        default: "h-11 px-5",
-        sm: "h-9 px-3 text-xs",
-        lg: "h-13 px-7 text-base"
+        default: "h-12 px-6",
+        sm: "h-10 px-4 text-xs",
+        lg: "h-14 px-8 text-base"
       }
     },
     defaultVariants: {
@@ -40,4 +40,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button";
 
 export { Button, buttonVariants };
-

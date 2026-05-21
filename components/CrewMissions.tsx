@@ -31,7 +31,7 @@ export function CrewMissions() {
           <div className="flex items-center justify-between gap-4">
             <div>
               <Badge>Guest desk</Badge>
-              <CardTitle className="mt-4">Missions</CardTitle>
+              <CardTitle className="mt-4">Underground Missions</CardTitle>
             </div>
             <div className="rounded-md border border-white/10 bg-black/25 p-3 text-right">
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Cash</p>
@@ -48,7 +48,7 @@ export function CrewMissions() {
               <div key={mission.title} className="rounded-md border border-white/10 bg-black/20 p-4">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="grid h-10 w-10 place-items-center rounded-md bg-cyanline/10 text-cyanline">
+                    <div className="grid h-10 w-10 place-items-center rounded-2xl bg-crimson/10 text-crimson">
                       <mission.icon size={18} />
                     </div>
                     <div>
@@ -58,10 +58,10 @@ export function CrewMissions() {
                       </p>
                     </div>
                   </div>
-                  <span className="font-mono text-cyanline">{mission.progress}%</span>
+                  <span className="font-mono text-ice">{mission.progress}%</span>
                 </div>
                 <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10">
-                  <div className="h-full rounded-full bg-cyanline" style={{ width: `${mission.progress}%` }} />
+                  <div className="h-full rounded-full bg-crimson" style={{ width: `${mission.progress}%` }} />
                 </div>
               </div>
             ))}
@@ -72,13 +72,13 @@ export function CrewMissions() {
       <Card>
         <CardHeader>
           <Badge>Crews</Badge>
-          <CardTitle className="mt-4">Crew League</CardTitle>
-          <p className="text-sm text-slate-400">A richer league table for crew identity, not just isolated character prices.</p>
+          <CardTitle className="mt-4">Generation Rankings</CardTitle>
+          <p className="text-sm text-slate-400">Crew power, member flow, and influence control across the current underground map.</p>
         </CardHeader>
         <CardContent className="space-y-3">
           {crews.map((crew, index) => (
             <div key={crew.name} className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-md border border-white/10 bg-white/[0.035] p-4">
-              <div className="font-display text-4xl text-cyanline">#{index + 1}</div>
+              <div className="font-display text-4xl text-crimson">#{index + 1}</div>
               <div>
                 <p className="font-display text-3xl">{crew.name}</p>
                 <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">
@@ -93,4 +93,3 @@ export function CrewMissions() {
     </section>
   );
 }
-

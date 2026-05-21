@@ -10,8 +10,8 @@ export function PredictionMarket() {
       <div className="mx-auto w-[min(1440px,calc(100%-32px))]">
         <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.28em] text-cyanline">Weekly contracts</p>
-            <h2 className="mt-3 font-display text-6xl uppercase leading-none md:text-8xl">Prediction Market</h2>
+            <p className="font-mono text-xs uppercase tracking-[0.28em] text-crimson">Reddit prophecy contracts</p>
+            <h2 className="text-shadow-red mt-3 font-display text-6xl uppercase leading-none md:text-8xl">Fight Bets</h2>
           </div>
           <p className="max-w-xl text-slate-400">
             Better than a static poll: each contract has a liquidity pool, catalyst note, and odds ladder tied to current Lookism discourse.
@@ -41,10 +41,10 @@ export function PredictionMarket() {
                     >
                       <div className="flex items-center justify-between gap-4">
                         <span className="font-semibold">{option.label}</span>
-                        <span className="font-mono text-cyanline">{option.odds}%</span>
+                        <span className="font-mono text-ice">{option.odds}%</span>
                       </div>
                       <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10">
-                        <div className="h-full rounded-full bg-cyanline" style={{ width: `${option.odds}%` }} />
+                        <div className="h-full rounded-full bg-crimson shadow-[0_0_18px_rgba(239,35,60,.45)]" style={{ width: `${option.odds}%` }} />
                       </div>
                     </button>
                   ))}
@@ -58,4 +58,3 @@ export function PredictionMarket() {
     </section>
   );
 }
-
