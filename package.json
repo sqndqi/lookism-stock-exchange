@@ -1,0 +1,14 @@
+{
+  "name": "lookism-character-stocks",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "update": "node src/update-stocks.mjs",
+    "serve": "npx http-server docs -p 4173 -c-1"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
+
