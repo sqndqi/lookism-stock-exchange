@@ -10,6 +10,16 @@ This is a Vercel-ready Next.js 15 dashboard for a fictional Lookism-inspired fac
 
 The script scans recent `r/lookismcomic` posts and writes data to `public/data/reddit-stocks.json`. The GitHub Actions workflow runs it every 6 hours and commits updated data.
 
+## GitHub Pages
+
+This repository is configured to deploy as a static GitHub Pages site using `.github/workflows/deploy-pages.yml`.
+
+Expected URL:
+
+```text
+https://sqndqi.github.io/lookism-stock-exchange/
+```
+
 ## Research Sources
 
 - `https://www.reddit.com/r/lookismcomic/` for current discourse, theory, meme, raws, and power-scaling catalysts
