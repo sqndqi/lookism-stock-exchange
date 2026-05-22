@@ -105,6 +105,35 @@ const customListingImages = [
   "/images/crew-big-deal.svg"
 ];
 
+function imageForUnknownAsset(name: string, symbol: string) {
+  const pool = [
+    "/images/fighter-daniel.svg",
+    "/images/fighter-gun.svg",
+    "/images/fighter-goo.svg",
+    "/images/fighter-jake.svg",
+    "/images/fighter-johan.svg",
+    "/images/fighter-samuel.svg",
+    "/images/fighter-eli.svg",
+    "/images/fighter-vasco.svg",
+    "/images/fighter-zack.svg",
+    "/images/fighter-james.svg",
+    "/images/fighter-tom.svg",
+    "/images/fighter-jay.svg",
+    "/images/fighter-vin.svg",
+    "/images/fighter-mary.svg",
+    "/images/fighter-sinu.svg",
+    "/images/fighter-seongji.svg",
+    "/images/crew-big-deal.svg",
+    "/images/crew-workers.svg",
+    "/images/crew-hostel.svg",
+    "/images/crew-white-tiger.svg",
+    "/images/crew-j-high.svg",
+    "/images/crew-elite.svg"
+  ];
+  const seed = [...`${name}${symbol}`].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  return pool[seed % pool.length];
+}
+
 export const redditMarketMeta = {
   generatedAt: feed.generatedAt,
   postsScanned: feed.postsScanned
@@ -224,7 +253,7 @@ function redditOnlyAsset(stock: RedditStock): MarketAsset | null {
     signal: signalFromChange(stock.changePercent),
     faction: factionHints[stock.name] ?? "Reddit Wire",
     accent: accentFromTrend(stock),
-    image: imageHints[stock.name] ?? "/images/fighter-generic.svg",
+    image: imageHints[stock.name] ?? imageForUnknownAsset(stock.name, symbol),
     quote: `${stock.name} entered the rumor wire as a side asset after ${stock.mentions} tracked mentions.`,
     catalyst: `${stock.name} moved from subreddit catalyst flow: ${stock.reason}`,
     chart: chartFromSignal(price, stock.changePercent)
