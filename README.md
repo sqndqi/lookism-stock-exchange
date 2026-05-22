@@ -24,4 +24,3 @@ https://sqndqi.github.io/lookism-stock-exchange/
 
 - `https://www.reddit.com/r/lookismcomic/` for current discourse, theory, meme, raws, and power-scaling catalysts
 - `https://lookism.fandom.com/wiki/Lookism_Wikia` for character, generation, organization, and gang taxonomy
-- `https://stockism.app/` as a product reference for a fan-market loop, then expanded with stronger visual identity and source intelligence
