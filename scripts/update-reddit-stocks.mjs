@@ -74,19 +74,39 @@ async function readJson(filePath, fallback) {
 async function fetchRedditPosts() {
   const seen = new Set();
   const posts = [];
+  const failures = [];
 
   for (const url of sourceUrls) {
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent": "lookism-stock-exchange/1.0 by fictional-market-dashboard"
-      }
-    });
+    const urls = [
+      url,
+      url.replace("https://www.reddit.com", "https://api.reddit.com"),
+      `${url}${url.includes("?") ? "&" : "?"}raw_json=1`
+    ];
 
-    if (!response.ok) {
-      throw new Error(`Reddit request failed: ${response.status} ${response.statusText} for ${url}`);
+    let payload = null;
+    for (const candidate of urls) {
+      try {
+        const response = await fetch(candidate, {
+          headers: {
+            "Accept": "application/json",
+            "User-Agent": "PTJStocksBot/1.0 (fictional market dashboard; contact: github.com/sqndqi/lookism-stock-exchange)"
+          }
+        });
+
+        if (!response.ok) {
+          failures.push(`${response.status} ${response.statusText} for ${candidate}`);
+          continue;
+        }
+
+        payload = await response.json();
+        break;
+      } catch (error) {
+        failures.push(`${candidate}: ${error instanceof Error ? error.message : String(error)}`);
+      }
     }
 
-    const payload = await response.json();
+    if (!payload) continue;
+
     for (const child of payload?.data?.children ?? []) {
       const post = child.data;
       if (!post?.id || seen.has(post.id)) continue;
@@ -101,6 +121,11 @@ async function fetchRedditPosts() {
         createdUtc: post.created_utc ? new Date(post.created_utc * 1000).toISOString() : null
       });
     }
+  }
+
+  if (!posts.length && failures.length) {
+    console.warn("Reddit fetch returned no posts. Keeping previous market data.");
+    console.warn(failures.slice(0, 6).join("\n"));
   }
 
   return posts;
@@ -186,6 +211,12 @@ async function main() {
   const characters = await readJson(charactersPath, []);
   const previous = await readJson(outputPath, { market: [] });
   const posts = await fetchRedditPosts();
+
+  if (!posts.length) {
+    console.log("No Reddit posts retrieved; previous market data left unchanged.");
+    return;
+  }
+
   const market = buildMarket(characters, posts, previous.market ?? []);
 
   await mkdir(path.dirname(outputPath), { recursive: true });
@@ -211,4 +242,3 @@ main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
-
