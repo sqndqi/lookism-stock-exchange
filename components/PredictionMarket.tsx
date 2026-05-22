@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useEffect } from "react";
 import { predictionContracts } from "@/lib/market-data";
 import { formatCurrency } from "@/lib/utils";
+import type { Account } from "@/lib/account";
+import { readAccount, writeAccount } from "@/lib/account";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +13,28 @@ import { Badge } from "@/components/ui/badge";
 export function PredictionMarket() {
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [locked, setLocked] = useState<Record<string, boolean>>({});
+  const [account, setAccount] = useState<Account | null>(null);
+
+  useEffect(() => {
+    setAccount(readAccount());
+
+    function accountUpdated(event: Event) {
+      setAccount((event as CustomEvent<Account>).detail);
+    }
+
+    window.addEventListener("ptj-account-updated", accountUpdated);
+    return () => window.removeEventListener("ptj-account-updated", accountUpdated);
+  }, []);
+
+  function lockBet(question: string) {
+    if (!account || !selected[question] || locked[question]) return;
+    const stake = Math.min(25, account.cash);
+    if (stake <= 0) return;
+    const next = { ...account, cash: account.cash - stake };
+    setAccount(next);
+    writeAccount(next);
+    setLocked((current) => ({ ...current, [question]: true }));
+  }
 
   return (
     <section id="predictions" className="relative z-10 border-y border-white/10 bg-white/[0.02] py-16">
@@ -20,7 +45,7 @@ export function PredictionMarket() {
             <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Fight Bets</h2>
           </div>
           <p className="max-w-xl text-slate-400">
-            Better than a static poll: each contract has a liquidity pool, catalyst note, and odds ladder tied to current Lookism discourse.
+            Better than a static poll: each contract has a liquidity pool, catalyst note, and a $25 paper stake tied to your local account.
           </p>
         </div>
 
@@ -65,11 +90,11 @@ export function PredictionMarket() {
                   className="mt-5 w-full"
                   variant="ghost"
                   onClick={() => {
-                    if (!selected[contract.question]) return;
-                    setLocked((current) => ({ ...current, [contract.question]: true }));
+                    lockBet(contract.question);
                   }}
+                  disabled={!account || !selected[contract.question] || locked[contract.question]}
                 >
-                  {locked[contract.question] ? `Paper bet locked: ${selected[contract.question]}` : "Place paper bet"}
+                  {!account ? "Create account to bet" : locked[contract.question] ? `Paper bet locked: ${selected[contract.question]}` : "Place $25 paper bet"}
                 </Button>
               </CardContent>
             </Card>

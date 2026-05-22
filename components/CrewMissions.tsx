@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useEffect } from "react";
 import { missions } from "@/lib/market-data";
 import { formatCurrency } from "@/lib/utils";
+import type { Account } from "@/lib/account";
+import { readAccount, STARTING_CASH, writeAccount } from "@/lib/account";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,14 +18,34 @@ const crews = [
 ];
 
 export function CrewMissions() {
-  const [cash, setCash] = useState(1000);
-  const [checkedIn, setCheckedIn] = useState(false);
+  const [account, setAccount] = useState<Account | null>(null);
+
+  useEffect(() => {
+    setAccount(readAccount());
+
+    function accountUpdated(event: Event) {
+      setAccount((event as CustomEvent<Account>).detail);
+    }
+
+    window.addEventListener("ptj-account-updated", accountUpdated);
+    return () => window.removeEventListener("ptj-account-updated", accountUpdated);
+  }, []);
 
   function checkIn() {
+    if (!account) return;
+    const checkedIn = account.claimedMissions.includes("Daily check-in");
     if (checkedIn) return;
-    setCash((value) => value + 300);
-    setCheckedIn(true);
+    const next = {
+      ...account,
+      cash: account.cash + 300,
+      claimedMissions: [...account.claimedMissions, "Daily check-in"]
+    };
+    setAccount(next);
+    writeAccount(next);
   }
+
+  const checkedIn = account?.claimedMissions.includes("Daily check-in") ?? false;
+  const cash = account?.cash ?? STARTING_CASH;
 
   return (
     <section id="crews" className="relative z-10 mx-auto grid w-[min(1180px,calc(100%-32px))] gap-5 py-16 lg:grid-cols-[.95fr_1.05fr]">
@@ -40,8 +63,8 @@ export function CrewMissions() {
           </div>
         </CardHeader>
         <CardContent>
-          <Button className="mb-5 w-full" onClick={checkIn} variant={checkedIn ? "ghost" : "default"}>
-            {checkedIn ? "Daily check-in claimed" : "Daily check-in (+$300)"}
+          <Button className="mb-5 w-full" onClick={checkIn} variant={checkedIn ? "ghost" : "default"} disabled={!account}>
+            {!account ? "Create account to claim missions" : checkedIn ? "Daily check-in claimed" : "Daily check-in (+$300)"}
           </Button>
           <div className="space-y-3">
             {missions.map((mission) => (
