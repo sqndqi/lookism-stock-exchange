@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { predictionContracts } from "@/lib/market-data";
 import { formatCurrency } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -5,6 +8,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export function PredictionMarket() {
+  const [selected, setSelected] = useState<Record<string, string>>({});
+  const [locked, setLocked] = useState<Record<string, boolean>>({});
+
   return (
     <section id="predictions" className="relative z-10 border-y border-white/10 bg-white/[0.02] py-16">
       <div className="mx-auto w-[min(1180px,calc(100%-32px))]">
@@ -36,8 +42,14 @@ export function PredictionMarket() {
                   {contract.options.map((option) => (
                     <button
                       key={option.label}
-                      className="w-full rounded-md border border-white/10 bg-black/25 p-3 text-left transition hover:border-cyanline/50 hover:bg-cyanline/10"
+                      className={`w-full rounded-md border p-3 text-left transition hover:border-cyanline/50 hover:bg-cyanline/10 ${
+                        selected[contract.question] === option.label ? "border-crimson/60 bg-crimson/10" : "border-white/10 bg-black/25"
+                      }`}
                       type="button"
+                      onClick={() => {
+                        setSelected((current) => ({ ...current, [contract.question]: option.label }));
+                        setLocked((current) => ({ ...current, [contract.question]: false }));
+                      }}
                     >
                       <div className="flex items-center justify-between gap-4">
                         <span className="font-semibold">{option.label}</span>
@@ -49,7 +61,16 @@ export function PredictionMarket() {
                     </button>
                   ))}
                 </div>
-                <Button className="mt-5 w-full" variant="ghost">Place paper bet</Button>
+                <Button
+                  className="mt-5 w-full"
+                  variant="ghost"
+                  onClick={() => {
+                    if (!selected[contract.question]) return;
+                    setLocked((current) => ({ ...current, [contract.question]: true }));
+                  }}
+                >
+                  {locked[contract.question] ? `Paper bet locked: ${selected[contract.question]}` : "Place paper bet"}
+                </Button>
               </CardContent>
             </Card>
           ))}

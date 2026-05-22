@@ -1,17 +1,28 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ArrowDownRight, ArrowUpRight, Gauge } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Check, Gauge } from "lucide-react";
 import type { MarketAsset } from "@/lib/market-data";
 import { formatCompact, formatCurrency, signedPercent } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MarketChart } from "@/components/MarketChart";
 import { Button } from "@/components/ui/button";
+import { assetPath } from "@/lib/site-path";
 
 export function StockCard({ asset, index }: { asset: MarketAsset; index: number }) {
   const positive = asset.change >= 0;
+  const [expanded, setExpanded] = useState(false);
+  const [queued, setQueued] = useState(false);
+
+  function trade() {
+    window.dispatchEvent(new CustomEvent("ptj-select-stock", { detail: asset.symbol }));
+    setQueued(true);
+    window.setTimeout(() => setQueued(false), 1400);
+    window.location.hash = "portfolio";
+  }
 
   return (
     <motion.article
@@ -24,7 +35,7 @@ export function StockCard({ asset, index }: { asset: MarketAsset; index: number 
       <Card className="group relative h-full overflow-hidden p-4">
         <div className="absolute inset-x-0 top-0 h-1" style={{ background: asset.accent }} />
         <div className="relative z-10 flex items-start gap-4">
-          <Image src={asset.image} alt={`${asset.name} stock image`} width={420} height={560} className="h-24 w-20 rounded-xl border border-white/10 bg-black object-cover" />
+          <Image src={assetPath(asset.image)} alt={`${asset.name} stock image`} width={420} height={560} className="h-24 w-20 rounded-xl border border-white/10 bg-black object-cover" />
           <div className="min-w-0 flex-1">
             <Badge className="border-white/10 bg-white/5 text-slate-300">{asset.category}</Badge>
             <h3 className="mt-3 text-2xl font-black uppercase leading-none tracking-tight">{asset.name}</h3>
@@ -59,9 +70,21 @@ export function StockCard({ asset, index }: { asset: MarketAsset; index: number 
           </div>
         </div>
         <p className="relative z-10 mt-4 min-h-12 text-sm leading-6 text-slate-400">{asset.quote}</p>
+        {expanded && (
+          <div className="relative z-10 mt-4 grid gap-2 rounded-xl border border-white/10 bg-black/30 p-3 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-slate-300">
+            <div className="flex justify-between gap-4"><span>Signal</span><strong className="text-white">{asset.signal}</strong></div>
+            <div className="flex justify-between gap-4"><span>Crew tape</span><strong className="text-white">{asset.faction}</strong></div>
+            <div className="flex justify-between gap-4"><span>Aura desk</span><strong style={{ color: asset.accent }}>{asset.power}/100</strong></div>
+          </div>
+        )}
         <div className="relative z-10 mt-5 grid grid-cols-2 gap-3">
-          <Button variant="ghost" size="sm">Details</Button>
-          <Button size="sm">Trade</Button>
+          <Button variant="ghost" size="sm" onClick={() => setExpanded((value) => !value)}>
+            {expanded ? "Hide" : "Details"}
+          </Button>
+          <Button size="sm" onClick={trade}>
+            {queued ? <Check size={16} /> : null}
+            {queued ? "Queued" : "Trade"}
+          </Button>
         </div>
       </Card>
     </motion.article>

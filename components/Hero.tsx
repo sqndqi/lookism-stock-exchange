@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowUpRight, BarChart3, Swords } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { assetPath } from "@/lib/site-path";
 
 export function Hero() {
   return (
@@ -48,7 +49,7 @@ export function Hero() {
           className="relative min-h-[360px]"
         >
           <div className="absolute inset-0 overflow-hidden rounded-2xl border border-white/10 bg-black">
-            <Image src="/images/seoul-night.svg" alt="Minimal Seoul night skyline" width={1200} height={760} priority className="h-full w-full object-cover opacity-80" />
+            <Image src={assetPath("/images/seoul-night.svg")} alt="Minimal Seoul night skyline" width={1200} height={760} priority className="h-full w-full object-cover opacity-80" />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/55 to-transparent p-5">
               <div className="flex items-center gap-2 text-sm text-slate-300">
                 <BarChart3 size={17} className="text-ice" />

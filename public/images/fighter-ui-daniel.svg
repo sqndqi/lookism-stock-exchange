@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560" role="img" aria-label="UI Daniel inspired fighter silhouette">
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="560" viewBox="0 0 420 560" role="img" aria-label="UI Daniel inspired fighter silhouette">
   <rect width="420" height="560" rx="28" fill="#07080b"/>
   <circle cx="210" cy="185" r="125" fill="#9be7ff" opacity=".1"/>
   <path d="M210 66c45 0 73 31 73 73 0 47-30 82-73 82s-73-35-73-82c0-42 28-73 73-73z" fill="#111318"/>

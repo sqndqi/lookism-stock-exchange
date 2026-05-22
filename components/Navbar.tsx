@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Bell, Moon, Music2, Search, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -45,6 +46,7 @@ export function Navbar() {
           <a className="transition hover:text-cyanline" href="#predictions">Predictions</a>
           <a className="transition hover:text-cyanline" href="#crews">Crews</a>
           <a className="transition hover:text-cyanline" href="#portfolio">Portfolio</a>
+          <Link className="transition hover:text-cyanline" href="/login">Login</Link>
         </div>
         <div className="flex items-center gap-2">
           <Button aria-label="Search" variant="ghost" size="sm"><Search size={16} /></Button>
@@ -54,6 +56,9 @@ export function Navbar() {
           </Button>
           <Button aria-label="Toggle light mode" variant="ghost" size="sm" onClick={() => setLight((value) => !value)}>
             {light ? <Moon size={16} /> : <Sun size={16} />}
+          </Button>
+          <Button asChild size="sm" className="hidden sm:inline-flex">
+            <Link href="/login">Login</Link>
           </Button>
         </div>
       </nav>

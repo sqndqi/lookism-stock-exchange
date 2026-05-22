@@ -17,7 +17,7 @@ export function MarketChart({ asset, height = 190 }: { asset: MarketAsset; heigh
   }
 
   return (
-    <div className="min-w-0" style={{ height }}>
+    <div className="w-full min-w-0" style={{ height }}>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={asset.chart} margin={{ left: 0, right: 0, top: 12, bottom: 0 }}>
           <defs>

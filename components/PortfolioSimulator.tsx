@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { BriefcaseBusiness, LockKeyhole, Minus, Plus, Wallet } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { BriefcaseBusiness, Check, LockKeyhole, Minus, Plus, Wallet } from "lucide-react";
 import { assets } from "@/lib/market-data";
 import { formatCurrency } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,21 @@ export function PortfolioSimulator() {
   const [selected, setSelected] = useState("GUN");
   const [loading, setLoading] = useState(false);
   const [cash, setCash] = useState(5000);
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setAuthenticated(window.localStorage.getItem("ptj-session") === "active");
+
+    function selectStock(event: Event) {
+      const symbol = (event as CustomEvent<string>).detail;
+      if (assets.some((asset) => asset.symbol === symbol)) {
+        setSelected(symbol);
+      }
+    }
+
+    window.addEventListener("ptj-select-stock", selectStock);
+    return () => window.removeEventListener("ptj-select-stock", selectStock);
+  }, []);
 
   const total = useMemo(
     () =>
@@ -54,6 +69,11 @@ export function PortfolioSimulator() {
     setCash((value) => value + asset.price * 0.15);
   }
 
+  function authenticate() {
+    window.localStorage.setItem("ptj-session", "active");
+    setAuthenticated(true);
+  }
+
   return (
     <section id="portfolio" className="relative z-10 mx-auto grid w-[min(1180px,calc(100%-32px))] gap-5 py-16 lg:grid-cols-[.82fr_1.18fr]">
       <Card className="overflow-hidden">
@@ -75,7 +95,10 @@ export function PortfolioSimulator() {
             <div className="mt-6 grid gap-3">
               <input className="h-12 rounded-2xl border border-white/10 bg-black/30 px-4 text-sm outline-none transition focus:border-crimson" value="dealer@ptj.black" readOnly />
               <input className="h-12 rounded-2xl border border-white/10 bg-black/30 px-4 text-sm outline-none transition focus:border-crimson" value="**********" readOnly />
-              <Button>Authenticate desk</Button>
+              <Button onClick={authenticate}>
+                {authenticated ? <Check size={17} /> : null}
+                {authenticated ? "Desk authenticated" : "Authenticate desk"}
+              </Button>
             </div>
           </div>
         </CardContent>

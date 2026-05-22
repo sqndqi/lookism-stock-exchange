@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { formatCurrency, signedPercent } from "@/lib/utils";
+import { assetPath } from "@/lib/site-path";
 
 type Character = {
   name: string;
@@ -41,7 +42,7 @@ export function CharacterCard({ character, index }: { character: Character; inde
     >
       <div className="absolute inset-x-0 top-0 h-1" style={{ background: character.signatureColor }} />
       <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black">
-        <Image src={character.image} alt={`${character.name} stock portrait`} width={420} height={560} className="h-52 w-full object-cover opacity-90 transition duration-300 group-hover:opacity-100" />
+        <Image src={assetPath(character.image)} alt={`${character.name} stock portrait`} width={420} height={560} className="h-52 w-full object-cover opacity-90 transition duration-300 group-hover:opacity-100" />
         <div className="absolute left-3 top-3 rounded-full border border-white/10 bg-black/70 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-white">
           {initials}
         </div>
