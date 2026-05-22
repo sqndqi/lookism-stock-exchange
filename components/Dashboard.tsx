@@ -1,10 +1,12 @@
-import { assets, marketPulse } from "@/lib/market-data";
+import { marketPulse } from "@/lib/market-data";
+import { getLiveBaseAssets, redditMarketMeta } from "@/lib/live-market";
 import { formatCurrency, signedPercent } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StockCard } from "@/components/StockCard";
 import { MarketChart } from "@/components/MarketChart";
 
 export function Dashboard() {
+  const assets = getLiveBaseAssets();
   const lead = assets.find((asset) => asset.symbol === "JMS") ?? assets[0];
 
   return (
@@ -15,7 +17,7 @@ export function Dashboard() {
           <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Aura Exchange</h2>
         </div>
         <p className="max-w-xl text-slate-400">
-          Track influence, fight heat, crew dominance, aura volatility, and monster movement across the Seoul underground.
+          Auto-priced from r/lookismcomic signal flow, then blended into fighter, crew, and holding markets across the Seoul underground.
         </p>
       </div>
 
@@ -36,7 +38,9 @@ export function Dashboard() {
         <Card className="overflow-hidden">
           <CardHeader>
             <CardTitle>Generation Control Index</CardTitle>
-            <p className="font-mono text-xs uppercase tracking-[0.22em] text-slate-500">JMS legend composite / aura tracking</p>
+            <p className="font-mono text-xs uppercase tracking-[0.22em] text-slate-500">
+              {lead.symbol} composite / {redditMarketMeta.postsScanned} posts scanned
+            </p>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">

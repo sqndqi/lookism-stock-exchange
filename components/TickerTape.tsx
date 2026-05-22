@@ -1,7 +1,9 @@
-import { tickerTape } from "@/lib/market-data";
+import { getTickerTape } from "@/lib/live-market";
 import { formatCurrency, signedPercent } from "@/lib/utils";
 
 export function TickerTape() {
+  const tickerTape = getTickerTape();
+
   return (
     <section className="relative z-20 border-y border-crimson/20 bg-black/75 py-3 backdrop-blur-xl">
       <div className="flex animate-ticker gap-8 whitespace-nowrap">

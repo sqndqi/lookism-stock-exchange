@@ -10,6 +10,12 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: reddit-market-pages
+  cancel-in-progress: false
 
 jobs:
   update:
@@ -36,3 +42,19 @@ jobs:
           commit_message: "Update Reddit market signals"
           file_pattern: public/data/reddit-stocks.json
 
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build static site with latest market data
+        run: npm run build
+        env:
+          GITHUB_PAGES: "true"
+          NEXT_PUBLIC_BASE_PATH: "/lookism-stock-exchange"
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./out
+
+      - name: Deploy updated market
+        uses: actions/deploy-pages@v4
