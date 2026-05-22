@@ -25,6 +25,15 @@ export type FuturePosition = {
   status: "OPEN" | "SETTLED";
 };
 
+export type ShortPosition = {
+  id: string;
+  symbol: string;
+  quantity: number;
+  entryPrice: number;
+  openedAt: string;
+  status: "OPEN" | "CLOSED";
+};
+
 export type Account = {
   alias: string;
   crew: string;
@@ -32,6 +41,7 @@ export type Account = {
   holdings: Holding[];
   customStocks: CustomStock[];
   futures: FuturePosition[];
+  shorts: ShortPosition[];
   claimedMissions: string[];
   createdAt: string;
 };
@@ -44,6 +54,7 @@ export function createAccount(alias: string, crew: string): Account {
     holdings: [],
     customStocks: [],
     futures: [],
+    shorts: [],
     claimedMissions: [],
     createdAt: new Date().toISOString()
   };
@@ -57,6 +68,7 @@ function normalizeAccount(account: Partial<Account>): Account {
     holdings: Array.isArray(account.holdings) ? account.holdings : [],
     customStocks: Array.isArray(account.customStocks) ? account.customStocks : [],
     futures: Array.isArray(account.futures) ? account.futures : [],
+    shorts: Array.isArray(account.shorts) ? account.shorts : [],
     claimedMissions: Array.isArray(account.claimedMissions) ? account.claimedMissions : [],
     createdAt: account.createdAt || new Date().toISOString()
   };

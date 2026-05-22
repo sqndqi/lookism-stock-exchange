@@ -3,10 +3,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "PTJ-Stocks",
-  description: "A lowkey Lookism-inspired fictional stock board for PTJ universe characters and crews.",
+  description: "A lowkey Lookism-inspired Seoul underground crew market for PTJ universe fighters and crews.",
   openGraph: {
     title: "PTJ-Stocks",
-    description: "Lookism-inspired character and crew stocks",
+    description: "Lookism-inspired fighter and crew market",
     type: "website"
   }
 };

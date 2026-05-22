@@ -22,12 +22,12 @@ type RedditFeed = {
 const feed = redditStocks as RedditFeed;
 
 const redditSymbolAliases: Record<string, string[]> = {
-  "Daniel Park": ["BDNL", "LDNL"],
-  "Gun Park": ["GUN", "WTJC"],
+  "Daniel Park": ["DAN"],
+  "Gun Park": ["GUN"],
   "Goo Kim": ["GOO"],
   "Johan Seong": ["JHL"],
-  "Jake Kim": ["JKE", "BDL"],
-  "Eli Jang": ["ELI", "HSTL"],
+  "Jake Kim": ["JKE"],
+  "Eli Jang": ["ELI"],
   Vasco: ["VAS"],
   "Zack Lee": ["ZACK"],
   "Samuel Seo": ["SML"],
@@ -36,6 +36,8 @@ const redditSymbolAliases: Record<string, string[]> = {
   "Gitae Kim": ["KTAE"],
   Elite: ["CCH"]
 };
+
+const canonicalRedditNames = new Set(Object.keys(redditSymbolAliases));
 
 const redditOnlySymbols: Record<string, string> = {
   "Tom Lee": "TOM",
@@ -70,6 +72,26 @@ function signalFromChange(change: number): MarketAsset["signal"] {
   if (change >= 3) return "BUY";
   if (change <= -3) return "SHORT";
   return "HOLD";
+}
+
+function loreCatalyst(stock: RedditStock) {
+  const reasons: Record<string, string> = {
+    "Daniel Park": "Daniel moves on UI/body mystery theories, second-body panic, and J High rescue talk.",
+    "Gun Park": "Gun moves on Yamazaki bloodline debate, TUI arguments, and Goo rematch speculation.",
+    "Goo Kim": "Goo moves on weapon genius arguments, Gun comparisons, and chaos-mode agenda posts.",
+    "James Lee": "James moves on King Era scaling, DG identity talk, and legend-status arguments.",
+    "Jake Kim": "Jake moves on Big Deal loyalty, Gangseo territory, and Gapryong-family speculation.",
+    "Johan Seong": "Johan moves on copy genius hype, eyesight talk, and God Dog comeback theories.",
+    "Vasco": "Vasco moves on conviction posts, mastery talk, and Burn Knuckles loyalty.",
+    "Zack Lee": "Zack moves on boxing mastery, endurance feats, and J High comeback energy.",
+    "Samuel Seo": "Samuel moves on heat-mode arguments, Workers baggage, and betrayal-risk chatter.",
+    "Eli Jang": "Eli moves on Hostel family stakes, wild-mode talk, and loyalty pressure.",
+    "Gitae Kim": "Gitae moves on Gapryong bloodline, endgame villain theory, and brutal aura posts.",
+    "Kitae Kim": "Gitae moves on Gapryong bloodline, endgame villain theory, and brutal aura posts.",
+    Elite: "Elite Network moves on old-generation secrets, Charles Choi theories, and betrayal risk."
+  };
+
+  return reasons[stock.name] ?? `${stock.name} moved because r/lookismcomic pushed ${stock.mentions} tracked mentions into the rumor wire.`;
 }
 
 function accentFromTrend(stock: RedditStock, fallback = "#c7ccd4") {
@@ -110,7 +132,7 @@ function redditBySymbol() {
 }
 
 function applyRedditSignal(asset: MarketAsset, stock: RedditStock): MarketAsset {
-  const priceMultiplier = asset.symbol === "LDNL" ? 0.94 : asset.symbol === "WTJC" ? 1.08 : asset.symbol === "BDL" || asset.symbol === "HSTL" ? 0.82 : 1;
+  const priceMultiplier = asset.symbol === "WTJC" ? 1.08 : asset.symbol === "BDL" || asset.symbol === "HSTL" ? 0.82 : 1;
   const price = Number((stock.price * priceMultiplier).toFixed(2));
   const mentionBoost = stock.mentions * 1_250_000;
 
@@ -124,12 +146,14 @@ function applyRedditSignal(asset: MarketAsset, stock: RedditStock): MarketAsset 
     volatility: clamp(Math.round(Math.abs(stock.changePercent) * 7 + stock.mentions / 3 + 32), 12, 99),
     signal: signalFromChange(stock.changePercent),
     accent: accentFromTrend(stock, asset.accent),
-    quote: `${stock.reason} Reddit mentions: ${stock.mentions}.`,
+    quote: loreCatalyst(stock),
+    catalyst: `${loreCatalyst(stock)} Rumor heat: ${stock.mentions}. Sentiment: ${stock.sentiment}.`,
     chart: chartFromSignal(price, stock.changePercent)
   };
 }
 
 function redditOnlyAsset(stock: RedditStock): MarketAsset | null {
+  if (canonicalRedditNames.has(stock.name)) return null;
   const symbol = redditOnlySymbols[stock.name] ?? normalizeSymbol(stock.name);
   if (!symbol || assets.some((asset) => asset.symbol === symbol)) return null;
 
@@ -148,7 +172,7 @@ function redditOnlyAsset(stock: RedditStock): MarketAsset | null {
     faction: factionHints[stock.name] ?? "Reddit Wire",
     accent: accentFromTrend(stock),
     image: "/images/fighter-generic.svg",
-    quote: `${stock.reason} Auto-listed from r/lookismcomic activity.`,
+    quote: `${stock.name} entered the rumor wire as a side asset after ${stock.mentions} tracked mentions.`,
     chart: chartFromSignal(price, stock.changePercent)
   };
 }
@@ -194,7 +218,7 @@ export function customStockToAsset(stock: CustomStock): MarketAsset {
     faction: stock.faction,
     accent,
     image: "/images/fighter-generic.svg",
-    quote: "User-listed desk asset. Price is set at listing and trades with local portfolio logic.",
+    quote: "User-listed underground asset. Street value is set at listing and trades inside this local crew basket.",
     chart: chartFromSignal(price, change)
   };
 }

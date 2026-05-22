@@ -27,8 +27,8 @@ export function MarketNews() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Faction Ranking</CardTitle>
-            <p className="text-sm text-slate-400">Leaderboard scored by power, liquidity, and rumor velocity.</p>
+            <CardTitle>Crew Threat Ranking</CardTitle>
+            <p className="text-sm text-slate-400">Leaderboard scored by fight power, territory pressure, and rumor heat.</p>
           </CardHeader>
           <CardContent className="space-y-4">
             {factionRanks.map((faction, index) => (

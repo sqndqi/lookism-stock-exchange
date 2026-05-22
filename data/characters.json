@@ -1,21 +1,74 @@
 [
-  { "name": "Daniel Park", "aliases": ["daniel", "park hyung seok", "hyung seok", "second body"] },
-  { "name": "Gun Park", "aliases": ["gun", "jong gun", "park jong gun"] },
-  { "name": "Goo Kim", "aliases": ["goo", "kim goo", "joongoo", "kim joongoo"] },
-  { "name": "James Lee", "aliases": ["james", "james lee", "dg"] },
-  { "name": "Jake Kim", "aliases": ["jake", "jake kim", "kim gitae's brother"] },
-  { "name": "Eli Jang", "aliases": ["eli", "eli jang"] },
-  { "name": "Johan Seong", "aliases": ["johan", "johan seong"] },
-  { "name": "Zack Lee", "aliases": ["zack", "zack lee"] },
-  { "name": "Vasco", "aliases": ["vasco", "euntae lee"] },
-  { "name": "Samuel Seo", "aliases": ["samuel", "samuel seo"] },
-  { "name": "Vin Jin", "aliases": ["vin", "vin jin"] },
-  { "name": "Jay Hong", "aliases": ["jay", "jay hong"] },
-  { "name": "Mary Kim", "aliases": ["mary", "mary kim"] },
-  { "name": "Sinu Han", "aliases": ["sinu", "sinu han"] },
-  { "name": "Tom Lee", "aliases": ["tom", "tom lee"] },
-  { "name": "Elite", "aliases": ["elite", "charles choi", "choi dongsoo"] },
-  { "name": "Gitae Kim", "aliases": ["gitae", "gitae kim", "kitae", "kitae kim"] },
-  { "name": "Seongji Yuk", "aliases": ["seongji", "seongji yuk"] }
+  {
+    "name": "Daniel Park",
+    "aliases": ["daniel park", "park hyung seok", "hyung seok", "ui daniel", "big daniel", "little daniel", "second body"]
+  },
+  {
+    "name": "Gun Park",
+    "aliases": ["gun park", "jong gun", "park jong gun", "yamazaki gun", "tui gun"]
+  },
+  {
+    "name": "Goo Kim",
+    "aliases": ["goo kim", "kim goo", "joongoo kim", "kim joongoo", "weapon genius"]
+  },
+  {
+    "name": "James Lee",
+    "aliases": ["james lee", "dg", "legend of the first generation"]
+  },
+  {
+    "name": "Jake Kim",
+    "aliases": ["jake kim", "kim gimyung", "gapryong son"]
+  },
+  {
+    "name": "Eli Jang",
+    "aliases": ["eli jang", "jang hyun", "hostel eli"]
+  },
+  {
+    "name": "Johan Seong",
+    "aliases": ["johan seong", "seong yohan", "god dog johan"]
+  },
+  {
+    "name": "Zack Lee",
+    "aliases": ["zack lee", "lee jin sung", "boxer zack"]
+  },
+  {
+    "name": "Vasco",
+    "aliases": ["vasco", "euntae lee", "lee euntae", "burn knuckles vasco"]
+  },
+  {
+    "name": "Samuel Seo",
+    "aliases": ["samuel seo", "seo seongeun", "heat mode samuel"]
+  },
+  {
+    "name": "Vin Jin",
+    "aliases": ["vin jin", "cheonliang vin"]
+  },
+  {
+    "name": "Jay Hong",
+    "aliases": ["jay hong", "hong jaeyeol"]
+  },
+  {
+    "name": "Mary Kim",
+    "aliases": ["mary kim", "cheonliang mary"]
+  },
+  {
+    "name": "Sinu Han",
+    "aliases": ["sinu han", "han sinu", "big deal sinu"]
+  },
+  {
+    "name": "Tom Lee",
+    "aliases": ["tom lee", "white tiger tom", "fighting genius tom lee"]
+  },
+  {
+    "name": "Elite",
+    "aliases": ["elite", "charles choi", "choi dongsoo", "charles choi network"]
+  },
+  {
+    "name": "Gitae Kim",
+    "aliases": ["gitae kim", "kitae kim", "kim gitae", "kim kitae"]
+  },
+  {
+    "name": "Seongji Yuk",
+    "aliases": ["seongji yuk", "yuk seongji", "cheonliang king"]
+  }
 ]
-

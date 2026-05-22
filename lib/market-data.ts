@@ -22,12 +22,16 @@ export type MarketAsset = {
   symbol: string;
   name: string;
   category: "Faction" | "Character" | "Holding";
+  aliases?: string[];
+  variants?: string[];
   price: number;
   change: number;
   marketCap: number;
   volume: number;
   power: number;
   volatility: number;
+  catalyst?: string;
+  affected?: string[];
   signal: "BUY" | "HOLD" | "SHORT";
   faction: string;
   accent: string;
@@ -68,7 +72,7 @@ export type Mission = {
 
 export const marketPulse = [
   { label: "Aura Surge", value: "91.8", icon: Flame, delta: "+8.4%" },
-  { label: "Crew Flow", value: "2.7B", icon: Activity, delta: "+14.2%" },
+  { label: "Street Activity", value: "2.7B", icon: Activity, delta: "+14.2%" },
   { label: "Threat Index", value: "64", icon: Shield, delta: "-2.1%" },
   { label: "Active Crews", value: "128K", icon: Users, delta: "+21.0%" }
 ];
@@ -81,9 +85,11 @@ const series = (base: number, moves: number[]) =>
 
 export const assets: MarketAsset[] = [
   {
-    symbol: "BDNL",
-    name: "Daniel Park (Big)",
+    symbol: "DAN",
+    name: "Daniel Park",
     category: "Character",
+    aliases: ["Big Daniel", "Little Daniel", "UI Daniel"],
+    variants: ["Original Body", "Second Body", "UI State"],
     price: 428.72,
     change: 9.82,
     marketCap: 9200000000,
@@ -94,30 +100,17 @@ export const assets: MarketAsset[] = [
     faction: "J High",
     accent: "#7dd3fc",
     image: "/images/fighter-ui-daniel.svg",
-    quote: "Dual-body premium is still underpriced by the street.",
+    quote: "Daniel moves hardest on UI, second-body, and J High rescue theories.",
+    catalyst: "UI/body mystery theories and Daniel rescue speculation are the main catalyst.",
+    affected: ["J High Alliance", "Allied", "Workers"],
     chart: series(380, [2, 18, 12, 38, 29, 48, 42, 61, 55])
-  },
-  {
-    symbol: "LDNL",
-    name: "Daniel Park (Small)",
-    category: "Character",
-    price: 367.11,
-    change: 4.01,
-    marketCap: 7900000000,
-    volume: 76000000,
-    power: 94,
-    volatility: 92,
-    signal: "BUY",
-    faction: "J High",
-    accent: "#93c5fd",
-    image: "/images/fighter-ui-daniel.svg",
-    quote: "Original-body comeback premium is rising with UI speculation.",
-    chart: series(330, [0, 7, 12, 8, 22, 19, 28, 34, 37])
   },
   {
     symbol: "GUN",
     name: "Gun Park",
     category: "Character",
+    aliases: ["Jong Gun", "Yamazaki Gun"],
+    variants: ["Base", "TUI / Yamazaki Mode"],
     price: 512.18,
     change: 12.44,
     marketCap: 11800000000,
@@ -128,12 +121,14 @@ export const assets: MarketAsset[] = [
     faction: "White Tiger",
     accent: "#e5e7eb",
     image: "/images/fighter-gun.svg",
-    quote: "Institutional fear remains the strongest moat in the sector.",
+    quote: "Gun spikes whenever Yamazaki bloodline, TUI, or Goo rematch talk resurfaces.",
+    catalyst: "Yamazaki/TUI debate and Goo rematch speculation drive Gun's rumor heat.",
+    affected: ["White Tiger", "Goo Kim", "Daniel Park"],
     chart: series(455, [4, 21, 28, 44, 39, 52, 71, 66, 83])
   },
   {
     symbol: "KTAE",
-    name: "Kitae Kim",
+    name: "Gitae Kim",
     category: "Character",
     price: 504.07,
     change: 1.4,
@@ -145,13 +140,16 @@ export const assets: MarketAsset[] = [
     faction: "Gapryong Line",
     accent: "#f87171",
     image: "/images/fighter-generic.svg",
-    quote: "Shadow-line scarcity keeps the float tight despite ugly headlines.",
+    quote: "Gapryong bloodline talk keeps Gitae unstable and dangerous.",
+    catalyst: "Gapryong lineage and endgame villain theories are moving the tape.",
     chart: series(492, [0, 10, 2, 18, 11, 23, 19, 16, 12])
   },
   {
     symbol: "GOO",
     name: "Goo Kim",
     category: "Character",
+    aliases: ["Kim Joongoo"],
+    variants: ["Base", "Weapon Genius"],
     price: 486.03,
     change: -3.26,
     marketCap: 10400000000,
@@ -162,7 +160,8 @@ export const assets: MarketAsset[] = [
     faction: "Independent",
     accent: "#facc15",
     image: "/images/fighter-generic.svg",
-    quote: "High chaos beta. Traders love it until settlement day.",
+    quote: "Weapon genius chaos. Goo gains on rematch rumors and loses on downplay posts.",
+    catalyst: "Gun rematch discourse and weapon-scaling arguments are the catalyst.",
     chart: series(500, [0, -18, 21, 4, 31, -8, 18, -4, -14])
   },
   {
@@ -179,7 +178,8 @@ export const assets: MarketAsset[] = [
     faction: "Big Deal",
     accent: "#60a5fa",
     image: "/images/fighter-generic.svg",
-    quote: "Big Deal leadership premium is back in play after rumor flow.",
+    quote: "Jake gains when Big Deal loyalty, Gangseo, and Gapryong links enter the chapter talk.",
+    catalyst: "Big Deal loyalty and Gapryong-family speculation are moving Jake.",
     chart: series(250, [2, 9, 8, 16, 21, 19, 28, 33, 31])
   },
   {
@@ -196,7 +196,8 @@ export const assets: MarketAsset[] = [
     faction: "Hostel",
     accent: "#cbd5e1",
     image: "/images/fighter-generic.svg",
-    quote: "Defensive holder base, but narrative volume is thin this session.",
+    quote: "Eli moves on Hostel family stakes and any sign of a wild-mode return.",
+    catalyst: "Hostel loyalty and family-risk discussion are the current catalyst.",
     chart: series(220, [0, -3, 4, 2, -5, -1, -6, -4, -5])
   },
   {
@@ -213,7 +214,8 @@ export const assets: MarketAsset[] = [
     faction: "God Dog",
     accent: "#38bdf8",
     image: "/images/fighter-generic.svg",
-    quote: "Copycat upside remains lethal in short windows.",
+    quote: "Johan reacts to copy genius hype, eyesight talk, and God Dog comeback rumors.",
+    catalyst: "Copycat scaling and rescue speculation are moving Johan.",
     chart: series(280, [1, 8, 4, 18, 21, 17, 25, 33, 29])
   },
   {
@@ -230,7 +232,8 @@ export const assets: MarketAsset[] = [
     faction: "Burn Knuckles",
     accent: "#38bdf8",
     image: "/images/fighter-generic.svg",
-    quote: "Clean fundamentals, low scandal beta, steady retail accumulation.",
+    quote: "Vasco gets steady support whenever Burn Knuckles conviction or mastery talk returns.",
+    catalyst: "Conviction and training-arc posts are carrying Vasco.",
     chart: series(176, [1, 3, 5, 4, 8, 7, 9, 12, 11])
   },
   {
@@ -247,7 +250,8 @@ export const assets: MarketAsset[] = [
     faction: "J High",
     accent: "#a5b4fc",
     image: "/images/fighter-generic.svg",
-    quote: "Training-arc recovery story is still attracting momentum funds.",
+    quote: "Zack moves on boxing mastery, endurance feats, and J High comeback energy.",
+    catalyst: "Boxing mastery and J High training posts are lifting Zack.",
     chart: series(162, [1, 2, 6, 5, 9, 11, 10, 15, 14])
   },
   {
@@ -264,7 +268,8 @@ export const assets: MarketAsset[] = [
     faction: "Workers",
     accent: "#fb7185",
     image: "/images/fighter-generic.svg",
-    quote: "High ego beta. Great liquidity, brutal drawdowns.",
+    quote: "Samuel is pure heat mode risk: ego, Workers baggage, and betrayal chatter.",
+    catalyst: "Workers baggage and heat-mode arguments are driving Samuel.",
     chart: series(270, [0, -8, -2, -15, -10, -24, -18, -28, -22])
   },
   {
@@ -281,12 +286,13 @@ export const assets: MarketAsset[] = [
     faction: "Gangbuk",
     accent: "#60a5fa",
     image: "/images/fighter-generic.svg",
-    quote: "Loyalty premium is outperforming the street economy index.",
+    quote: "Gangseo loyalty, Jake's name, and street romance keep Big Deal alive.",
+    catalyst: "Gangseo loyalty and Jake-centered chapter talk support Big Deal.",
     chart: series(160, [0, 6, 9, 14, 12, 20, 19, 26, 24])
   },
   {
     symbol: "WRK",
-    name: "Workers Corp",
+    name: "Workers / Affiliates",
     category: "Faction",
     price: 221.47,
     change: -7.39,
@@ -298,7 +304,8 @@ export const assets: MarketAsset[] = [
     faction: "Workers",
     accent: "#fb7185",
     image: "/images/fighter-generic.svg",
-    quote: "Regulatory pressure and executive risk keep the tape unstable.",
+    quote: "Affiliate pressure, Eugene strategy, and betrayal risk keep Workers unstable.",
+    catalyst: "Affiliate drama and Eugene strategy are driving Workers.",
     chart: series(250, [0, -8, -2, -17, -14, -22, -19, -31, -28])
   },
   {
@@ -315,13 +322,16 @@ export const assets: MarketAsset[] = [
     faction: "Hostel",
     accent: "#94a3b8",
     image: "/images/fighter-generic.svg",
-    quote: "Family-based fundamentals. Low float, loyal holders.",
+    quote: "Hostel is a family-first crew asset: smaller territory, stubborn loyalty.",
+    catalyst: "Family stakes and Eli-related chapter chatter are moving Hostel.",
     chart: series(135, [1, 2, 4, 3, 5, 6, 4, 8, 7])
   },
   {
     symbol: "JMS",
     name: "James Lee",
     category: "Character",
+    aliases: ["DG"],
+    variants: ["Legend", "DG Persona"],
     price: 545.54,
     change: 5.74,
     marketCap: 13400000000,
@@ -332,12 +342,13 @@ export const assets: MarketAsset[] = [
     faction: "Legend",
     accent: "#c084fc",
     image: "/images/fighter-james.svg",
-    quote: "Legend multiple remains expensive, but the chart refuses to break.",
+    quote: "James rises on legend debate, King Era lore, and speed mastery arguments.",
+    catalyst: "King Era scaling and DG identity talk are moving James.",
     chart: series(510, [3, 12, 18, 24, 21, 29, 33, 41, 36])
   },
   {
     symbol: "CCH",
-    name: "Charles Choi Holdings",
+    name: "Charles Choi Network",
     category: "Holding",
     price: 336.16,
     change: -11.02,
@@ -349,7 +360,8 @@ export const assets: MarketAsset[] = [
     faction: "Elite",
     accent: "#f8fafc",
     image: "/images/fighter-generic.svg",
-    quote: "Governance discount is widening after boardroom rumors.",
+    quote: "Elite Network falls when betrayal risk and old-generation secrets resurface.",
+    catalyst: "Betrayal risk, old-generation secrets, and Charles Choi theories are pressuring Elite.",
     chart: series(380, [0, -12, -20, -18, -33, -27, -41, -44, -43])
   },
   {
@@ -366,12 +378,13 @@ export const assets: MarketAsset[] = [
     faction: "White Tiger",
     accent: "#e2e8f0",
     image: "/images/fighter-gun.svg",
-    quote: "Mercenary cashflow gives this desk rare defensive strength.",
+    quote: "White Tiger moves on mercenary pressure, Tom Lee links, and Gun proximity.",
+    catalyst: "Tom Lee, Gun proximity, and mercenary contracts are moving White Tiger.",
     chart: series(276, [1, 4, 8, 13, 12, 17, 21, 19, 20])
   },
   {
     symbol: "JHI",
-    name: "J High Industries",
+    name: "J High Alliance",
     category: "Faction",
     price: 199.8,
     change: 3.92,
@@ -383,15 +396,16 @@ export const assets: MarketAsset[] = [
     faction: "J High",
     accent: "#22d3ee",
     image: "/images/fighter-generic.svg",
-    quote: "Youth pipeline and training arc momentum keep buyers active.",
+    quote: "Daniel's circle moves on school-alliance rescues and training arc momentum.",
+    catalyst: "J High rescue energy and Daniel's circle theories are moving the alliance.",
     chart: series(182, [2, 4, 8, 7, 12, 15, 13, 18, 17])
   }
 ];
 
 export const characterRoster = [
   {
-    name: "UI Daniel",
-    ticker: "UID",
+    name: "Daniel Park",
+    ticker: "DAN",
     rank: 1,
     price: 612,
     change: 18.4,
@@ -402,7 +416,7 @@ export const characterRoster = [
     generation: "Anomaly",
     fightingStyle: "Copy / UI",
     masteryType: "Instinct",
-    currentArc: "Second body crisis",
+    currentArc: "Second body / UI crisis",
     signatureColor: "#9be7ff",
     image: "/images/fighter-ui-daniel.svg"
   },
@@ -425,7 +439,7 @@ export const characterRoster = [
   },
   {
     name: "James Lee",
-    ticker: "DG",
+    ticker: "JMS",
     rank: 3,
     price: 545,
     change: 5.7,
@@ -453,7 +467,7 @@ export const characterRoster = [
     generation: "Bloodline",
     fightingStyle: "Brutal pressure",
     masteryType: "Power",
-    currentArc: "Shadow liquidity",
+    currentArc: "Shadow territory",
     signatureColor: "#ef4444",
     image: "/images/fighter-generic.svg"
   },
@@ -470,13 +484,13 @@ export const characterRoster = [
     generation: "2nd Gen Monster",
     fightingStyle: "Weapon genius",
     masteryType: "Technique",
-    currentArc: "Chaos beta",
+    currentArc: "Weapon genius risk",
     signatureColor: "#f8fafc",
     image: "/images/fighter-generic.svg"
   },
   {
     name: "Johan Seong",
-    ticker: "JHN",
+    ticker: "JHL",
     rank: 6,
     price: 309,
     change: 4.6,
@@ -561,7 +575,7 @@ export const characterRoster = [
   },
   {
     name: "Zack Lee",
-    ticker: "ZCK",
+    ticker: "ZACK",
     rank: 11,
     price: 176,
     change: 3.3,
@@ -597,7 +611,7 @@ export const characterRoster = [
 
 export const factionRanks = [
   { name: "White Tiger", score: 98, icon: Swords, change: "+4.2%" },
-  { name: "Workers Corp", score: 91, icon: Building2, change: "-6.8%" },
+  { name: "Workers / Affiliates", score: 91, icon: Building2, change: "-6.8%" },
   { name: "Big Deal", score: 84, icon: TrendingUp, change: "+9.1%" },
   { name: "Hostel", score: 76, icon: Shield, change: "+1.7%" },
   { name: "God Dog", score: 70, icon: TrendingDown, change: "-2.4%" }
@@ -628,21 +642,21 @@ export const wikiDossiers: WikiDossier[] = [
   {
     name: "Tom Lee",
     group: "0th Generation",
-    role: "old-guard institutional desk",
+    role: "old-guard underground desk",
     marketUse: "Defensive veteran exposure during Fist Gang discourse.",
     sourcePath: "Tom_Lee"
   },
   {
     name: "Kitae Kim",
     group: "Gapryong line",
-    role: "shadow liquidity shock",
+    role: "shadow territory shock",
     marketUse: "Moves hard when Reddit theories mention bloodline or endgame power.",
     sourcePath: "Kitae_Kim"
   },
   {
     name: "Zack Lee / Vasco / Jay Hong",
     group: "J High basket",
-    role: "training arc ETF",
+    role: "training arc alliance basket",
     marketUse: "Tracks school-side development, teamwork, and comeback chatter.",
     sourcePath: "J_High_School"
   }
@@ -687,15 +701,15 @@ export const predictionContracts: PredictionContract[] = [
 export const missions: Mission[] = [
   { title: "Daily check-in", reward: 300, progress: 100, icon: BadgeCheck },
   { title: "Vote on one prediction contract", reward: 125, progress: 66, icon: Goal },
-  { title: "Build a 5-stock crew basket", reward: 500, progress: 40, icon: Users },
-  { title: "Beat the chapter-review halt spread", reward: 750, progress: 25, icon: Trophy }
+  { title: "Build a 5-fighter crew basket", reward: 500, progress: 40, icon: Users },
+  { title: "Beat the chapter-lock rumor spread", reward: 750, progress: 25, icon: Trophy }
 ];
 
 export const news: NewsItem[] = [
   {
     title: "Second-body reveal chatter pushes Daniel basket into auction imbalance",
     tag: "Reddit Wire",
-    impact: "BDNL +9.82%",
+    impact: "DAN +9.82%",
     time: "Live"
   },
   {
@@ -705,7 +719,7 @@ export const news: NewsItem[] = [
     time: "Live"
   },
   {
-    title: "Gangbuk liquidity spikes after Big Deal block trade",
+    title: "Gangseo street activity spikes after Big Deal loyalty rumors",
     tag: "Underground Economy",
     impact: "BDL +6.11%",
     time: "08:40 KST"
@@ -717,13 +731,13 @@ export const news: NewsItem[] = [
     time: "09:15 KST"
   },
   {
-    title: "Workers Corp sells off as governance risk hits affiliate pricing",
+    title: "Workers / Affiliates slips as betrayal risk hits Eugene strategy",
     tag: "Breaking",
     impact: "WRK -7.39%",
     time: "10:03 KST"
   },
   {
-    title: "J High training arc basket attracts retail inflows",
+    title: "J High Alliance gains after Daniel's circle training chatter",
     tag: "Market Flow",
     impact: "JHI +3.92%",
     time: "11:22 KST"

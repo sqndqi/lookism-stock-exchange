@@ -9,7 +9,7 @@ export function MarketStatusBanner() {
             <ShieldAlert size={19} />
           </div>
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.24em] text-crimson">Chapter halt protocol</p>
+            <p className="font-mono text-xs uppercase tracking-[0.24em] text-crimson">Chapter Lock / Fight Review</p>
             <p className="text-slate-200">New fight intel under review. Aura pricing stays simulated while Reddit sentiment settles.</p>
           </div>
         </div>

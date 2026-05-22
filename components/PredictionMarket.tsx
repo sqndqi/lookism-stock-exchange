@@ -14,15 +14,15 @@ function positionId() {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
-function markValue(stake: number, odds: number) {
-  return stake * (0.55 + odds / 100);
+function contractPayout(stake: number, odds: number) {
+  return stake * (100 / odds);
 }
 
 export function PredictionMarket() {
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [stakeByQuestion, setStakeByQuestion] = useState<Record<string, number>>({});
   const [account, setAccount] = useState<Account | null>(null);
-  const [message, setMessage] = useState("Futures desk ready.");
+  const [message, setMessage] = useState("Paper chapter prediction desk ready.");
 
   useEffect(() => {
     setAccount(readAccount());
@@ -37,7 +37,7 @@ export function PredictionMarket() {
 
   const openFutures = useMemo(() => (account?.futures ?? []).filter((future) => future.status === "OPEN"), [account]);
   const totalMargin = useMemo(() => openFutures.reduce((sum, future) => sum + future.stake, 0), [openFutures]);
-  const markedValue = useMemo(() => openFutures.reduce((sum, future) => sum + markValue(future.stake, future.odds), 0), [openFutures]);
+  const markedValue = useMemo(() => openFutures.reduce((sum, future) => sum + contractPayout(future.stake, future.odds), 0), [openFutures]);
 
   function save(next: Account, status: string) {
     setAccount(next);
@@ -47,7 +47,7 @@ export function PredictionMarket() {
 
   function buyFuture(question: string) {
     if (!account) {
-      setMessage("Create a PTJ account before opening futures.");
+      setMessage("Create a PTJ account before opening chapter predictions.");
       return;
     }
 
@@ -61,7 +61,7 @@ export function PredictionMarket() {
 
     const stake = Math.min(Math.max(stakeByQuestion[question] || 25, 1), account.cash);
     if (stake <= 0) {
-      setMessage("No cash available for this futures order.");
+      setMessage("No demo cash available for this chapter prediction.");
       return;
     }
 
@@ -82,7 +82,7 @@ export function PredictionMarket() {
           }
         ]
       },
-      `Opened ${selection} futures for ${formatCurrency(stake)} margin.`
+      `Backed ${selection} for ${formatCurrency(stake)}. Potential paper payout: ${formatCurrency(contractPayout(stake, option.odds))}.`
     );
   }
 
@@ -91,11 +91,11 @@ export function PredictionMarket() {
     const future = account.futures.find((item) => item.id === id);
     if (!future || future.status !== "OPEN") return;
 
-    const proceeds = markValue(future.stake, future.odds);
+    const proceeds = contractPayout(future.stake, future.odds);
     const futures = account.futures.map((item) => (item.id === id ? { ...item, status: "SETTLED" as const } : item));
     save(
       { ...account, cash: account.cash + proceeds, futures },
-      `Closed ${future.selection} futures for ${formatCurrency(proceeds)} mark value.`
+      `Closed ${future.selection} prediction for ${formatCurrency(proceeds)} paper payout.`
     );
   }
 
@@ -104,25 +104,25 @@ export function PredictionMarket() {
       <div className="mx-auto w-[min(1180px,calc(100%-32px))]">
         <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-crimson">Event futures</p>
-            <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Chapter Futures</h2>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-crimson">Paper prediction market</p>
+            <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Next Chapter Odds</h2>
           </div>
           <p className="max-w-xl text-slate-400">
-            Buy paper contracts on Lookism arc outcomes. Margin, open positions, mark value, and cash settlement all persist in your account.
+            Back chapter outcomes with demo cash. Stake, potential payout, open positions, and settlement all persist in your local account.
           </p>
         </div>
 
         <div className="mb-5 grid gap-3 md:grid-cols-3">
           <div className="rounded-md border border-white/10 bg-black/30 p-4">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Available cash</p>
-            <p className="text-3xl font-black">{formatCurrency(account?.cash ?? 0)}</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Demo cash</p>
+            <p className="text-3xl font-black">{account ? formatCurrency(account.cash) : "Locked"}</p>
           </div>
           <div className="rounded-md border border-white/10 bg-black/30 p-4">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Open margin</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Staked</p>
             <p className="text-3xl font-black">{formatCurrency(totalMargin)}</p>
           </div>
           <div className="rounded-md border border-white/10 bg-black/30 p-4">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Mark value</p>
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Potential payout</p>
             <p className="text-3xl font-black">{formatCurrency(markedValue)}</p>
           </div>
         </div>
@@ -137,7 +137,7 @@ export function PredictionMarket() {
                   <div className="flex items-center justify-between gap-3">
                     <Badge>{contract.closes}</Badge>
                     <span className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">
-                      Pool {formatCurrency(contract.pool)}
+                      Chapter pool {formatCurrency(contract.pool)}
                     </span>
                   </div>
                   <CardTitle className="mt-4 leading-none">{contract.question}</CardTitle>
@@ -180,11 +180,11 @@ export function PredictionMarket() {
                       onClick={() => buyFuture(contract.question)}
                       disabled={!account || !selectedOption || (account?.cash ?? 0) <= 0}
                     >
-                      Buy
+                      Back
                     </Button>
                   </div>
                   <p className="mt-3 font-mono text-xs uppercase tracking-[0.16em] text-slate-500">
-                    {selectedOption ? `Max payout ${formatCurrency(stake * (100 / selectedOption.odds))}` : "Select a side to quote payout"}
+                    {selectedOption ? `Potential payout ${formatCurrency(contractPayout(stake, selectedOption.odds))}` : "Select a side to quote chapter odds"}
                   </p>
                 </CardContent>
               </Card>
@@ -195,7 +195,7 @@ export function PredictionMarket() {
         <Card className="mt-5">
           <CardHeader className="flex flex-row items-start justify-between gap-4">
             <div>
-              <CardTitle>Open Futures Book</CardTitle>
+              <CardTitle>Open Chapter Predictions</CardTitle>
               <p className="text-sm text-slate-400">{message}</p>
             </div>
             <Landmark className="text-crimson" size={24} />
@@ -203,12 +203,12 @@ export function PredictionMarket() {
           <CardContent className="grid gap-3">
             {!account && (
               <div className="rounded-md border border-crimson/25 bg-crimson/10 p-4 text-sm text-slate-300">
-                Create an account to open and settle futures.
+                Create an account to receive demo cash and unlock chapter predictions.
               </div>
             )}
             {account && openFutures.length === 0 && (
               <div className="rounded-md border border-white/10 bg-black/20 p-4 text-sm text-slate-400">
-                No open contracts. Buy a side above to create a futures position.
+                No open predictions. Back a side above to create a paper chapter position.
               </div>
             )}
             {openFutures.map((future) => (
@@ -222,10 +222,10 @@ export function PredictionMarket() {
                   </div>
                   <p className="font-semibold">{future.question}</p>
                   <p className="mt-2 flex items-center gap-2 text-sm text-slate-400">
-                    <TrendingUp size={15} /> Margin {formatCurrency(future.stake)} / odds {future.odds}% / mark {formatCurrency(markValue(future.stake, future.odds))}
+                    <TrendingUp size={15} /> Stake {formatCurrency(future.stake)} / chapter odds {future.odds}% / potential payout {formatCurrency(contractPayout(future.stake, future.odds))}
                   </p>
                 </div>
-                <Button variant="ghost" onClick={() => closeFuture(future.id)}>Close</Button>
+                <Button variant="ghost" onClick={() => closeFuture(future.id)}>Settle Paper</Button>
               </div>
             ))}
           </CardContent>

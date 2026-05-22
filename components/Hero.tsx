@@ -17,24 +17,24 @@ export function Hero() {
           transition={{ duration: 0.8 }}
           className="relative"
         >
-          <Badge>Lookism underground stock board</Badge>
+          <Badge>Lookism underground crew market</Badge>
           <h1 className="mt-5 max-w-4xl font-comic text-[clamp(3rem,8vw,6.8rem)] font-black uppercase leading-[0.9] tracking-tight text-shadow-red">
             PTJ-Stocks
-            <span className="block text-crimson">crew market</span>
+            <span className="block text-crimson">crew war market</span>
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-slate-300 md:text-lg">
-            A dark Lookism-inspired exchange for crew influence, fighter aura, chapter hype, Reddit signals, and PTJ universe movement.
+            A Seoul underground exchange for fighter aura, crew influence, chapter hype, Reddit rumors, and PTJ power-scaling movement.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg">
-              <a href="#market">View stocks <ArrowUpRight size={18} /></a>
+              <a href="#market">View fighters <ArrowUpRight size={18} /></a>
             </Button>
             <Button asChild variant="ghost" size="lg">
               <a href="#characters">Characters <Swords size={18} /></a>
             </Button>
           </div>
           <div className="mt-8 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
-            {["Aura +18.4", "Crews 128K", "Reddit 135 posts"].map((label) => (
+            {["WANTED: GUN", "KING ERA ACTIVE", "RUMOR WIRE LIVE"].map((label) => (
               <div key={label} className="ink-scratch rounded-xl border border-white/10 bg-black/35 p-4 font-mono text-xs uppercase tracking-[0.14em] text-slate-300">
                 {label}
               </div>
@@ -53,16 +53,16 @@ export function Hero() {
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/55 to-transparent p-5">
               <div className="flex items-center gap-2 text-sm text-slate-300">
                 <BarChart3 size={17} className="text-ice" />
-                Seoul night session
+                Seoul night fight review
               </div>
               <div className="mt-3 grid grid-cols-2 gap-3">
                 <div className="rounded-xl border border-white/10 bg-black/60 p-4">
-                  <p className="font-mono text-xs uppercase tracking-[0.14em] text-slate-400">Top</p>
-                  <p className="mt-1 text-3xl font-black">UID</p>
+                  <p className="font-mono text-xs uppercase tracking-[0.14em] text-slate-400">Top fighter</p>
+                  <p className="mt-1 text-3xl font-black">DAN</p>
                 </div>
                 <div className="rounded-xl border border-white/10 bg-black/60 p-4">
-                  <p className="font-mono text-xs uppercase tracking-[0.14em] text-slate-400">Signal</p>
-                  <p className="mt-1 text-3xl font-black text-crimson">Hold</p>
+                  <p className="font-mono text-xs uppercase tracking-[0.14em] text-slate-400">Street call</p>
+                  <p className="mt-1 text-3xl font-black text-crimson">Back</p>
                 </div>
               </div>
             </div>

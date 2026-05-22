@@ -17,22 +17,28 @@ const sourceUrls = [
 const bullishTerms = [
   "goat",
   "peak",
-  "strong",
-  "stronger",
+  "top tier",
+  "insane",
+  "legend",
+  "menace",
   "wins",
   "won",
   "beats",
-  "beat",
   "aura",
-  "him",
+  " him ",
   "upscale",
-  "top tier",
   "cooked him",
   "low diff",
-  "no diff"
+  "no diff",
+  "high diff",
+  "stronger than",
+  "best feat",
+  "stocks up"
 ];
 
 const bearishTerms = [
+  "butchered",
+  "ruined",
   "fraud",
   "lost",
   "loses",
@@ -42,10 +48,19 @@ const bearishTerms = [
   "nerfed",
   "downscale",
   "overrated",
+  "disappointing",
+  "ass pull",
+  "plot armor",
+  "mid",
+  "fell off",
+  "bad writing",
+  "got worse",
   "clown",
   "got cooked",
   "trash"
 ];
+
+const negators = ["not", "no", "never", "isn't", "aint", "ain't", "wasn't", "doesn't", "didn't", "cannot", "can't"];
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const round = (value, digits = 2) => Number(value.toFixed(digits));
@@ -59,8 +74,20 @@ function countMatches(text, alias) {
   return [...text.matchAll(pattern)].length;
 }
 
-function countTerms(text, terms) {
-  return terms.reduce((total, term) => total + countMatches(text, term), 0);
+function termScore(text, terms, polarity) {
+  let score = 0;
+
+  for (const term of terms) {
+    const pattern = new RegExp(`(^|[^a-z0-9])${escapeRegex(term.trim().toLowerCase())}([^a-z0-9]|$)`, "g");
+    for (const match of text.matchAll(pattern)) {
+      const start = Math.max(0, (match.index ?? 0) - 42);
+      const window = text.slice(start, match.index ?? 0).split(/\s+/).slice(-5);
+      const negated = window.some((word) => negators.includes(word.replace(/[^a-z']/g, "")));
+      score += negated ? -polarity : polarity;
+    }
+  }
+
+  return score;
 }
 
 async function readJson(filePath, fallback) {
@@ -143,9 +170,7 @@ function scoreCharacter(character, posts, previousPrice) {
     if (!aliasHits) continue;
 
     const engagement = Math.log10(post.ups + post.comments * 2 + 10);
-    const bullish = countTerms(text, bullishTerms);
-    const bearish = countTerms(text, bearishTerms);
-    const postSentiment = clamp(bullish - bearish, -3, 3);
+    const postSentiment = clamp(termScore(text, bullishTerms, 1) + termScore(text, bearishTerms, -1), -3, 3);
 
     mentions += aliasHits;
     weightedMentions += aliasHits * engagement;
@@ -173,9 +198,9 @@ function scoreCharacter(character, posts, previousPrice) {
 
 function explainStock(stock) {
   if (stock.mentions === 0) return "Quiet cycle. No strong Reddit signal found.";
-  if (stock.sentiment > 0.35) return "Bullish chatter and engagement are pushing attention up.";
-  if (stock.sentiment < -0.35) return "Recent discussion is leaning bearish or downplay-heavy.";
-  return "Movement is mostly driven by attention volume rather than clear sentiment.";
+  if (stock.sentiment > 0.35) return "Positive aura posts and chapter hype are pushing the street value up.";
+  if (stock.sentiment < -0.35) return "Downplay, fraud checks, or writing complaints are dragging the rumor wire down.";
+  return "The move is attention-led: lots of theory traffic without a clear agenda winner.";
 }
 
 function buildMarket(characters, posts, previousMarket) {

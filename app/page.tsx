@@ -20,12 +20,12 @@ export default function Home() {
       <Hero />
       <MarketStatusBanner />
       <TickerTape />
-      <IntelligenceHub />
       <Dashboard />
+      <CrewMissions />
       <CharacterGrid />
       <PredictionMarket />
-      <CrewMissions />
       <PortfolioSimulator />
+      <IntelligenceHub />
       <MarketNews />
       <Footer />
     </main>

@@ -13,11 +13,11 @@ export function Dashboard() {
     <section id="market" className="relative z-10 mx-auto w-[min(1180px,calc(100%-32px))] py-16">
       <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-ice">Market board</p>
-          <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Aura Exchange</h2>
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-ice">Crew market board</p>
+          <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Seoul Underground Exchange</h2>
         </div>
         <p className="max-w-xl text-slate-400">
-          Auto-priced from r/lookismcomic signal flow, then blended into fighter, crew, and holding markets across the Seoul underground.
+          Street value, fight power, rumor heat, crew influence, and instability stay separated so this reads like Lookism, not Wall Street.
         </p>
       </div>
 
@@ -37,7 +37,7 @@ export function Dashboard() {
       <div className="mt-5 grid gap-5 lg:grid-cols-[1.3fr_.7fr]">
         <Card className="overflow-hidden">
           <CardHeader>
-            <CardTitle>Generation Control Index</CardTitle>
+            <CardTitle>Generation War Index</CardTitle>
             <p className="font-mono text-xs uppercase tracking-[0.22em] text-slate-500">
               {lead.symbol} composite / {redditMarketMeta.postsScanned} posts scanned
             </p>
@@ -46,10 +46,10 @@ export function Dashboard() {
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div>
                 <p className="text-5xl font-black">{formatCurrency(lead.price)}</p>
-                <p className="text-ice">{signedPercent(lead.change)} aura surge</p>
+                <p className="text-ice">{signedPercent(lead.change)} street value shift</p>
               </div>
               <div className="grid grid-cols-3 gap-3 text-center">
-                {["BUY", "POWER 100", "BETA .63"].map((text) => (
+                {[lead.signal === "BUY" ? "BACK" : lead.signal === "SHORT" ? "DROP" : "WATCH", `POWER ${lead.power}`, `INSTABILITY ${lead.volatility}`].map((text) => (
                   <div key={text} className="rounded-md border border-white/10 bg-white/[0.035] px-4 py-3 font-mono text-xs uppercase tracking-[0.16em] text-slate-300">
                     {text}
                   </div>
@@ -62,7 +62,7 @@ export function Dashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Current Monsters</CardTitle>
+            <CardTitle>Biggest Hype Spikes</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {assets.slice(0, 6).map((asset) => (

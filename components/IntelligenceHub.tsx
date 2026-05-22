@@ -30,11 +30,11 @@ export function IntelligenceHub() {
     <section id="intel" className="relative z-10 mx-auto w-[min(1180px,calc(100%-32px))] py-16">
       <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-ice">Source intelligence</p>
-          <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Reddit x Wiki Desk</h2>
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-ice">Rumor wire</p>
+          <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Why Did This Move?</h2>
         </div>
         <p className="max-w-xl text-slate-400">
-          A live research layer combining r/lookismcomic chatter with Lookism Wiki taxonomy, then converting the noise into market language.
+          Reddit catalysts, chapter theories, and Lookism Wiki context converted into fighter and crew movement.
         </p>
       </div>
 
@@ -47,7 +47,7 @@ export function IntelligenceHub() {
                 {redditStocks.postsScanned} posts scanned
               </span>
             </div>
-            <CardTitle className="mt-3">Reddit Signal Board</CardTitle>
+            <CardTitle className="mt-3">Rumor Catalyst Board</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {redditMarket.slice(0, 6).map((stock) => (
@@ -58,15 +58,15 @@ export function IntelligenceHub() {
                     <p className="mt-1 text-sm text-slate-400">{stock.reason}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-mono text-sm">{formatCurrency(stock.price)}</p>
+                    <p className="font-mono text-sm">{formatCurrency(stock.price)} street value</p>
                     <p className={stock.changePercent >= 0 ? "text-ice" : "text-crimson"}>
                       {signedPercent(stock.changePercent)}
                     </p>
                   </div>
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-3 font-mono text-xs uppercase tracking-[0.16em] text-slate-500">
-                  <span>Mentions {stock.mentions}</span>
-                  <span>Sentiment {stock.sentiment}</span>
+                  <span>Rumor Heat {stock.mentions}</span>
+                  <span>Aura Sentiment {stock.sentiment}</span>
                 </div>
               </div>
             ))}
@@ -87,7 +87,7 @@ export function IntelligenceHub() {
                   source map
                 </a>
               </div>
-              <CardTitle className="mt-3">Wiki Dossiers</CardTitle>
+              <CardTitle className="mt-3">Wikia Dossiers</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-3 md:grid-cols-2">
               {wikiDossiers.map((dossier) => (

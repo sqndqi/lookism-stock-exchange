@@ -83,7 +83,7 @@ export function CharacterCard({ character, index }: { character: Character; inde
         </div>
         <div className="mt-4 flex items-end justify-between">
           <div>
-            <p className="text-sm text-slate-400">Price</p>
+            <p className="text-sm text-slate-400">Street Value</p>
             <p className="text-2xl font-black">{formatCurrency(character.price)}</p>
           </div>
           <p className={positive ? "text-profit" : "text-danger"}>{signedPercent(character.change)}</p>

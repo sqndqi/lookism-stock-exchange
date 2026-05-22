@@ -45,8 +45,7 @@ export function Navbar() {
           <a className="transition hover:text-cyanline" href="#characters">Characters</a>
           <a className="transition hover:text-cyanline" href="#predictions">Predictions</a>
           <a className="transition hover:text-cyanline" href="#crews">Crews</a>
-          <a className="transition hover:text-cyanline" href="#portfolio">Portfolio</a>
-          <Link className="transition hover:text-cyanline" href="/login">Login</Link>
+          <a className="transition hover:text-cyanline" href="#portfolio">Crew Basket</a>
         </div>
         <div className="flex items-center gap-2">
           <Button aria-label="Search" variant="ghost" size="sm"><Search size={16} /></Button>
@@ -58,7 +57,7 @@ export function Navbar() {
             {light ? <Moon size={16} /> : <Sun size={16} />}
           </Button>
           <Button asChild size="sm" className="hidden sm:inline-flex">
-            <Link href="/login">Login</Link>
+            <Link href="/login">Account</Link>
           </Button>
         </div>
       </nav>

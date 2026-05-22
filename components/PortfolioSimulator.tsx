@@ -5,7 +5,7 @@ import Link from "next/link";
 import { BriefcaseBusiness, Check, LockKeyhole, Minus, Plus, RadioTower, Wallet } from "lucide-react";
 import { findTradableAsset, getTradableAssets, redditMarketMeta } from "@/lib/live-market";
 import { formatCurrency } from "@/lib/utils";
-import type { Account, CustomStock } from "@/lib/account";
+import type { Account, CustomStock, ShortPosition } from "@/lib/account";
 import { readAccount, STARTING_CASH, writeAccount } from "@/lib/account";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,13 +28,14 @@ export function PortfolioSimulator() {
   const [investment, setInvestment] = useState(100);
   const [loading, setLoading] = useState(false);
   const [listing, setListing] = useState(listingDefaults);
-  const [message, setMessage] = useState("Market terminal ready.");
+  const [message, setMessage] = useState("Crew basket terminal ready.");
 
   const tradableAssets = useMemo(() => getTradableAssets(account), [account]);
   const holdings = useMemo(() => account?.holdings ?? [], [account]);
-  const cash = account?.cash ?? STARTING_CASH;
+  const cash = account?.cash ?? 0;
   const selectedAsset = tradableAssets.find((item) => item.symbol === selected) ?? tradableAssets[0];
   const selectedHolding = holdings.find((holding) => holding.symbol === selected);
+  const openShorts = useMemo(() => (account?.shorts ?? []).filter((item) => item.status === "OPEN"), [account]);
   const openFutureMargin = useMemo(
     () => (account?.futures ?? []).filter((future) => future.status === "OPEN").reduce((sum, future) => sum + future.stake, 0),
     [account]
@@ -57,7 +58,8 @@ export function PortfolioSimulator() {
       const currentAccount = readAccount();
       if (getTradableAssets(currentAccount).some((asset) => asset.symbol === symbol)) {
         setSelected(symbol);
-        setMessage(`${symbol} loaded into the order ticket.`);
+        const asset = getTradableAssets(currentAccount).find((item) => item.symbol === symbol);
+        setMessage(`${asset?.name ?? symbol} loaded into the crew basket order ticket.`);
       }
     }
 
@@ -89,7 +91,7 @@ export function PortfolioSimulator() {
     if (!account || !selectedAsset) return;
     const amount = Math.min(Math.max(Number(investment) || 0, 0), account.cash);
     if (amount <= 0) {
-      setMessage("Order rejected. Increase order size or add cash from missions.");
+      setMessage("Back order rejected. Increase stake or claim account demo cash.");
       return;
     }
 
@@ -111,7 +113,7 @@ export function PortfolioSimulator() {
 
       save(
         { ...account, cash: account.cash - amount, holdings: nextHoldings },
-        `Filled buy order: ${shares.toFixed(4)} ${selectedAsset.symbol} for ${formatCurrency(amount)}.`
+        `Backed ${selectedAsset.name}: ${shares.toFixed(4)} units for ${formatCurrency(amount)}.`
       );
       setLoading(false);
     }, 300);
@@ -122,7 +124,7 @@ export function PortfolioSimulator() {
     const holding = account.holdings.find((item) => item.symbol === symbol);
     const sellAsset = findTradableAsset(symbol, account);
     if (!holding || !sellAsset) {
-      setMessage("Sell rejected. Asset is not listed on the active market.");
+      setMessage("Drop rejected. Asset is not listed on the active crew market.");
       return;
     }
 
@@ -134,26 +136,53 @@ export function PortfolioSimulator() {
 
     save(
       { ...account, cash: account.cash + proceeds, holdings: nextHoldings },
-      `Filled sell order: ${sharesToSell.toFixed(4)} ${symbol} for ${formatCurrency(proceeds)}.`
+      `Dropped ${sharesToSell.toFixed(4)} ${symbol} for ${formatCurrency(proceeds)}.`
     );
   }
 
-  function shortSignal() {
+  function openShort() {
     if (!account || !selectedAsset) return;
-    const stake = Math.min(Math.max(Number(investment) || 0, 0), account.cash);
-    if (stake <= 0) return;
-    const move = Math.max(Math.abs(selectedAsset.change), 1.5);
-    const payout = selectedAsset.change < 0 ? stake * (1 + move / 100) : stake * Math.max(0.55, 1 - move / 120);
+    const margin = Math.min(Math.max(Number(investment) || 0, 0), account.cash);
+    if (margin <= 0) {
+      setMessage("Drop order rejected. No demo cash available for margin.");
+      return;
+    }
+    const quantity = margin / selectedAsset.price;
+    const short: ShortPosition = {
+      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+      symbol: selectedAsset.symbol,
+      quantity,
+      entryPrice: selectedAsset.price,
+      openedAt: new Date().toISOString(),
+      status: "OPEN"
+    };
     save(
-      { ...account, cash: account.cash - stake + payout },
-      `Short signal settled on ${selectedAsset.symbol}: ${formatCurrency(payout - stake)} P/L.`
+      { ...account, cash: account.cash - margin, shorts: [...account.shorts, short] },
+      `Opened Drop position on ${selectedAsset.name}: ${quantity.toFixed(4)} units at ${formatCurrency(selectedAsset.price)}.`
+    );
+  }
+
+  function closeShort(id: string) {
+    if (!account) return;
+    const short = account.shorts.find((item) => item.id === id);
+    if (!short || short.status !== "OPEN") return;
+    const asset = findTradableAsset(short.symbol, account);
+    if (!asset) return;
+
+    const entryValue = short.entryPrice * short.quantity;
+    const coverValue = asset.price * short.quantity;
+    const proceeds = Math.max(0, entryValue + (entryValue - coverValue));
+    const shorts = account.shorts.map((item) => (item.id === id ? { ...item, status: "CLOSED" as const } : item));
+    save(
+      { ...account, cash: account.cash + proceeds, shorts },
+      `Closed Drop on ${asset.name}: ${formatCurrency(proceeds - entryValue)} unrealized result settled.`
     );
   }
 
   function addListing(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!account) {
-      setMessage("Create a PTJ account before listing new stocks.");
+      setMessage("Create a PTJ account before listing new fighter or crew assets.");
       return;
     }
 
@@ -162,7 +191,7 @@ export function PortfolioSimulator() {
     const price = Math.min(Math.max(Number(listing.price) || 0, 1), 9999);
 
     if (!name || symbol.length < 2) {
-      setMessage("Listing rejected. Add a character name and a 2-6 letter ticker.");
+      setMessage("Listing rejected. Add a fighter/crew name and a 2-6 letter ticker.");
       return;
     }
 
@@ -181,7 +210,7 @@ export function PortfolioSimulator() {
 
     save(
       { ...account, customStocks: [...account.customStocks, customStock] },
-      `${customStock.symbol} listed at ${formatCurrency(customStock.price)}. It is now tradable in this browser.`
+      `${customStock.symbol} listed at ${formatCurrency(customStock.price)} street value. It is now tradable in this browser.`
     );
     setSelected(customStock.symbol);
     setListing(listingDefaults);
@@ -192,8 +221,8 @@ export function PortfolioSimulator() {
       <div className="grid gap-5">
         <Card className="overflow-hidden">
           <CardHeader>
-            <CardTitle>Dealer Access</CardTitle>
-            <p className="text-sm text-slate-400">One local account. Paper cash, holdings, custom listings, and futures save in this browser.</p>
+            <CardTitle>Underground Access</CardTitle>
+            <p className="text-sm text-slate-400">One local account. Demo cash, crew basket, custom listings, and chapter predictions save in this browser.</p>
           </CardHeader>
           <CardContent>
             <div className="rounded-2xl border border-crimson/25 bg-crimson/10 p-5">
@@ -203,12 +232,12 @@ export function PortfolioSimulator() {
                 </div>
                 <div>
                   <p className="text-3xl font-black">{account ? account.alias : "VIP Desk"}</p>
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-slate-400">{account ? `${account.crew} account` : "Create account to trade"}</p>
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-slate-400">{account ? `${account.crew} account` : "Create account to unlock trading"}</p>
                 </div>
               </div>
               <div className="mt-6 grid gap-3">
                 <input className="h-12 rounded-xl border border-white/10 bg-black/30 px-4 text-sm outline-none" value={account ? `${account.alias}@ptj.black` : "new-dealer@ptj.black"} readOnly />
-                <input className="h-12 rounded-xl border border-white/10 bg-black/30 px-4 text-sm outline-none" value={account ? `Started with ${formatCurrency(STARTING_CASH)}` : "No account found"} readOnly />
+                <input className="h-12 rounded-xl border border-white/10 bg-black/30 px-4 text-sm outline-none" value={account ? `Started with ${formatCurrency(STARTING_CASH)} demo cash` : "Create account to receive demo cash"} readOnly />
                 <Button asChild>
                   <Link href="/login">
                     {account ? <Check size={17} /> : null}
@@ -222,8 +251,8 @@ export function PortfolioSimulator() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Listing Desk</CardTitle>
-            <p className="text-sm text-slate-400">Add missing fighters, schools, crews, or meme assets to your local market.</p>
+            <CardTitle>Underground Listing</CardTitle>
+            <p className="text-sm text-slate-400">Add missing fighters, schools, crews, or meme assets to your local crew market.</p>
           </CardHeader>
           <CardContent>
             <form className="grid gap-3" onSubmit={addListing}>
@@ -270,38 +299,38 @@ export function PortfolioSimulator() {
       <Card>
         <CardHeader className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <CardTitle>Crew Holdings</CardTitle>
-            <p className="text-sm text-slate-400">Market orders now use the automatic Reddit-backed price feed plus your local listings.</p>
+            <CardTitle>Crew Basket</CardTitle>
+            <p className="text-sm text-slate-400">Back or drop fighter and crew assets using the Reddit-backed rumor feed plus your local listings.</p>
           </div>
           <div className="grid grid-cols-3 gap-2 text-right">
             <div className="rounded-md border border-white/10 bg-black/30 p-3">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Cash</p>
-              <p className="text-2xl font-black">{formatCurrency(cash)}</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Demo Cash</p>
+              <p className="text-2xl font-black">{account ? formatCurrency(cash) : "Locked"}</p>
             </div>
             <div className="rounded-md border border-white/10 bg-black/30 p-3">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Equity</p>
-              <p className="text-2xl font-black">{formatCurrency(holdingsValue)}</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Crew Value</p>
+              <p className="text-2xl font-black">{account ? formatCurrency(holdingsValue) : "Locked"}</p>
             </div>
             <div className="rounded-md border border-white/10 bg-black/30 p-3">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Net</p>
-              <p className="text-2xl font-black">{formatCurrency(holdingsValue + cash)}</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Total Pull</p>
+              <p className="text-2xl font-black">{account ? formatCurrency(holdingsValue + cash) : "Locked"}</p>
             </div>
           </div>
         </CardHeader>
         <CardContent>
           {!account && (
             <div className="mb-5 rounded-xl border border-crimson/30 bg-crimson/10 p-4 text-sm text-slate-200">
-              Create your one-time PTJ account first. You will start with {formatCurrency(STARTING_CASH)}.
+              Create your one-time PTJ account to receive {formatCurrency(STARTING_CASH)} demo cash and unlock trading.
             </div>
           )}
 
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-white/10 bg-black/25 p-4">
             <div className="flex items-center gap-3 text-sm text-slate-300">
               <RadioTower className="text-ice" size={18} />
-              <span>Auto market sync: {redditMarketMeta.postsScanned} Reddit posts scanned</span>
+              <span>Rumor wire sync: {redditMarketMeta.postsScanned} r/lookismcomic posts scanned</span>
             </div>
             <span className="font-mono text-xs uppercase tracking-[0.16em] text-slate-500">
-              Futures margin {formatCurrency(openFutureMargin)}
+              Chapter prediction margin {formatCurrency(openFutureMargin)}
             </span>
           </div>
 
@@ -325,14 +354,14 @@ export function PortfolioSimulator() {
               disabled={!account}
               onChange={(event) => setInvestment(Number(event.target.value))}
             />
-            <Button onClick={buy} disabled={!account || cash <= 0 || !selectedAsset}><Plus size={17} /> Buy</Button>
-            <Button onClick={() => selectedHolding && sell(selected, 0.25)} disabled={!selectedHolding} variant="ghost"><Minus size={17} /> Sell 25%</Button>
-            <Button onClick={shortSignal} disabled={!account || cash <= 0 || !selectedAsset} variant="ghost">Short</Button>
+            <Button onClick={buy} disabled={!account || cash <= 0 || !selectedAsset}><Plus size={17} /> Back</Button>
+            <Button onClick={() => selectedHolding && sell(selected, 0.25)} disabled={!selectedHolding} variant="ghost"><Minus size={17} /> Drop 25%</Button>
+            <Button onClick={openShort} disabled={!account || cash <= 0 || !selectedAsset} variant="ghost">Open Drop</Button>
           </div>
 
           {selectedAsset && (
             <p className="mt-3 font-mono text-xs uppercase tracking-[0.16em] text-slate-500">
-              Selected: {selectedAsset.name} / {formatCurrency(selectedAsset.price)} per share / {selectedHolding ? `${selectedHolding.shares.toFixed(4)} owned` : "no position"}
+              Selected: {selectedAsset.name} / {formatCurrency(selectedAsset.price)} street value / {selectedHolding ? `${selectedHolding.shares.toFixed(4)} backed` : "no backing"}
             </p>
           )}
           <p className="mt-2 text-sm text-slate-400">{message}</p>
@@ -341,7 +370,7 @@ export function PortfolioSimulator() {
             {loading && <Skeleton className="h-16" />}
             {account && holdings.length === 0 && (
               <div className="rounded-md border border-white/10 bg-black/20 p-5 text-sm text-slate-400">
-                No holdings yet. Pick a stock and buy any amount up to your cash balance.
+                No crew basket positions yet. Pick a fighter or crew asset and back any amount up to your demo cash balance.
               </div>
             )}
             {holdings.map((holding) => {
@@ -359,7 +388,7 @@ export function PortfolioSimulator() {
                     <div>
                       <p className="font-semibold">{asset.name}</p>
                       <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">
-                        {holding.shares.toFixed(4)} shares / avg {formatCurrency(holding.averageCost)} / {asset.symbol}
+                        {holding.shares.toFixed(4)} units / entry {formatCurrency(holding.averageCost)} / {asset.symbol}
                       </p>
                     </div>
                   </div>
@@ -367,14 +396,40 @@ export function PortfolioSimulator() {
                     <p>{formatCurrency(value)}</p>
                     <p className={`flex items-center gap-1 md:justify-end ${gain >= 0 ? "text-ice" : "text-crimson"}`}><Wallet size={14} /> {gain >= 0 ? "+" : ""}{formatCurrency(gain)}</p>
                     <div className="mt-2 flex gap-2 md:justify-end">
-                      <Button size="sm" variant="ghost" onClick={() => sell(holding.symbol, 0.25)}>Sell 25%</Button>
-                      <Button size="sm" variant="ghost" onClick={() => sell(holding.symbol, 1)}>Sell all</Button>
+                      <Button size="sm" variant="ghost" onClick={() => sell(holding.symbol, 0.25)}>Drop 25%</Button>
+                      <Button size="sm" variant="ghost" onClick={() => sell(holding.symbol, 1)}>Drop all</Button>
                     </div>
                   </div>
                 </div>
               );
             })}
           </div>
+          {account && openShorts.length > 0 && (
+            <div className="mt-6 grid gap-3 border-t border-white/10 pt-5">
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-crimson">Open Drop Positions</p>
+              {openShorts.map((short) => {
+                const asset = findTradableAsset(short.symbol, account);
+                if (!asset) return null;
+                const entryValue = short.entryPrice * short.quantity;
+                const currentValue = asset.price * short.quantity;
+                const pnl = entryValue - currentValue;
+                return (
+                  <div key={short.id} className="flex flex-col gap-3 rounded-md border border-crimson/25 bg-crimson/10 p-4 md:flex-row md:items-center md:justify-between">
+                    <div>
+                      <p className="font-semibold">{asset.name} Drop</p>
+                      <p className="font-mono text-xs uppercase tracking-[0.16em] text-slate-400">
+                        Entry {formatCurrency(short.entryPrice)} / current {formatCurrency(asset.price)} / {short.quantity.toFixed(4)} units
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3 md:justify-end">
+                      <span className={pnl >= 0 ? "text-ice" : "text-crimson"}>{pnl >= 0 ? "+" : ""}{formatCurrency(pnl)}</span>
+                      <Button size="sm" variant="ghost" onClick={() => closeShort(short.id)}>Close Drop</Button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </CardContent>
       </Card>
     </section>

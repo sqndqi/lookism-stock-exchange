@@ -58,7 +58,7 @@ export default function LoginPage() {
             <span className="block text-slate-400">terminal</span>
           </h1>
           <p className="mt-6 max-w-xl text-sm leading-7 text-slate-300 md:text-base">
-            One-time local account setup for PTJ-Stocks. Every new desk starts with {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(STARTING_CASH)} paper cash.
+            One-time local account setup for PTJ-Stocks. Every new desk starts with {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(STARTING_CASH)} demo cash for the crew market.
           </p>
         </div>
 

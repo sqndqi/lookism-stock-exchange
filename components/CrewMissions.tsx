@@ -5,16 +5,67 @@ import { useEffect } from "react";
 import { missions } from "@/lib/market-data";
 import { formatCurrency } from "@/lib/utils";
 import type { Account } from "@/lib/account";
-import { readAccount, STARTING_CASH, writeAccount } from "@/lib/account";
+import { readAccount, writeAccount } from "@/lib/account";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const crews = [
-  { name: "Allied", members: 48210, equity: 18_200_000, change: "+11.4%" },
-  { name: "Workers", members: 43890, equity: 16_940_000, change: "-4.8%" },
-  { name: "Big Deal", members: 39100, equity: 14_610_000, change: "+8.9%" },
-  { name: "White Tiger", members: 31840, equity: 13_200_000, change: "+5.1%" }
+  {
+    name: "Allied",
+    leader: "Daniel Park",
+    territory: "Low territory / high plot impact",
+    members: "Small strike team",
+    threat: 96,
+    betrayalRisk: "Low",
+    pressure: "Workers and Charles Choi Network",
+    status: "Elite rescue unit, not a mass crew",
+    change: "+11.4%"
+  },
+  {
+    name: "Workers / Affiliates",
+    leader: "Eugene",
+    territory: "Affiliate network",
+    members: "High infrastructure",
+    threat: 91,
+    betrayalRisk: "Extreme",
+    pressure: "Internal affiliates, Allied, Big Deal",
+    status: "Money, leverage, and criminal systems",
+    change: "-4.8%"
+  },
+  {
+    name: "Big Deal",
+    leader: "Jake Kim",
+    territory: "Gangseo street zone",
+    members: "Loyal street crew",
+    threat: 84,
+    betrayalRisk: "Low",
+    pressure: "Workers, Gapryong legacy",
+    status: "Street romance, loyalty, Jake identity",
+    change: "+8.9%"
+  },
+  {
+    name: "J High Alliance",
+    leader: "Daniel's Circle",
+    territory: "School alliance",
+    members: "Small core group",
+    threat: 88,
+    betrayalRisk: "Low",
+    pressure: "Body mystery, Workers",
+    status: "School-side rescue and training arc pressure",
+    change: "+6.2%"
+  },
+  {
+    name: "White Tiger",
+    leader: "Tom Lee",
+    territory: "Mercenary network",
+    members: "Contract fighters",
+    threat: 94,
+    betrayalRisk: "Medium",
+    pressure: "Gun proximity, old generation secrets",
+    status: "High-end fight labor and old guard influence",
+    change: "+5.1%"
+  }
 ];
 
 export function CrewMissions() {
@@ -45,7 +96,7 @@ export function CrewMissions() {
   }
 
   const checkedIn = account?.claimedMissions.includes("Daily check-in") ?? false;
-  const cash = account?.cash ?? STARTING_CASH;
+  const cash = account?.cash ?? 0;
 
   return (
     <section id="crews" className="relative z-10 mx-auto grid w-[min(1180px,calc(100%-32px))] gap-5 py-16 lg:grid-cols-[.95fr_1.05fr]">
@@ -53,18 +104,18 @@ export function CrewMissions() {
         <CardHeader>
           <div className="flex items-center justify-between gap-4">
             <div>
-              <Badge>Guest desk</Badge>
+              <Badge>Daily crew tasks</Badge>
               <CardTitle className="mt-4">Underground Missions</CardTitle>
             </div>
             <div className="rounded-md border border-white/10 bg-black/25 p-3 text-right">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Cash</p>
-              <p className="text-3xl font-black">{formatCurrency(cash)}</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Demo Cash</p>
+              <p className="text-3xl font-black">{account ? formatCurrency(cash) : "Locked"}</p>
             </div>
           </div>
         </CardHeader>
         <CardContent>
           <Button className="mb-5 w-full" onClick={checkIn} variant={checkedIn ? "ghost" : "default"} disabled={!account}>
-            {!account ? "Create account to claim missions" : checkedIn ? "Daily check-in claimed" : "Daily check-in (+$300)"}
+            {!account ? "Create account to unlock missions" : checkedIn ? "Daily check-in claimed" : "Daily crew check-in (+$300)"}
           </Button>
           <div className="space-y-3">
             {missions.map((mission) => (
@@ -77,7 +128,7 @@ export function CrewMissions() {
                     <div>
                       <p className="font-semibold">{mission.title}</p>
                       <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">
-                        Reward {formatCurrency(mission.reward)}
+                        Demo reward {formatCurrency(mission.reward)}
                       </p>
                     </div>
                   </div>
@@ -94,21 +145,28 @@ export function CrewMissions() {
 
       <Card>
         <CardHeader>
-          <Badge>Crews</Badge>
-          <CardTitle className="mt-4">Generation Rankings</CardTitle>
-          <p className="text-sm text-slate-400">Crew power, member flow, and influence control across the current underground map.</p>
+          <Badge>Crew War</Badge>
+          <CardTitle className="mt-4">Crew War Map</CardTitle>
+          <p className="text-sm text-slate-400">Lore-aware crew profiles based on leaders, territory, threat level, enemies, and current arc pressure.</p>
         </CardHeader>
         <CardContent className="space-y-3">
           {crews.map((crew, index) => (
-            <div key={crew.name} className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-md border border-white/10 bg-white/[0.035] p-4">
+            <div key={crew.name} className="grid gap-4 rounded-md border border-white/10 bg-white/[0.035] p-4 md:grid-cols-[auto_1fr_auto] md:items-center">
               <div className="text-3xl font-black text-crimson">#{index + 1}</div>
               <div>
                 <p className="text-2xl font-black">{crew.name}</p>
                 <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">
-                  {crew.members.toLocaleString()} members / {formatCurrency(crew.equity)} equity
+                  Leader {crew.leader} / {crew.members} / {crew.territory}
+                </p>
+                <p className="mt-2 text-sm text-slate-400">{crew.status}</p>
+                <p className="mt-2 font-mono text-xs uppercase tracking-[0.14em] text-slate-500">
+                  Enemies: {crew.pressure} / Betrayal risk: {crew.betrayalRisk}
                 </p>
               </div>
-              <span className={crew.change.startsWith("+") ? "text-profit" : "text-danger"}>{crew.change}</span>
+              <div className="text-left md:text-right">
+                <span className={crew.change.startsWith("+") ? "text-profit" : "text-danger"}>{crew.change}</span>
+                <p className="font-mono text-xs uppercase tracking-[0.14em] text-slate-500">Threat {crew.threat}/100</p>
+              </div>
             </div>
           ))}
         </CardContent>
