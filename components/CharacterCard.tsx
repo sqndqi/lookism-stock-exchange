@@ -38,18 +38,30 @@ export function CharacterCard({ character, index }: { character: Character; inde
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5, delay: index * 0.035 }}
       whileHover={{ y: -4 }}
-      className="group manga-border relative min-h-[430px] overflow-hidden rounded-2xl bg-white/[0.035] p-4"
+      className="group manga-border manhwa-panel relative min-h-[460px] overflow-hidden rounded-2xl bg-black p-4"
     >
-      <div className="absolute inset-x-0 top-0 h-1" style={{ background: character.signatureColor }} />
-      <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black">
-        <Image src={assetPath(character.image)} alt={`${character.name} stock portrait`} width={420} height={560} className="h-52 w-full object-cover opacity-90 transition duration-300 group-hover:opacity-100" />
-        <div className="absolute left-3 top-3 rounded-full border border-white/10 bg-black/70 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-white">
+      <Image
+        src={assetPath(character.image)}
+        alt=""
+        width={420}
+        height={560}
+        aria-hidden
+        className="absolute inset-0 h-full w-full scale-110 object-cover object-center opacity-[0.18] grayscale transition duration-300 group-hover:scale-105 group-hover:opacity-[0.28]"
+      />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_18%,rgba(215,25,32,.24),transparent_28%),linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.82)_64%,rgba(0,0,0,.94))]" />
+      <div className="absolute -right-16 top-12 h-52 w-52 rounded-full blur-3xl opacity-20" style={{ background: character.signatureColor }} />
+      <div className="absolute inset-x-0 top-0 h-1.5" style={{ background: character.signatureColor }} />
+      <div className="relative z-10 flex items-start justify-between">
+        <div className="rounded-xl border border-white/10 bg-black/55 px-3 py-2 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-slate-300">
+          Rank #{character.rank}
+        </div>
+        <div className="grid h-12 w-12 place-items-center rounded-xl border border-white/10 bg-black/65 font-comic text-lg text-white">
           {initials}
         </div>
       </div>
-      <div className="relative z-10 mt-4 flex items-center justify-between">
-        <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-mono text-xs uppercase tracking-[0.14em] text-ice">
-          #{character.rank} {character.rarity}
+      <div className="relative z-10 mt-20 flex items-center justify-between">
+        <span className="rounded-full border border-white/10 bg-black/55 px-3 py-1 font-mono text-xs uppercase tracking-[0.14em] text-ice">
+          {character.rarity}
         </span>
         <span className={positive ? "text-profit" : "text-danger"}>
           {positive ? <ArrowUpRight size={20} /> : <ArrowDownRight size={20} />}
@@ -57,14 +69,14 @@ export function CharacterCard({ character, index }: { character: Character; inde
       </div>
       <div className="relative z-10 mt-4">
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-slate-400">{character.ticker} / {character.faction}</p>
-        <h3 className="mt-2 text-3xl font-black uppercase leading-none">{character.name}</h3>
-        <p className="mt-1 text-sm text-slate-400">{character.generation}</p>
+        <h3 className="mt-2 font-comic text-4xl font-black uppercase leading-none text-white text-shadow-red">{character.name}</h3>
+        <p className="mt-1 text-sm font-medium text-slate-300">{character.generation}</p>
         <div className="mt-4 grid grid-cols-2 gap-2 text-xs uppercase tracking-[0.1em] text-slate-300">
-          <div className="rounded-xl border border-white/10 bg-black/25 p-3">
+          <div className="rounded-xl border border-white/10 bg-black/55 p-3 backdrop-blur">
             <span className="block text-slate-500">Style</span>
             <strong className="mt-1 block text-white">{character.fightingStyle}</strong>
           </div>
-          <div className="rounded-xl border border-white/10 bg-black/25 p-3">
+          <div className="rounded-xl border border-white/10 bg-black/55 p-3 backdrop-blur">
             <span className="block text-slate-500">Mastery</span>
             <strong className="mt-1 block text-white">{character.masteryType}</strong>
           </div>

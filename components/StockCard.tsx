@@ -32,13 +32,21 @@ export function StockCard({ asset, index }: { asset: MarketAsset; index: number 
       transition={{ duration: 0.55, delay: index * 0.04 }}
       whileHover={{ y: -4 }}
     >
-      <Card className="group relative h-full overflow-hidden p-4">
+      <Card className="group manhwa-panel relative h-full overflow-hidden p-4">
+        <Image
+          src={assetPath(asset.image)}
+          alt=""
+          width={420}
+          height={560}
+          aria-hidden
+          className="absolute right-[-42px] top-4 h-52 w-40 object-cover opacity-[0.10] grayscale transition duration-300 group-hover:opacity-[0.18]"
+        />
         <div className="absolute inset-x-0 top-0 h-1" style={{ background: asset.accent }} />
         <div className="relative z-10 flex items-start gap-4">
-          <Image src={assetPath(asset.image)} alt={`${asset.name} stock image`} width={420} height={560} className="h-24 w-20 rounded-xl border border-white/10 bg-black object-cover" />
+          <Image src={assetPath(asset.image)} alt={`${asset.name} stock image`} width={420} height={560} className="h-24 w-20 rounded-xl border border-white/10 bg-black object-cover grayscale" />
           <div className="min-w-0 flex-1">
             <Badge className="border-white/10 bg-white/5 text-slate-300">{asset.category}</Badge>
-            <h3 className="mt-3 text-2xl font-black uppercase leading-none tracking-tight">{asset.name}</h3>
+            <h3 className="mt-3 font-comic text-2xl font-black uppercase leading-none tracking-tight">{asset.name}</h3>
             <p className="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-slate-500">{asset.symbol} / {asset.faction}</p>
           </div>
           <div className={`rounded-2xl border px-3 py-2 font-mono text-xs ${positive ? "border-ice/30 bg-ice/10 text-ice" : "border-crimson/30 bg-crimson/10 text-crimson"}`}>

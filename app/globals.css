@@ -1,17 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Bebas+Neue&family=Black+Han+Sans&family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700;900&family=Orbitron:wght@500;700;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-display: "Arial Narrow", "Inter", system-ui, sans-serif;
-  --font-sans: "Inter", "Pretendard", "Noto Sans KR", system-ui, sans-serif;
+  --font-display: "Anime Sans 2.0", "Anime Ace 2.0 BB", "Black Han Sans", "Anton", "Bebas Neue", "Impact", sans-serif;
+  --font-comic: "Anime Sans 2.0", "Anime Ace 2.0 BB", "Bangers", "Do Hyeon", "Black Han Sans", fantasy;
+  --font-sans: "Noto Sans KR", "Pretendard", "Inter", system-ui, sans-serif;
   --font-mono: "SFMono-Regular", Consolas, monospace;
-  --background: #030405;
-  --foreground: #f6f7fb;
-  --crimson: #ef233c;
-  --ice: #8cc7e8;
-  --silver: #d8dee9;
-  --graphite: #111318;
+  --background: #040405;
+  --foreground: #f4f6f8;
+  --crimson: #d71920;
+  --blood: #7a0b13;
+  --ice: #93b7d8;
+  --silver: #c7ccd4;
+  --graphite: #121216;
+  --panel: #090a0d;
 }
 
 * {
@@ -26,8 +31,9 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at 12% 4%, rgba(239, 35, 60, 0.08), transparent 26%),
-    radial-gradient(circle at 88% 10%, rgba(140, 199, 232, 0.08), transparent 34%),
+    radial-gradient(circle at 12% 4%, rgba(215, 25, 32, 0.11), transparent 27%),
+    radial-gradient(circle at 78% 10%, rgba(147, 183, 216, 0.08), transparent 32%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.035), transparent 16%, rgba(215, 25, 32, 0.045) 52%, transparent 72%),
     var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
@@ -39,13 +45,17 @@ body.light {
 }
 
 ::selection {
-  background: rgba(239, 35, 60, 0.5);
+  background: rgba(215, 25, 32, 0.55);
   color: white;
 }
 
 .font-outline {
   color: transparent;
-  -webkit-text-stroke: 1px rgba(246, 247, 251, 0.5);
+  -webkit-text-stroke: 1px rgba(244, 246, 248, 0.56);
+}
+
+.font-comic {
+  font-family: var(--font-comic);
 }
 
 .panel-cut {
@@ -54,8 +64,34 @@ body.light {
 
 .manga-border {
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
-    0 16px 50px rgba(0, 0, 0, 0.42);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 0 0 2px rgba(0, 0, 0, 0.72),
+    0 20px 60px rgba(0, 0, 0, 0.55);
+}
+
+.manhwa-panel {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.09), transparent 18%),
+    radial-gradient(circle at 70% 20%, rgba(215, 25, 32, 0.18), transparent 32%),
+    rgba(8, 9, 12, 0.9);
+}
+
+.manhwa-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 9px),
+    linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.42));
+  mix-blend-mode: screen;
+  opacity: 0.22;
+}
+
+.ink-scratch {
+  background-image:
+    linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.08) 43% 44%, transparent 45% 100%),
+    linear-gradient(76deg, transparent 0 58%, rgba(215, 25, 32, 0.18) 59% 60%, transparent 61% 100%);
 }
 
 .city-mask {
@@ -72,7 +108,7 @@ body.light {
 .luxury-panel {
   position: relative;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(14, 16, 20, 0.82);
+  background: rgba(9, 10, 13, 0.88);
   box-shadow:
     0 16px 55px rgba(0, 0, 0, 0.36),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -88,11 +124,11 @@ body.light {
 }
 
 .text-shadow-red {
-  text-shadow: none;
+  text-shadow: 0 0 22px rgba(215, 25, 32, 0.38);
 }
 
 .text-shadow-ice {
-  text-shadow: none;
+  text-shadow: 0 0 22px rgba(147, 183, 216, 0.34);
 }
 
 .hide-scrollbar {

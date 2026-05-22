@@ -11,28 +11,30 @@ const config: Config = {
     extend: {
       fontFamily: {
         display: ["var(--font-display)", "Impact", "sans-serif"],
+        comic: ["var(--font-comic)", "fantasy"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"]
       },
       colors: {
-        abyss: "#030405",
-        ink: "#0b0d10",
-        graphite: "#111318",
-        chrome: "#d8dee9",
-        silver: "#d8dee9",
-        electric: "#9be7ff",
-        ice: "#9be7ff",
-        cyanline: "#9be7ff",
-        crimson: "#ef233c",
-        danger: "#ef233c",
-        profit: "#d8dee9"
+        abyss: "#040405",
+        ink: "#090a0d",
+        graphite: "#121216",
+        chrome: "#c7ccd4",
+        silver: "#c7ccd4",
+        electric: "#93b7d8",
+        ice: "#93b7d8",
+        cyanline: "#93b7d8",
+        crimson: "#d71920",
+        blood: "#7a0b13",
+        danger: "#d71920",
+        profit: "#c7ccd4"
       },
       boxShadow: {
-        glow: "0 0 40px rgba(239, 35, 60, 0.32)",
-        panel: "0 32px 120px rgba(0, 0, 0, 0.68)"
+        glow: "0 0 40px rgba(215, 25, 32, 0.28)",
+        panel: "0 32px 120px rgba(0, 0, 0, 0.76)"
       },
       backgroundImage: {
-        grid: "linear-gradient(rgba(125,211,252,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(125,211,252,.08) 1px, transparent 1px)",
+        grid: "linear-gradient(rgba(147,183,216,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(147,183,216,.07) 1px, transparent 1px)",
         scanline: "repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 4px)"
       },
       keyframes: {

@@ -17,13 +17,13 @@ export function Hero() {
           transition={{ duration: 0.8 }}
           className="relative"
         >
-          <Badge>Lookism community stock board</Badge>
-          <h1 className="mt-5 max-w-4xl text-[clamp(3rem,8vw,6.8rem)] font-black uppercase leading-[0.9] tracking-tight">
+          <Badge>Lookism underground stock board</Badge>
+          <h1 className="mt-5 max-w-4xl font-comic text-[clamp(3rem,8vw,6.8rem)] font-black uppercase leading-[0.9] tracking-tight text-shadow-red">
             PTJ-Stocks
-            <span className="block text-crimson">character market</span>
+            <span className="block text-crimson">crew market</span>
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-slate-300 md:text-lg">
-            A simple Lookism-inspired board for character prices, crew holdings, aura movement, Reddit signals, and PTJ universe notes.
+            A dark Lookism-inspired exchange for crew influence, fighter aura, chapter hype, Reddit signals, and PTJ universe movement.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg">
@@ -35,7 +35,7 @@ export function Hero() {
           </div>
           <div className="mt-8 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
             {["Aura +18.4", "Crews 128K", "Reddit 135 posts"].map((label) => (
-              <div key={label} className="rounded-xl border border-white/10 bg-white/[0.035] p-4 font-mono text-xs uppercase tracking-[0.14em] text-slate-300">
+              <div key={label} className="ink-scratch rounded-xl border border-white/10 bg-black/35 p-4 font-mono text-xs uppercase tracking-[0.14em] text-slate-300">
                 {label}
               </div>
             ))}
@@ -48,7 +48,7 @@ export function Hero() {
           transition={{ duration: 0.9, delay: 0.15 }}
           className="relative min-h-[360px]"
         >
-          <div className="absolute inset-0 overflow-hidden rounded-2xl border border-white/10 bg-black">
+          <div className="manhwa-panel absolute inset-0 overflow-hidden rounded-2xl border border-white/10 bg-black">
             <Image src={assetPath("/images/seoul-night.svg")} alt="Minimal Seoul night skyline" width={1200} height={760} priority className="h-full w-full object-cover opacity-80" />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/55 to-transparent p-5">
               <div className="flex items-center gap-2 text-sm text-slate-300">
