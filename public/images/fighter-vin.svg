@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560">
+  <rect width="420" height="560" fill="#100e0b"/>
+  <path d="M0 428h420v132H0z" fill="#211a10"/>
+  <path d="M58 69h304v420H58z" fill="none" stroke="#d6a85d" stroke-opacity=".38" stroke-width="4"/>
+  <ellipse cx="211" cy="176" rx="74" ry="84" fill="#e5e0d7"/>
+  <path d="M128 164c35-78 135-78 169 2-56-24-108-24-169-2Z" fill="#0d0d0d"/>
+  <path d="M95 545c19-143 55-218 116-218s99 75 119 218Z" fill="#050505"/>
+  <path d="M126 356h170l34 189H94Z" fill="#22170b"/>
+  <text x="31" y="83" fill="#fff7ed" font-family="Arial Black, Impact, sans-serif" font-size="82">VIN</text>
+  <text x="34" y="124" fill="#d6a85d" font-family="monospace" font-size="20">CHEONLIANG</text>
+</svg>

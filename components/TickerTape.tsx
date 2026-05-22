@@ -1,8 +1,12 @@
+"use client";
+
 import { getTickerTape } from "@/lib/live-market";
+import { useMarketAutomation } from "@/lib/use-market-automation";
 import { formatCurrency, signedPercent } from "@/lib/utils";
 
 export function TickerTape() {
-  const tickerTape = getTickerTape();
+  const automation = useMarketAutomation();
+  const tickerTape = getTickerTape(automation);
 
   return (
     <section className="relative z-20 border-y border-crimson/20 bg-black/75 py-3 backdrop-blur-xl">

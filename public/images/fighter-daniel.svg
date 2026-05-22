@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1017"/><stop offset=".56" stop-color="#111827"/><stop offset="1" stop-color="#7dd3fc"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <rect width="420" height="560" fill="url(#g)"/>
+  <path d="M35 63h350M48 494h324M0 180h420M0 387h420" stroke="#fff" stroke-opacity=".08"/>
+  <path d="M76 516 344 44" stroke="#7dd3fc" stroke-opacity=".24" stroke-width="5"/>
+  <ellipse cx="215" cy="184" rx="70" ry="82" fill="#dfe7ef"/>
+  <path d="M137 173c28-79 129-78 153-20-29-24-99-24-153 20Z" fill="#090b0f"/>
+  <path d="M104 545c14-135 50-217 111-217s100 82 113 217Z" fill="#05070b"/>
+  <path d="M137 351c40 39 113 39 154 0l28 194H111Z" fill="#111827"/>
+  <path d="M163 214h105" stroke="#7dd3fc" stroke-width="8" stroke-linecap="round" filter="url(#glow)"/>
+  <text x="28" y="73" fill="#f8fafc" font-family="Arial Black, Impact, sans-serif" font-size="58">DANIEL</text>
+  <text x="30" y="116" fill="#7dd3fc" font-family="monospace" font-size="20">UI BODY ANOMALY</text>
+</svg>

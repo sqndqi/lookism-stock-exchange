@@ -19,6 +19,21 @@ type RedditFeed = {
   market?: RedditStock[];
 };
 
+export type MarketAutomationSnapshot = {
+  generatedAt: string;
+  tick: number;
+  overrides: Record<
+    string,
+    {
+      price: number;
+      change: number;
+      volume: number;
+      volatility: number;
+      chart: StockPoint[];
+    }
+  >;
+};
+
 const feed = redditStocks as RedditFeed;
 
 const redditSymbolAliases: Record<string, string[]> = {
@@ -56,6 +71,39 @@ const factionHints: Record<string, string> = {
   "Sinu Han": "Big Deal",
   "Seongji Yuk": "Cheonliang"
 };
+
+const imageHints: Record<string, string> = {
+  "Daniel Park": "/images/fighter-daniel.svg",
+  "Gun Park": "/images/fighter-gun.svg",
+  "Goo Kim": "/images/fighter-goo.svg",
+  "Johan Seong": "/images/fighter-johan.svg",
+  "Jake Kim": "/images/fighter-jake.svg",
+  "Eli Jang": "/images/fighter-eli.svg",
+  Vasco: "/images/fighter-vasco.svg",
+  "Zack Lee": "/images/fighter-zack.svg",
+  "Samuel Seo": "/images/fighter-samuel.svg",
+  "James Lee": "/images/fighter-james.svg",
+  "Kitae Kim": "/images/fighter-gitae.svg",
+  "Gitae Kim": "/images/fighter-gitae.svg",
+  "Tom Lee": "/images/fighter-tom.svg",
+  "Jay Hong": "/images/fighter-jay.svg",
+  "Vin Jin": "/images/fighter-vin.svg",
+  "Mary Kim": "/images/fighter-mary.svg",
+  "Sinu Han": "/images/fighter-sinu.svg",
+  "Seongji Yuk": "/images/fighter-seongji.svg",
+  Elite: "/images/crew-elite.svg"
+};
+
+const customListingImages = [
+  "/images/fighter-daniel.svg",
+  "/images/fighter-gun.svg",
+  "/images/fighter-goo.svg",
+  "/images/fighter-jake.svg",
+  "/images/fighter-johan.svg",
+  "/images/fighter-samuel.svg",
+  "/images/crew-workers.svg",
+  "/images/crew-big-deal.svg"
+];
 
 export const redditMarketMeta = {
   generatedAt: feed.generatedAt,
@@ -118,6 +166,10 @@ function normalizeSymbol(value: string) {
   return value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6);
 }
 
+function symbolSeed(symbol: string) {
+  return [...normalizeSymbol(symbol)].reduce((sum, char, index) => sum + char.charCodeAt(0) * (index + 3), 0);
+}
+
 function redditBySymbol() {
   const entries = new Map<string, RedditStock>();
 
@@ -146,6 +198,7 @@ function applyRedditSignal(asset: MarketAsset, stock: RedditStock): MarketAsset 
     volatility: clamp(Math.round(Math.abs(stock.changePercent) * 7 + stock.mentions / 3 + 32), 12, 99),
     signal: signalFromChange(stock.changePercent),
     accent: accentFromTrend(stock, asset.accent),
+    image: imageHints[stock.name] ?? asset.image,
     quote: loreCatalyst(stock),
     catalyst: `${loreCatalyst(stock)} Rumor heat: ${stock.mentions}. Sentiment: ${stock.sentiment}.`,
     chart: chartFromSignal(price, stock.changePercent)
@@ -171,13 +224,61 @@ function redditOnlyAsset(stock: RedditStock): MarketAsset | null {
     signal: signalFromChange(stock.changePercent),
     faction: factionHints[stock.name] ?? "Reddit Wire",
     accent: accentFromTrend(stock),
-    image: "/images/fighter-generic.svg",
+    image: imageHints[stock.name] ?? "/images/fighter-generic.svg",
     quote: `${stock.name} entered the rumor wire as a side asset after ${stock.mentions} tracked mentions.`,
+    catalyst: `${stock.name} moved from subreddit catalyst flow: ${stock.reason}`,
     chart: chartFromSignal(price, stock.changePercent)
   };
 }
 
-export function getLiveBaseAssets(): MarketAsset[] {
+function withAutomation(asset: MarketAsset, automation?: MarketAutomationSnapshot | null): MarketAsset {
+  const override = automation?.overrides[asset.symbol];
+  if (!override) return asset;
+
+  return {
+    ...asset,
+    price: override.price,
+    change: override.change,
+    volume: override.volume,
+    volatility: override.volatility,
+    signal: signalFromChange(override.change),
+    chart: override.chart,
+    catalyst: `${asset.catalyst ?? asset.quote} Live desk tick ${automation.tick} adjusted street value from rumor heat and instability.`
+  };
+}
+
+export function createMarketAutomationSnapshot(baseAssets: MarketAsset[], previous?: MarketAutomationSnapshot | null): MarketAutomationSnapshot {
+  const previousTick = previous?.tick ?? 0;
+  const tick = previousTick + 1;
+  const overrides: MarketAutomationSnapshot["overrides"] = {};
+
+  for (const asset of baseAssets) {
+    const seed = symbolSeed(asset.symbol);
+    const old = previous?.overrides[asset.symbol];
+    const oldPrice = old?.price ?? asset.price;
+    const heat = clamp(asset.volume / 120_000_000, 0.05, 1.85);
+    const sentimentDrift = asset.signal === "BUY" ? 0.32 : asset.signal === "SHORT" ? -0.32 : 0;
+    const wave = Math.sin((tick + seed) / 2.7) * 0.72 + Math.cos((tick * 1.7 + seed) / 5.5) * 0.36;
+    const rawMove = clamp(wave * heat + sentimentDrift + asset.change * 0.045, -2.8, 2.8);
+    const price = Number(clamp(oldPrice * (1 + rawMove / 100), 1, 9999).toFixed(2));
+    const change = Number(clamp(asset.change * 0.58 + rawMove * 2.2, -18, 18).toFixed(2));
+    const volumePulse = 1 + Math.abs(rawMove) / 12 + ((seed + tick) % 7) / 100;
+    const volume = Math.round(asset.volume * volumePulse);
+    const volatility = clamp(Math.round(asset.volatility * 0.82 + Math.abs(change) * 3.5 + heat * 8), 12, 99);
+    const baseChart = old?.chart ?? asset.chart;
+    const chart = [...baseChart.slice(-8), { t: `T+${tick}`, value: price }];
+
+    overrides[asset.symbol] = { price, change, volume, volatility, chart };
+  }
+
+  return {
+    generatedAt: new Date().toISOString(),
+    tick,
+    overrides
+  };
+}
+
+export function getLiveBaseAssets(automation?: MarketAutomationSnapshot | null): MarketAsset[] {
   const signals = redditBySymbol();
   const knownSymbols = new Set(assets.map((asset) => asset.symbol));
   const merged = assets.map((asset) => {
@@ -194,18 +295,18 @@ export function getLiveBaseAssets(): MarketAsset[] {
       return true;
     });
 
-  return [...merged, ...autoListed];
+  return [...merged, ...autoListed].map((asset) => withAutomation(asset, automation));
 }
 
 export function customStockToAsset(stock: CustomStock): MarketAsset {
   const price = clamp(Number(stock.price) || 25, 1, 9999);
-  const symbolSeed = normalizeSymbol(stock.symbol);
-  const seed = [...symbolSeed].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  const normalizedSymbol = normalizeSymbol(stock.symbol);
+  const seed = symbolSeed(normalizedSymbol);
   const change = Number((((seed % 13) - 5) / 2).toFixed(2));
   const accent = change >= 0 ? "#93b7d8" : "#d71920";
 
   return {
-    symbol: symbolSeed,
+    symbol: normalizedSymbol,
     name: stock.name,
     category: "Character",
     price,
@@ -217,33 +318,36 @@ export function customStockToAsset(stock: CustomStock): MarketAsset {
     signal: signalFromChange(change),
     faction: stock.faction,
     accent,
-    image: "/images/fighter-generic.svg",
+    image: customListingImages[seed % customListingImages.length],
     quote: "User-listed underground asset. Street value is set at listing and trades inside this local crew basket.",
     chart: chartFromSignal(price, change)
   };
 }
 
-export function getTradableAssets(account?: Account | null): MarketAsset[] {
-  const base = getLiveBaseAssets();
+export function getTradableAssets(account?: Account | null, automation?: MarketAutomationSnapshot | null): MarketAsset[] {
+  const base = getLiveBaseAssets(automation);
   const custom = account?.customStocks ?? [];
   const symbols = new Set(base.map((asset) => asset.symbol));
 
   return [
     ...base,
-    ...custom.map(customStockToAsset).filter((asset) => {
-      if (symbols.has(asset.symbol)) return false;
-      symbols.add(asset.symbol);
-      return true;
-    })
+    ...custom
+      .map(customStockToAsset)
+      .map((asset) => withAutomation(asset, automation))
+      .filter((asset) => {
+        if (symbols.has(asset.symbol)) return false;
+        symbols.add(asset.symbol);
+        return true;
+      })
   ];
 }
 
-export function findTradableAsset(symbol: string, account?: Account | null) {
-  return getTradableAssets(account).find((asset) => asset.symbol === symbol);
+export function findTradableAsset(symbol: string, account?: Account | null, automation?: MarketAutomationSnapshot | null) {
+  return getTradableAssets(account, automation).find((asset) => asset.symbol === symbol);
 }
 
-export function getTickerTape() {
-  const live = getLiveBaseAssets();
+export function getTickerTape(automation?: MarketAutomationSnapshot | null) {
+  const live = getLiveBaseAssets(automation);
   return [...live, ...live.slice(0, 8)].map((asset) => ({
     symbol: asset.symbol,
     price: asset.price,

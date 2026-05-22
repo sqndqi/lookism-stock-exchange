@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560">
+  <rect width="420" height="560" fill="#061018"/>
+  <path d="M47 72h326v424H47z" fill="none" stroke="#38bdf8" stroke-opacity=".38" stroke-width="4"/>
+  <path d="M0 250h420M0 284h420" stroke="#38bdf8" stroke-opacity=".16"/>
+  <ellipse cx="214" cy="179" rx="73" ry="84" fill="#e2e8f0"/>
+  <path d="M130 168c33-86 138-82 168 0-56-25-111-24-168 0Z" fill="#121212"/>
+  <path d="M101 545c16-139 52-218 113-218s99 79 117 218Z" fill="#05070b"/>
+  <path d="M135 351h158l36 194H100Z" fill="#0f2433"/>
+  <path d="M150 219h130" stroke="#38bdf8" stroke-width="7"/>
+  <text x="24" y="82" fill="#e0f2fe" font-family="Arial Black, Impact, sans-serif" font-size="62">JOHAN</text>
+  <text x="28" y="124" fill="#38bdf8" font-family="monospace" font-size="20">COPY GENIUS</text>
+</svg>

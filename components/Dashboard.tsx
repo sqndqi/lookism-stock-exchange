@@ -1,12 +1,16 @@
+"use client";
+
 import { marketPulse } from "@/lib/market-data";
 import { getLiveBaseAssets, redditMarketMeta } from "@/lib/live-market";
+import { useMarketAutomation } from "@/lib/use-market-automation";
 import { formatCurrency, signedPercent } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StockCard } from "@/components/StockCard";
 import { MarketChart } from "@/components/MarketChart";
 
 export function Dashboard() {
-  const assets = getLiveBaseAssets();
+  const automation = useMarketAutomation();
+  const assets = getLiveBaseAssets(automation);
   const lead = assets.find((asset) => asset.symbol === "JMS") ?? assets[0];
 
   return (
@@ -17,7 +21,7 @@ export function Dashboard() {
           <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Seoul Underground Exchange</h2>
         </div>
         <p className="max-w-xl text-slate-400">
-          Street value, fight power, rumor heat, crew influence, and instability stay separated so this reads like Lookism, not Wall Street.
+          Street value, fight power, rumor heat, crew influence, and instability now auto-tick from the local rumor engine.
         </p>
       </div>
 
@@ -40,6 +44,7 @@ export function Dashboard() {
             <CardTitle>Generation War Index</CardTitle>
             <p className="font-mono text-xs uppercase tracking-[0.22em] text-slate-500">
               {lead.symbol} composite / {redditMarketMeta.postsScanned} posts scanned
+              {automation ? ` / live tick ${automation.tick}` : ""}
             </p>
           </CardHeader>
           <CardContent>

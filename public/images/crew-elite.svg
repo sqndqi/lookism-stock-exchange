@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560">
+  <rect width="420" height="560" fill="#050505"/>
+  <path d="M51 66h318v429H51z" fill="#111" stroke="#f8fafc" stroke-opacity=".5" stroke-width="5"/>
+  <path d="M210 126 316 406H104Z" fill="none" stroke="#ef4444" stroke-opacity=".62" stroke-width="10"/>
+  <circle cx="210" cy="292" r="68" fill="none" stroke="#f8fafc" stroke-opacity=".32" stroke-width="9"/>
+  <text x="45" y="103" fill="#fff" font-family="Arial Black, Impact, sans-serif" font-size="62">ELITE</text>
+  <text x="58" y="524" fill="#ef4444" font-family="monospace" font-size="20">OLD GENERATION RISK</text>
+</svg>

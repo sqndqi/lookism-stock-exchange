@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560">
+  <rect width="420" height="560" fill="#0b0f18"/>
+  <path d="M33 83h354M33 476h354" stroke="#a5b4fc" stroke-opacity=".32" stroke-width="5"/>
+  <circle cx="210" cy="177" r="79" fill="#dbe1e8"/>
+  <path d="M125 168c33-79 138-76 171-3-54-27-111-26-171 3Z" fill="#101010"/>
+  <path d="M94 545c20-141 55-217 117-217s98 76 118 217Z" fill="#060812"/>
+  <path d="M128 364h168l34 181H94Z" fill="#111827"/>
+  <path d="M132 238h156" stroke="#a5b4fc" stroke-width="10" stroke-linecap="round"/>
+  <text x="30" y="83" fill="#eef2ff" font-family="Arial Black, Impact, sans-serif" font-size="78">ZACK</text>
+  <text x="34" y="124" fill="#a5b4fc" font-family="monospace" font-size="20">BOXING MASTERY</text>
+</svg>

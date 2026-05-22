@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560">
+  <rect width="420" height="560" fill="#06111f"/>
+  <path d="M0 402h420v158H0z" fill="#0b1f3a"/>
+  <path d="M58 67h304v423H58z" fill="none" stroke="#60a5fa" stroke-opacity=".38" stroke-width="4"/>
+  <ellipse cx="212" cy="175" rx="73" ry="83" fill="#e5e7eb"/>
+  <path d="M129 164c32-78 137-78 166 3-57-28-110-27-166-3Z" fill="#0d0d0d"/>
+  <path d="M98 545c18-138 53-218 114-218s97 80 116 218Z" fill="#05070b"/>
+  <path d="M128 355h168l33 190H95Z" fill="#10294a"/>
+  <text x="30" y="82" fill="#eff6ff" font-family="Arial Black, Impact, sans-serif" font-size="78">SINU</text>
+  <text x="34" y="124" fill="#60a5fa" font-family="monospace" font-size="20">BIG DEAL ROMANCE</text>
+</svg>

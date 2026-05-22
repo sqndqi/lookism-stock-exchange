@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { BriefcaseBusiness, Check, LockKeyhole, Minus, Plus, RadioTower, Wallet } from "lucide-react";
 import { findTradableAsset, getTradableAssets, redditMarketMeta } from "@/lib/live-market";
+import { useMarketAutomation } from "@/lib/use-market-automation";
 import { formatCurrency } from "@/lib/utils";
 import type { Account, CustomStock, ShortPosition } from "@/lib/account";
 import { readAccount, STARTING_CASH, writeAccount } from "@/lib/account";
@@ -29,8 +30,9 @@ export function PortfolioSimulator() {
   const [loading, setLoading] = useState(false);
   const [listing, setListing] = useState(listingDefaults);
   const [message, setMessage] = useState("Crew basket terminal ready.");
+  const automation = useMarketAutomation();
 
-  const tradableAssets = useMemo(() => getTradableAssets(account), [account]);
+  const tradableAssets = useMemo(() => getTradableAssets(account, automation), [account, automation]);
   const holdings = useMemo(() => account?.holdings ?? [], [account]);
   const cash = account?.cash ?? 0;
   const selectedAsset = tradableAssets.find((item) => item.symbol === selected) ?? tradableAssets[0];
@@ -56,9 +58,10 @@ export function PortfolioSimulator() {
     function selectStock(event: Event) {
       const symbol = (event as CustomEvent<string>).detail;
       const currentAccount = readAccount();
-      if (getTradableAssets(currentAccount).some((asset) => asset.symbol === symbol)) {
+      const currentAssets = getTradableAssets(currentAccount, automation);
+      if (currentAssets.some((asset) => asset.symbol === symbol)) {
         setSelected(symbol);
-        const asset = getTradableAssets(currentAccount).find((item) => item.symbol === symbol);
+        const asset = currentAssets.find((item) => item.symbol === symbol);
         setMessage(`${asset?.name ?? symbol} loaded into the crew basket order ticket.`);
       }
     }
@@ -74,7 +77,7 @@ export function PortfolioSimulator() {
       window.removeEventListener("ptj-select-stock", selectStock);
       window.removeEventListener("ptj-account-updated", accountUpdated);
     };
-  }, []);
+  }, [automation]);
 
   useEffect(() => {
     if (selectedAsset) return;
@@ -122,7 +125,7 @@ export function PortfolioSimulator() {
   function sell(symbol: string, ratio: number) {
     if (!account) return;
     const holding = account.holdings.find((item) => item.symbol === symbol);
-    const sellAsset = findTradableAsset(symbol, account);
+    const sellAsset = findTradableAsset(symbol, account, automation);
     if (!holding || !sellAsset) {
       setMessage("Drop rejected. Asset is not listed on the active crew market.");
       return;
@@ -166,7 +169,7 @@ export function PortfolioSimulator() {
     if (!account) return;
     const short = account.shorts.find((item) => item.id === id);
     if (!short || short.status !== "OPEN") return;
-    const asset = findTradableAsset(short.symbol, account);
+    const asset = findTradableAsset(short.symbol, account, automation);
     if (!asset) return;
 
     const entryValue = short.entryPrice * short.quantity;
@@ -374,7 +377,7 @@ export function PortfolioSimulator() {
               </div>
             )}
             {holdings.map((holding) => {
-              const asset = findTradableAsset(holding.symbol, account);
+                const asset = findTradableAsset(holding.symbol, account, automation);
               if (!asset) return null;
               const value = asset.price * holding.shares;
               const cost = holding.averageCost * holding.shares;
@@ -408,7 +411,7 @@ export function PortfolioSimulator() {
             <div className="mt-6 grid gap-3 border-t border-white/10 pt-5">
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-crimson">Open Drop Positions</p>
               {openShorts.map((short) => {
-                const asset = findTradableAsset(short.symbol, account);
+                const asset = findTradableAsset(short.symbol, account, automation);
                 if (!asset) return null;
                 const entryValue = short.entryPrice * short.quantity;
                 const currentValue = asset.price * short.quantity;

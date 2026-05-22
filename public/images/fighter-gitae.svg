@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560">
+  <defs><radialGradient id="r" cx=".58" cy=".32"><stop stop-color="#7f1d1d"/><stop offset=".48" stop-color="#151515"/><stop offset="1" stop-color="#030303"/></radialGradient></defs>
+  <rect width="420" height="560" fill="url(#r)"/>
+  <path d="M34 40h352v480H34z" fill="none" stroke="#ef4444" stroke-width="4" stroke-opacity=".45"/>
+  <path d="M70 105h280M70 455h280" stroke="#fff" stroke-opacity=".12"/>
+  <ellipse cx="213" cy="175" rx="76" ry="88" fill="#d6d3d1"/>
+  <path d="M126 179c21-94 143-104 177-13-66-28-121-24-177 13Z" fill="#0b0b0b"/>
+  <path d="M91 545c23-154 62-231 123-231 62 0 101 77 123 231Z" fill="#070707"/>
+  <path d="m163 330 51 73 49-73 37 215H124Z" fill="#1f1010"/>
+  <path d="M164 218h95" stroke="#b91c1c" stroke-width="9"/>
+  <text x="24" y="82" fill="#fee2e2" font-family="Arial Black, Impact, sans-serif" font-size="64">GITAE</text>
+  <text x="28" y="124" fill="#ef4444" font-family="monospace" font-size="19">GAPRYONG BLOOD</text>
+</svg>

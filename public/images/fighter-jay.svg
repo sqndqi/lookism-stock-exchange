@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560">
+  <rect width="420" height="560" fill="#0d1117"/>
+  <path d="M68 78h284v407H68z" fill="none" stroke="#f8fafc" stroke-opacity=".28" stroke-width="4"/>
+  <ellipse cx="212" cy="178" rx="72" ry="83" fill="#eef2f7"/>
+  <path d="M131 166c32-78 136-78 164 2-55-26-106-26-164-2Z" fill="#101010"/>
+  <path d="M102 545c16-136 51-218 110-218s96 82 113 218Z" fill="#05070b"/>
+  <path d="M133 354h160l33 191H96Z" fill="#172033"/>
+  <text x="29" y="82" fill="#fff" font-family="Arial Black, Impact, sans-serif" font-size="82">JAY</text>
+  <text x="33" y="124" fill="#cbd5e1" font-family="monospace" font-size="20">QUIET WHALE</text>
+</svg>

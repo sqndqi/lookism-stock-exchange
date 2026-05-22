@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560">
+  <rect width="420" height="560" fill="#07111f"/>
+  <path d="M0 410c94-64 162-68 239-31 64 31 111 24 181-14v195H0Z" fill="#0b1f3a"/>
+  <path d="M57 71h306v418H57z" fill="none" stroke="#60a5fa" stroke-opacity=".45" stroke-width="4"/>
+  <ellipse cx="210" cy="172" rx="72" ry="82" fill="#e5e7eb"/>
+  <path d="M130 162c31-74 119-77 158-5-54-21-104-20-158 5Z" fill="#0d0d0d"/>
+  <path d="M99 545c18-136 57-216 112-216s95 80 111 216Z" fill="#05070c"/>
+  <path d="M127 371h168l29 174H96Z" fill="#12335f"/>
+  <text x="31" y="81" fill="#eff6ff" font-family="Arial Black, Impact, sans-serif" font-size="74">JAKE</text>
+  <text x="34" y="122" fill="#60a5fa" font-family="monospace" font-size="20">GANGSEO LOYALTY</text>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560">
+  <rect width="420" height="560" fill="#12070a"/>
+  <path d="M45 68h330v424H45z" fill="#1f0d12" stroke="#fb7185" stroke-width="5"/>
+  <path d="M96 154h228v248H96z" fill="none" stroke="#fff" stroke-opacity=".2" stroke-width="7"/>
+  <path d="M124 194h172M124 248h172M124 302h172M124 356h172" stroke="#fb7185" stroke-opacity=".55" stroke-width="8"/>
+  <text x="39" y="103" fill="#fff1f2" font-family="Arial Black, Impact, sans-serif" font-size="48">WORKERS</text>
+  <text x="63" y="524" fill="#fb7185" font-family="monospace" font-size="20">AFFILIATE PRESSURE</text>
+</svg>
