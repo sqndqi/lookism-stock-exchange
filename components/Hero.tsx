@@ -55,7 +55,7 @@ export function Hero() {
           <div className="mt-8 grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3">
             {[
               account ? `${account.alias.toUpperCase()} / ${account.crew.toUpperCase()}` : "NEW DEALER DESK",
-              "DANIEL FEATURED",
+              "BIG DANIEL FEATURED",
               "RUMOR WIRE LIVE"
             ].map((label) => (
               <div key={label} className="ink-scratch rounded-xl border border-white/10 bg-black/35 p-4 font-mono text-xs uppercase tracking-[0.14em] text-slate-300">
@@ -92,7 +92,7 @@ export function Hero() {
               <div className="flex items-start justify-between gap-4">
                 <div className="rounded-xl border border-white/10 bg-black/55 px-4 py-3">
                   <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Featured fighter</p>
-                  <p className="mt-1 text-3xl font-black uppercase text-white">Daniel Park</p>
+                  <p className="mt-1 text-3xl font-black uppercase text-white">Big Daniel</p>
                 </div>
                 <div className="rounded-xl border border-crimson/30 bg-crimson/10 px-4 py-3 font-mono text-xs uppercase tracking-[0.18em] text-crimson">
                   WANTED

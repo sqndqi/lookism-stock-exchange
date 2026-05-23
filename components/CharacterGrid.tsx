@@ -8,10 +8,10 @@ export function CharacterGrid() {
         <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-crimson">Manhwa dossiers</p>
-            <h2 className="mt-3 font-comic text-4xl font-black uppercase leading-none text-shadow-red md:text-6xl">Rising Legends</h2>
+            <h2 className="mt-3 font-comic text-4xl font-black uppercase leading-none text-shadow-red md:text-6xl">Current Top 10</h2>
           </div>
           <p className="max-w-xl text-slate-400">
-            Mythic and legendary fighter cards with aura level, generation, mastery type, crew affiliation, current arc, and signature color pressure.
+            The board now opens with Big Daniel, James, Gun, Kitae, Tom, Seongji, Little Daniel, Goo, Johan, and Vasco before the wider supporting cast.
           </p>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">

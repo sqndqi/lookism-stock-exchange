@@ -11,7 +11,10 @@ import { MarketChart } from "@/components/MarketChart";
 export function Dashboard() {
   const automation = useMarketAutomation();
   const assets = getLiveBaseAssets(automation);
-  const lead = assets.find((asset) => asset.symbol === "JMS") ?? assets[0];
+  const lead = [...assets].sort((a, b) => b.price - a.price)[0] ?? assets[0];
+  const hypeSpikes = [...assets]
+    .sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
+    .slice(0, 6);
 
   return (
     <section id="market" className="relative z-10 mx-auto w-[min(1180px,calc(100%-32px))] py-16">
@@ -70,7 +73,7 @@ export function Dashboard() {
             <CardTitle>Biggest Hype Spikes</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {assets.slice(0, 6).map((asset) => (
+            {hypeSpikes.map((asset) => (
               <div key={asset.symbol} className="flex items-center justify-between rounded-md border border-white/10 bg-black/20 p-3">
                 <div>
                   <p className="font-semibold">{asset.name}</p>
