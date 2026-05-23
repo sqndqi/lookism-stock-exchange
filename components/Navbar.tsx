@@ -4,14 +4,27 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Bell, Moon, Music2, Search, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { readAccount, type Account } from "@/lib/account";
 
 export function Navbar() {
   const [light, setLight] = useState(false);
   const [audio, setAudio] = useState(false);
+  const [account, setAccount] = useState<Account | null>(null);
 
   useEffect(() => {
     document.body.classList.toggle("light", light);
   }, [light]);
+
+  useEffect(() => {
+    setAccount(readAccount());
+
+    function accountUpdated(event: Event) {
+      setAccount(((event as CustomEvent<Account | null>).detail ?? null));
+    }
+
+    window.addEventListener("ptj-account-updated", accountUpdated);
+    return () => window.removeEventListener("ptj-account-updated", accountUpdated);
+  }, []);
 
   useEffect(() => {
     if (!audio) return;
@@ -40,6 +53,7 @@ export function Navbar() {
           <span className="hidden text-xl font-black tracking-tight sm:block">PTJ-Stocks</span>
         </a>
         <div className="hidden items-center gap-5 text-xs font-bold uppercase tracking-[0.14em] text-slate-300 lg:flex">
+          <a className="transition hover:text-cyanline" href="#top">Landing</a>
           <a className="transition hover:text-cyanline" href="#intel">Intel</a>
           <a className="transition hover:text-cyanline" href="#market">Market</a>
           <a className="transition hover:text-cyanline" href="#characters">Characters</a>
@@ -57,7 +71,7 @@ export function Navbar() {
             {light ? <Moon size={16} /> : <Sun size={16} />}
           </Button>
           <Button asChild size="sm" className="hidden sm:inline-flex">
-            <Link href="/login">Account</Link>
+            <Link href={account ? "/#portfolio" : "/login"}>{account ? "Crew Basket" : "Account"}</Link>
           </Button>
         </div>
       </nav>

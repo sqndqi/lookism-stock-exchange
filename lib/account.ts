@@ -1,6 +1,17 @@
 export const STARTING_CASH = 1000;
 export const ACCOUNT_KEY = "ptj-account";
 
+const crewAliases: Record<string, string> = {
+  "J High School": "J High",
+  "J High Alliance": "J High",
+  Allied: "Allied",
+  "Big Deal": "Big Deal",
+  Workers: "Workers",
+  Hostel: "Hostel",
+  "White Tiger": "White Tiger",
+  "God Dog": "God Dog"
+};
+
 export type Holding = {
   symbol: string;
   shares: number;
@@ -46,10 +57,15 @@ export type Account = {
   createdAt: string;
 };
 
+function normalizeCrew(crew?: string) {
+  if (!crew) return "J High";
+  return crewAliases[crew] ?? crew;
+}
+
 export function createAccount(alias: string, crew: string): Account {
   return {
     alias,
-    crew,
+    crew: normalizeCrew(crew),
     cash: STARTING_CASH,
     holdings: [],
     customStocks: [],
@@ -63,7 +79,7 @@ export function createAccount(alias: string, crew: string): Account {
 function normalizeAccount(account: Partial<Account>): Account {
   return {
     alias: account.alias || "dealer",
-    crew: account.crew || "J High",
+    crew: normalizeCrew(account.crew),
     cash: Number.isFinite(account.cash) ? Number(account.cash) : STARTING_CASH,
     holdings: Array.isArray(account.holdings) ? account.holdings : [],
     customStocks: Array.isArray(account.customStocks) ? account.customStocks : [],
@@ -93,4 +109,12 @@ export function writeAccount(account: Account) {
   window.localStorage.setItem("ptj-session", "active");
   window.localStorage.setItem("ptj-profile", JSON.stringify({ alias: account.alias, crew: account.crew }));
   window.dispatchEvent(new CustomEvent("ptj-account-updated", { detail: account }));
+}
+
+export function clearAccount() {
+  window.localStorage.removeItem(ACCOUNT_KEY);
+  window.localStorage.removeItem("ptj-session");
+  window.localStorage.removeItem("ptj-profile");
+  window.localStorage.removeItem("ptj-auto-market-v1");
+  window.dispatchEvent(new CustomEvent("ptj-account-updated", { detail: null }));
 }

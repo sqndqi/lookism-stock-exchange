@@ -39,11 +39,11 @@ export function StockCard({ asset, index }: { asset: MarketAsset; index: number 
           width={420}
           height={560}
           aria-hidden
-          className="absolute right-[-36px] top-3 h-60 w-44 object-cover opacity-[0.18] grayscale transition duration-300 group-hover:opacity-[0.30]"
+          className="absolute right-[-18px] top-2 h-64 w-48 object-cover opacity-[0.38] transition duration-300 group-hover:opacity-[0.55]"
         />
         <div className="absolute inset-x-0 top-0 h-1" style={{ background: asset.accent }} />
         <div className="relative z-10 flex items-start gap-4">
-          <Image src={assetPath(asset.image)} alt={`${asset.name} stock image`} width={420} height={560} className="h-28 w-24 rounded-xl border border-white/10 bg-black object-cover grayscale" />
+          <Image src={assetPath(asset.image)} alt={`${asset.name} stock image`} width={420} height={560} className="h-28 w-24 rounded-xl border border-white/10 bg-black object-cover" />
           <div className="min-w-0 flex-1">
             <Badge className="border-white/10 bg-white/5 text-slate-300">{asset.category === "Faction" ? "CREW" : asset.category === "Holding" ? "NETWORK" : "FIGHTER"}</Badge>
             <h3 className="mt-3 font-comic text-2xl font-black uppercase leading-none tracking-tight">{asset.name}</h3>

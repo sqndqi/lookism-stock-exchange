@@ -1,13 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 560">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1017"/><stop offset=".56" stop-color="#111827"/><stop offset="1" stop-color="#7dd3fc"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-  <rect width="420" height="560" fill="url(#g)"/>
-  <path d="M35 63h350M48 494h324M0 180h420M0 387h420" stroke="#fff" stroke-opacity=".08"/>
-  <path d="M76 516 344 44" stroke="#7dd3fc" stroke-opacity=".24" stroke-width="5"/>
-  <ellipse cx="215" cy="184" rx="70" ry="82" fill="#dfe7ef"/>
-  <path d="M137 173c28-79 129-78 153-20-29-24-99-24-153 20Z" fill="#090b0f"/>
-  <path d="M104 545c14-135 50-217 111-217s100 82 113 217Z" fill="#05070b"/>
-  <path d="M137 351c40 39 113 39 154 0l28 194H111Z" fill="#111827"/>
-  <path d="M163 214h105" stroke="#7dd3fc" stroke-width="8" stroke-linecap="round" filter="url(#glow)"/>
-  <text x="28" y="73" fill="#f8fafc" font-family="Arial Black, Impact, sans-serif" font-size="58">DANIEL</text>
-  <text x="30" y="116" fill="#7dd3fc" font-family="monospace" font-size="20">UI BODY ANOMALY</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 1200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#13090b"/>
+      <stop offset=".52" stop-color="#2b1115"/>
+      <stop offset="1" stop-color="#070709"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".12" r=".95">
+      <stop offset="0" stop-color="#ffb1b1" stop-opacity=".46"/>
+      <stop offset=".44" stop-color="#8d2936" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff5f6"/>
+      <stop offset=".45" stop-color="#f4d7dd"/>
+      <stop offset="1" stop-color="#e4bec5"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffd9cf"/>
+      <stop offset="1" stop-color="#f2b8a9"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0c0d12"/>
+      <stop offset="1" stop-color="#27212a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="700" height="1200" fill="url(#bg)"/>
+  <rect width="700" height="1200" fill="url(#glow)"/>
+  <path d="M0 959c151-71 286-91 407-49 78 27 175 29 293 2v288H0Z" fill="#09090b"/>
+  <g opacity=".5">
+    <circle cx="113" cy="412" r="4" fill="#ff8b96"/>
+    <circle cx="132" cy="442" r="2" fill="#ff8b96"/>
+    <circle cx="568" cy="367" r="4" fill="#ff8b96"/>
+    <circle cx="589" cy="387" r="2" fill="#ff8b96"/>
+    <circle cx="554" cy="423" r="3" fill="#ff8b96"/>
+  </g>
+
+  <g transform="translate(99 96)">
+    <path d="M229 100c84 0 124 65 115 147-8 78-54 134-116 134-63 0-109-56-117-134-8-82 34-147 118-147Z" fill="url(#skin)"/>
+    <path d="M140 245c20 37 54 54 88 54 41 0 70-16 95-54-25 61-61 93-97 93-35 0-69-32-86-93Z" fill="#ebb1a6" opacity=".55"/>
+    <path d="M119 211c13-105 88-155 181-149 51 3 96 33 116 89-32-19-57-29-72-31-21-2-46-2-75-1-26 1-56 16-93 48Z" fill="url(#hair)"/>
+    <path d="M180 94c73-39 204-4 224 121-26-58-54-90-89-104-39-15-87-17-135-17Z" fill="#19161c" opacity=".58"/>
+    <path d="M144 113c47-57 115-78 196-56 41 12 70 38 90 79-41-32-82-46-123-46-71 0-124 6-163 23Z" fill="#0d0e13"/>
+    <path d="M250 95c34 7 61 22 81 41-32-8-74-2-126 6 12-25 27-40 45-47Z" fill="#4e3c45" opacity=".55"/>
+    <path d="M258 101c-17 7-39 29-64 73-23 39-48 46-74 43 21-14 35-29 47-49 18-31 36-52 53-65 11-2 23-3 38-2Z" fill="#111216"/>
+    <path d="M262 97c45 3 89 24 131 75 17 20 39 33 65 37-37 4-70-11-99-45-43-50-77-70-97-67Z" fill="#101115"/>
+    <path d="M145 236c14-10 29-17 46-19 28-4 39 4 48 14-27-4-58-2-94 5Z" fill="#121216"/>
+    <path d="M314 230c14-12 29-17 47-14 17 3 34 12 51 25-38-11-71-15-98-11Z" fill="#131316"/>
+    <path d="M219 256c30-13 61-12 91 2-30 14-61 15-91-2Z" fill="#d38d8b"/>
+    <path d="M181 212c12-18 26-26 42-26 16 0 29 8 39 26-26-6-53-6-81 0Z" fill="#121218"/>
+    <path d="M308 212c10-18 23-26 39-26 16 0 31 9 45 26-30-6-58-6-84 0Z" fill="#121218"/>
+    <path d="M243 347c21 17 49 25 84 25 37 0 67-10 92-31-20 48-55 72-102 72-39 0-65-21-74-66Z" fill="#f0b7aa" opacity=".72"/>
+    <path d="M233 387c-6 67-17 111-32 131-19 26-30 79-35 158l-13 224h-71l12-289c6-86 27-143 60-173 18-15 44-32 79-51Z" fill="url(#skin)"/>
+    <path d="M398 383c35 18 64 39 83 61 29 34 46 90 50 170l10 286h-71l-12-222c-4-85-16-139-33-162-15-22-27-68-35-133Z" fill="url(#skin)"/>
+    <path d="M155 457c36-20 74-33 108-40l13 108-13 351H77l8-242c3-74 23-131 70-177Z" fill="url(#shirt)"/>
+    <path d="M389 418c41 10 78 24 113 43 43 47 62 103 68 173l10 242H389V418Z" fill="url(#shirt)"/>
+    <path d="M256 417h133l18 458H228Z" fill="url(#shirt)"/>
+    <path d="M170 561c53-23 118-36 196-38-73 14-136 35-188 63Z" fill="#dbb4ba" opacity=".72"/>
+    <path d="M387 579c44 10 88 28 133 56-39-13-82-25-128-31Z" fill="#dbb4ba" opacity=".72"/>
+    <path d="M258 634c21 30 39 67 54 113 17 54 30 83 40 88-25 4-46-6-57-29-7-14-23-70-37-172Z" fill="#debbc1" opacity=".62"/>
+    <path d="M337 632c31 47 55 117 72 208-23-41-44-86-62-137-6-18-9-42-10-71Z" fill="#debbc1" opacity=".62"/>
+    <path d="M149 444c38-12 90-17 156-17 85 0 139 4 163 16-33 11-88 18-163 18-70 0-122-5-156-17Z" fill="#fff7f8" opacity=".74"/>
+    <path d="M227 874h183l7 119H225Z" fill="#14151a"/>
+    <path d="M121 872h88l9 122h-92Z" fill="#17181e"/>
+    <path d="M423 871h82l18 122h-96Z" fill="#17181e"/>
+    <path d="M100 900c0 42-14 75-40 96-18 15-34 23-48 24 5-66 18-111 39-136 13-15 29-20 49-17Z" fill="url(#skin)"/>
+    <path d="M489 900c20-3 36 2 49 17 21 25 34 70 39 136-14-1-30-9-48-24-26-21-40-54-40-96Z" fill="url(#skin)"/>
+    <path d="M216 1017h215" stroke="#0f1015" stroke-opacity=".45" stroke-width="5"/>
+  </g>
+
+  <text x="48" y="89" fill="#fff0f1" font-family="Arial Black, Impact, sans-serif" font-size="92">DANIEL</text>
+  <text x="52" y="132" fill="#ffb2be" font-family="monospace" font-size="24">ALTERNATIVE BODY</text>
 </svg>

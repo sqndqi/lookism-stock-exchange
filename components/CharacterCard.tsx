@@ -46,10 +46,10 @@ export function CharacterCard({ character, index }: { character: Character; inde
         width={420}
         height={560}
         aria-hidden
-        className="absolute inset-0 h-full w-full scale-110 object-cover object-center opacity-[0.18] grayscale transition duration-300 group-hover:scale-105 group-hover:opacity-[0.28]"
+        className="absolute inset-0 h-full w-full scale-[1.03] object-cover object-top opacity-[0.92] transition duration-300 group-hover:scale-105"
       />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_18%,rgba(215,25,32,.24),transparent_28%),linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.82)_64%,rgba(0,0,0,.94))]" />
-      <div className="absolute -right-16 top-12 h-52 w-52 rounded-full blur-3xl opacity-20" style={{ background: character.signatureColor }} />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_12%,rgba(215,25,32,.18),transparent_24%),linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.48)_52%,rgba(0,0,0,.88)_78%,rgba(0,0,0,.97))]" />
+      <div className="absolute -right-12 top-8 h-44 w-44 rounded-full blur-3xl opacity-30" style={{ background: character.signatureColor }} />
       <div className="absolute inset-x-0 top-0 h-1.5" style={{ background: character.signatureColor }} />
       <div className="relative z-10 flex items-start justify-between">
         <div className="rounded-xl border border-white/10 bg-black/55 px-3 py-2 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-slate-300">
@@ -59,7 +59,7 @@ export function CharacterCard({ character, index }: { character: Character; inde
           {initials}
         </div>
       </div>
-      <div className="relative z-10 mt-20 flex items-center justify-between">
+      <div className="relative z-10 mt-44 flex items-center justify-between">
         <span className="rounded-full border border-white/10 bg-black/55 px-3 py-1 font-mono text-xs uppercase tracking-[0.14em] text-ice">
           {character.rarity}
         </span>

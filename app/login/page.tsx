@@ -4,25 +4,23 @@ import { FormEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Check, Shield } from "lucide-react";
+import { ArrowLeft, Check, RotateCcw, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { assetPath } from "@/lib/site-path";
-import { createAccount, readAccount, STARTING_CASH, writeAccount } from "@/lib/account";
+import { clearAccount, createAccount, readAccount, STARTING_CASH, writeAccount } from "@/lib/account";
 
 export default function LoginPage() {
   const router = useRouter();
   const [alias, setAlias] = useState("dealer");
   const [crew, setCrew] = useState("J High");
-  const [ready, setReady] = useState(false);
-  const [locked, setLocked] = useState(false);
+  const [hasAccount, setHasAccount] = useState(false);
 
   useEffect(() => {
     const account = readAccount();
     if (account) {
       setAlias(account.alias);
       setCrew(account.crew);
-      setReady(true);
-      setLocked(true);
+      setHasAccount(true);
     }
   }, []);
 
@@ -30,16 +28,21 @@ export default function LoginPage() {
     event.preventDefault();
     const existing = readAccount();
     if (existing) {
-      setReady(true);
-      setLocked(true);
+      setHasAccount(true);
       router.push("/#portfolio");
       return;
     }
 
     writeAccount(createAccount(alias.trim() || "dealer", crew));
-    setReady(true);
-    setLocked(true);
+    setHasAccount(true);
     router.push("/#portfolio");
+  }
+
+  function reset() {
+    clearAccount();
+    setAlias("dealer");
+    setCrew("J High");
+    setHasAccount(false);
   }
 
   return (
@@ -66,10 +69,10 @@ export default function LoginPage() {
           <div className="mb-8 flex items-center justify-between gap-4 border-b border-white/10 pb-5">
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Status</p>
-              <p className="mt-1 text-3xl font-black uppercase">{ready ? "Account active" : "Locked"}</p>
+              <p className="mt-1 text-3xl font-black uppercase">{hasAccount ? "Desk active" : "New desk"}</p>
             </div>
             <div className="grid h-14 w-14 place-items-center rounded-2xl border border-crimson/30 bg-crimson/10 text-crimson">
-              {ready ? <Check size={24} /> : <Shield size={24} />}
+              {hasAccount ? <Check size={24} /> : <Shield size={24} />}
             </div>
           </div>
 
@@ -78,7 +81,7 @@ export default function LoginPage() {
             <input
               className="mt-2 h-12 w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 text-sm outline-none transition focus:border-crimson"
               value={alias}
-              disabled={locked}
+              disabled={hasAccount}
               onChange={(event) => setAlias(event.target.value)}
             />
           </label>
@@ -88,16 +91,21 @@ export default function LoginPage() {
             <select
               className="mt-2 h-12 w-full rounded-xl border border-white/10 bg-black px-4 text-sm outline-none transition focus:border-crimson"
               value={crew}
-              disabled={locked}
+              disabled={hasAccount}
               onChange={(event) => setCrew(event.target.value)}
             >
-              {["J High School", "Big Deal", "Workers", "Hostel", "White Tiger", "God Dog"].map((item) => (
+              {["J High", "Big Deal", "Workers", "Hostel", "White Tiger", "God Dog", "Allied"].map((item) => (
                 <option key={item} value={item}>{item}</option>
               ))}
             </select>
           </label>
 
-          <Button className="mt-7 w-full" size="lg" type="submit">{locked ? "Open account" : "Create account"}</Button>
+          <Button className="mt-7 w-full" size="lg" type="submit">{hasAccount ? "Continue to crew basket" : "Create account"}</Button>
+          {hasAccount ? (
+            <Button className="mt-3 w-full" size="lg" type="button" variant="ghost" onClick={reset}>
+              <RotateCcw size={16} /> Reset local desk
+            </Button>
+          ) : null}
           <p className="mt-4 text-xs leading-6 text-slate-500">
             This account is saved in this browser. No real trading, no password, no server account.
           </p>
