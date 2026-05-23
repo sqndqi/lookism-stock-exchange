@@ -99,7 +99,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "J High",
     accent: "#7dd3fc",
-    image: "/images/fighter-daniel.svg",
+    image: "/images/fighter-daniel.png",
     quote: "Daniel moves hardest on UI, second-body, and J High rescue theories.",
     catalyst: "UI/body mystery theories and Daniel rescue speculation are the main catalyst.",
     affected: ["J High Alliance", "Allied", "Workers"],
@@ -120,7 +120,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "White Tiger",
     accent: "#e5e7eb",
-    image: "/images/fighter-gun.svg",
+    image: "/images/fighter-gun.png",
     quote: "Gun spikes whenever Yamazaki bloodline, TUI, or Goo rematch talk resurfaces.",
     catalyst: "Yamazaki/TUI debate and Goo rematch speculation drive Gun's rumor heat.",
     affected: ["White Tiger", "Goo Kim", "Daniel Park"],
@@ -139,7 +139,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "Gapryong Line",
     accent: "#f87171",
-    image: "/images/fighter-gitae.svg",
+    image: "/images/fighter-gitae.png",
     quote: "Gapryong bloodline talk keeps Gitae unstable and dangerous.",
     catalyst: "Gapryong lineage and endgame villain theories are moving the tape.",
     chart: series(492, [0, 10, 2, 18, 11, 23, 19, 16, 12])
@@ -159,7 +159,7 @@ export const assets: MarketAsset[] = [
     signal: "HOLD",
     faction: "Independent",
     accent: "#facc15",
-    image: "/images/fighter-goo.svg",
+    image: "/images/fighter-goo.png",
     quote: "Weapon genius chaos. Goo gains on rematch rumors and loses on downplay posts.",
     catalyst: "Gun rematch discourse and weapon-scaling arguments are the catalyst.",
     chart: series(500, [0, -18, 21, 4, 31, -8, 18, -4, -14])
@@ -177,7 +177,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "Big Deal",
     accent: "#60a5fa",
-    image: "/images/fighter-jake.svg",
+    image: "/images/fighter-jake.png",
     quote: "Jake gains when Big Deal loyalty, Gangseo, and Gapryong links enter the chapter talk.",
     catalyst: "Big Deal loyalty and Gapryong-family speculation are moving Jake.",
     chart: series(250, [2, 9, 8, 16, 21, 19, 28, 33, 31])
@@ -195,7 +195,7 @@ export const assets: MarketAsset[] = [
     signal: "HOLD",
     faction: "Hostel",
     accent: "#cbd5e1",
-    image: "/images/fighter-eli.svg",
+    image: "/images/fighter-eli.png",
     quote: "Eli moves on Hostel family stakes and any sign of a wild-mode return.",
     catalyst: "Hostel loyalty and family-risk discussion are the current catalyst.",
     chart: series(220, [0, -3, 4, 2, -5, -1, -6, -4, -5])
@@ -213,7 +213,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "God Dog",
     accent: "#38bdf8",
-    image: "/images/fighter-johan.svg",
+    image: "/images/fighter-johan.png",
     quote: "Johan reacts to copy genius hype, eyesight talk, and God Dog comeback rumors.",
     catalyst: "Copycat scaling and rescue speculation are moving Johan.",
     chart: series(280, [1, 8, 4, 18, 21, 17, 25, 33, 29])
@@ -231,7 +231,7 @@ export const assets: MarketAsset[] = [
     signal: "HOLD",
     faction: "Burn Knuckles",
     accent: "#38bdf8",
-    image: "/images/fighter-vasco.svg",
+    image: "/images/fighter-vasco.png",
     quote: "Vasco gets steady support whenever Burn Knuckles conviction or mastery talk returns.",
     catalyst: "Conviction and training-arc posts are carrying Vasco.",
     chart: series(176, [1, 3, 5, 4, 8, 7, 9, 12, 11])
@@ -249,7 +249,7 @@ export const assets: MarketAsset[] = [
     signal: "HOLD",
     faction: "J High",
     accent: "#a5b4fc",
-    image: "/images/fighter-zack.svg",
+    image: "/images/fighter-zack.png",
     quote: "Zack moves on boxing mastery, endurance feats, and J High comeback energy.",
     catalyst: "Boxing mastery and J High training posts are lifting Zack.",
     chart: series(162, [1, 2, 6, 5, 9, 11, 10, 15, 14])
@@ -267,7 +267,7 @@ export const assets: MarketAsset[] = [
     signal: "SHORT",
     faction: "Workers",
     accent: "#fb7185",
-    image: "/images/fighter-samuel.svg",
+    image: "/images/fighter-samuel.png",
     quote: "Samuel is pure heat mode risk: ego, Workers baggage, and betrayal chatter.",
     catalyst: "Workers baggage and heat-mode arguments are driving Samuel.",
     chart: series(270, [0, -8, -2, -15, -10, -24, -18, -28, -22])
@@ -285,7 +285,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "Gangbuk",
     accent: "#60a5fa",
-    image: "/images/crew-big-deal.svg",
+    image: "/images/crew-big-deal.png",
     quote: "Gangseo loyalty, Jake's name, and street romance keep Big Deal alive.",
     catalyst: "Gangseo loyalty and Jake-centered chapter talk support Big Deal.",
     chart: series(160, [0, 6, 9, 14, 12, 20, 19, 26, 24])
@@ -303,7 +303,7 @@ export const assets: MarketAsset[] = [
     signal: "SHORT",
     faction: "Workers",
     accent: "#fb7185",
-    image: "/images/crew-workers.svg",
+    image: "/images/crew-workers.png",
     quote: "Affiliate pressure, Eugene strategy, and betrayal risk keep Workers unstable.",
     catalyst: "Affiliate drama and Eugene strategy are driving Workers.",
     chart: series(250, [0, -8, -2, -17, -14, -22, -19, -31, -28])
@@ -321,7 +321,7 @@ export const assets: MarketAsset[] = [
     signal: "HOLD",
     faction: "Hostel",
     accent: "#94a3b8",
-    image: "/images/crew-hostel.svg",
+    image: "/images/crew-hostel.png",
     quote: "Hostel is a family-first crew asset: smaller territory, stubborn loyalty.",
     catalyst: "Family stakes and Eli-related chapter chatter are moving Hostel.",
     chart: series(135, [1, 2, 4, 3, 5, 6, 4, 8, 7])
@@ -341,7 +341,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "Legend",
     accent: "#c084fc",
-    image: "/images/fighter-james.svg",
+    image: "/images/fighter-james.png",
     quote: "James rises on legend debate, King Era lore, and speed mastery arguments.",
     catalyst: "King Era scaling and DG identity talk are moving James.",
     chart: series(510, [3, 12, 18, 24, 21, 29, 33, 41, 36])
@@ -359,7 +359,7 @@ export const assets: MarketAsset[] = [
     signal: "SHORT",
     faction: "Elite",
     accent: "#f8fafc",
-    image: "/images/crew-elite.svg",
+    image: "/images/crew-elite.png",
     quote: "Elite Network falls when betrayal risk and old-generation secrets resurface.",
     catalyst: "Betrayal risk, old-generation secrets, and Charles Choi theories are pressuring Elite.",
     chart: series(380, [0, -12, -20, -18, -33, -27, -41, -44, -43])
@@ -377,7 +377,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "White Tiger",
     accent: "#e2e8f0",
-    image: "/images/crew-white-tiger.svg",
+    image: "/images/crew-white-tiger.png",
     quote: "White Tiger moves on mercenary pressure, Tom Lee links, and Gun proximity.",
     catalyst: "Tom Lee, Gun proximity, and mercenary contracts are moving White Tiger.",
     chart: series(276, [1, 4, 8, 13, 12, 17, 21, 19, 20])
@@ -395,7 +395,7 @@ export const assets: MarketAsset[] = [
     signal: "BUY",
     faction: "J High",
     accent: "#22d3ee",
-    image: "/images/crew-j-high.svg",
+    image: "/images/crew-j-high.png",
     quote: "Daniel's circle moves on school-alliance rescues and training arc momentum.",
     catalyst: "J High rescue energy and Daniel's circle theories are moving the alliance.",
     chart: series(182, [2, 4, 8, 7, 12, 15, 13, 18, 17])
@@ -418,7 +418,7 @@ export const characterRoster = [
     masteryType: "Instinct",
     currentArc: "Second body / UI crisis",
     signatureColor: "#9be7ff",
-    image: "/images/fighter-daniel.svg"
+    image: "/images/fighter-daniel.png"
   },
   {
     name: "Gun Park",
@@ -435,7 +435,7 @@ export const characterRoster = [
     masteryType: "Endurance",
     currentArc: "TUI discourse",
     signatureColor: "#d8dee9",
-    image: "/images/fighter-gun.svg"
+    image: "/images/fighter-gun.png"
   },
   {
     name: "James Lee",
@@ -452,7 +452,7 @@ export const characterRoster = [
     masteryType: "Speed",
     currentArc: "Legend premium",
     signatureColor: "#ef233c",
-    image: "/images/fighter-james.svg"
+    image: "/images/fighter-james.png"
   },
   {
     name: "Kitae Kim",
@@ -469,7 +469,7 @@ export const characterRoster = [
     masteryType: "Power",
     currentArc: "Shadow territory",
     signatureColor: "#ef4444",
-    image: "/images/fighter-gitae.svg"
+    image: "/images/fighter-gitae.png"
   },
   {
     name: "Goo Kim",
@@ -486,7 +486,7 @@ export const characterRoster = [
     masteryType: "Technique",
     currentArc: "Weapon genius risk",
     signatureColor: "#f8fafc",
-    image: "/images/fighter-goo.svg"
+    image: "/images/fighter-goo.png"
   },
   {
     name: "Johan Seong",
@@ -503,7 +503,7 @@ export const characterRoster = [
     masteryType: "Vision",
     currentArc: "Copycat premium",
     signatureColor: "#9be7ff",
-    image: "/images/fighter-johan.svg"
+    image: "/images/fighter-johan.png"
   },
   {
     name: "Jake Kim",
@@ -520,7 +520,7 @@ export const characterRoster = [
     masteryType: "Leadership",
     currentArc: "Big Deal rebound",
     signatureColor: "#60a5fa",
-    image: "/images/fighter-jake.svg"
+    image: "/images/fighter-jake.png"
   },
   {
     name: "Samuel Seo",
@@ -537,7 +537,7 @@ export const characterRoster = [
     masteryType: "Heat mode",
     currentArc: "Ego drawdown",
     signatureColor: "#ef233c",
-    image: "/images/fighter-samuel.svg"
+    image: "/images/fighter-samuel.png"
   },
   {
     name: "Eli Jang",
@@ -554,7 +554,7 @@ export const characterRoster = [
     masteryType: "Animal instinct",
     currentArc: "Defensive base",
     signatureColor: "#d8dee9",
-    image: "/images/fighter-eli.svg"
+    image: "/images/fighter-eli.png"
   },
   {
     name: "Vasco",
@@ -571,7 +571,7 @@ export const characterRoster = [
     masteryType: "Conviction",
     currentArc: "Clean accumulation",
     signatureColor: "#9be7ff",
-    image: "/images/fighter-vasco.svg"
+    image: "/images/fighter-vasco.png"
   },
   {
     name: "Zack Lee",
@@ -588,7 +588,7 @@ export const characterRoster = [
     masteryType: "Endurance",
     currentArc: "Recovery bid",
     signatureColor: "#d8dee9",
-    image: "/images/fighter-zack.svg"
+    image: "/images/fighter-zack.png"
   },
   {
     name: "Jay Hong",
@@ -605,7 +605,7 @@ export const characterRoster = [
     masteryType: "Technique",
     currentArc: "Quiet whale",
     signatureColor: "#f8fafc",
-    image: "/images/fighter-jay.svg"
+    image: "/images/fighter-jay.png"
   }
 ];
 
@@ -749,3 +749,4 @@ export const tickerTape = [...assets, ...assets.slice(0, 6)].map((asset) => ({
   price: asset.price,
   change: asset.change
 }));
+

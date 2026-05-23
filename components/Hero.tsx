@@ -86,7 +86,7 @@ export function Hero() {
           <div className="manhwa-panel absolute inset-0 overflow-hidden rounded-3xl border border-white/10 bg-black">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(215,25,32,.28),transparent_24%),linear-gradient(160deg,rgba(255,255,255,.02),rgba(0,0,0,.08)_30%,rgba(0,0,0,.72)_72%)]" />
             <Image src={assetPath("/images/seoul-night.svg")} alt="Minimal Seoul night skyline" width={1200} height={760} priority className="absolute inset-0 h-full w-full object-cover opacity-30" />
-            <Image src={assetPath("/images/fighter-daniel.svg")} alt="Daniel Park feature render" width={900} height={1200} priority className="absolute bottom-0 right-[-24px] h-[96%] w-auto object-contain object-bottom" />
+            <Image src={assetPath("/images/fighter-daniel.png")} alt="Daniel Park feature render" width={900} height={1200} priority className="absolute bottom-0 right-[-24px] h-[96%] w-auto object-contain object-bottom" />
             <div className="absolute left-0 top-0 h-full w-full bg-gradient-to-r from-black via-black/55 to-transparent" />
             <div className="relative z-10 flex h-full flex-col justify-between p-6 md:p-7">
               <div className="flex items-start justify-between gap-4">

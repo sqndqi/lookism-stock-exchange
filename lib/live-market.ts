@@ -73,62 +73,62 @@ const factionHints: Record<string, string> = {
 };
 
 const imageHints: Record<string, string> = {
-  "Daniel Park": "/images/fighter-daniel.svg",
-  "Gun Park": "/images/fighter-gun.svg",
-  "Goo Kim": "/images/fighter-goo.svg",
-  "Johan Seong": "/images/fighter-johan.svg",
-  "Jake Kim": "/images/fighter-jake.svg",
-  "Eli Jang": "/images/fighter-eli.svg",
-  Vasco: "/images/fighter-vasco.svg",
-  "Zack Lee": "/images/fighter-zack.svg",
-  "Samuel Seo": "/images/fighter-samuel.svg",
-  "James Lee": "/images/fighter-james.svg",
-  "Kitae Kim": "/images/fighter-gitae.svg",
-  "Gitae Kim": "/images/fighter-gitae.svg",
-  "Tom Lee": "/images/fighter-tom.svg",
-  "Jay Hong": "/images/fighter-jay.svg",
-  "Vin Jin": "/images/fighter-vin.svg",
-  "Mary Kim": "/images/fighter-mary.svg",
-  "Sinu Han": "/images/fighter-sinu.svg",
-  "Seongji Yuk": "/images/fighter-seongji.svg",
-  Elite: "/images/crew-elite.svg"
+  "Daniel Park": "/images/fighter-daniel.png",
+  "Gun Park": "/images/fighter-gun.png",
+  "Goo Kim": "/images/fighter-goo.png",
+  "Johan Seong": "/images/fighter-johan.png",
+  "Jake Kim": "/images/fighter-jake.png",
+  "Eli Jang": "/images/fighter-eli.png",
+  Vasco: "/images/fighter-vasco.png",
+  "Zack Lee": "/images/fighter-zack.png",
+  "Samuel Seo": "/images/fighter-samuel.png",
+  "James Lee": "/images/fighter-james.png",
+  "Kitae Kim": "/images/fighter-gitae.png",
+  "Gitae Kim": "/images/fighter-gitae.png",
+  "Tom Lee": "/images/fighter-tom.png",
+  "Jay Hong": "/images/fighter-jay.png",
+  "Vin Jin": "/images/fighter-vin.png",
+  "Mary Kim": "/images/fighter-mary.png",
+  "Sinu Han": "/images/fighter-sinu.png",
+  "Seongji Yuk": "/images/fighter-seongji.png",
+  Elite: "/images/crew-elite.png"
 };
 
 const customListingImages = [
-  "/images/fighter-daniel.svg",
-  "/images/fighter-gun.svg",
-  "/images/fighter-goo.svg",
-  "/images/fighter-jake.svg",
-  "/images/fighter-johan.svg",
-  "/images/fighter-samuel.svg",
-  "/images/crew-workers.svg",
-  "/images/crew-big-deal.svg"
+  "/images/fighter-daniel.png",
+  "/images/fighter-gun.png",
+  "/images/fighter-goo.png",
+  "/images/fighter-jake.png",
+  "/images/fighter-johan.png",
+  "/images/fighter-samuel.png",
+  "/images/crew-workers.png",
+  "/images/crew-big-deal.png"
 ];
 
 function imageForUnknownAsset(name: string, symbol: string) {
   const pool = [
-    "/images/fighter-daniel.svg",
-    "/images/fighter-gun.svg",
-    "/images/fighter-goo.svg",
-    "/images/fighter-jake.svg",
-    "/images/fighter-johan.svg",
-    "/images/fighter-samuel.svg",
-    "/images/fighter-eli.svg",
-    "/images/fighter-vasco.svg",
-    "/images/fighter-zack.svg",
-    "/images/fighter-james.svg",
-    "/images/fighter-tom.svg",
-    "/images/fighter-jay.svg",
-    "/images/fighter-vin.svg",
-    "/images/fighter-mary.svg",
-    "/images/fighter-sinu.svg",
-    "/images/fighter-seongji.svg",
-    "/images/crew-big-deal.svg",
-    "/images/crew-workers.svg",
-    "/images/crew-hostel.svg",
-    "/images/crew-white-tiger.svg",
-    "/images/crew-j-high.svg",
-    "/images/crew-elite.svg"
+    "/images/fighter-daniel.png",
+    "/images/fighter-gun.png",
+    "/images/fighter-goo.png",
+    "/images/fighter-jake.png",
+    "/images/fighter-johan.png",
+    "/images/fighter-samuel.png",
+    "/images/fighter-eli.png",
+    "/images/fighter-vasco.png",
+    "/images/fighter-zack.png",
+    "/images/fighter-james.png",
+    "/images/fighter-tom.png",
+    "/images/fighter-jay.png",
+    "/images/fighter-vin.png",
+    "/images/fighter-mary.png",
+    "/images/fighter-sinu.png",
+    "/images/fighter-seongji.png",
+    "/images/crew-big-deal.png",
+    "/images/crew-workers.png",
+    "/images/crew-hostel.png",
+    "/images/crew-white-tiger.png",
+    "/images/crew-j-high.png",
+    "/images/crew-elite.png"
   ];
   const seed = [...`${name}${symbol}`].reduce((sum, char) => sum + char.charCodeAt(0), 0);
   return pool[seed % pool.length];
@@ -383,3 +383,4 @@ export function getTickerTape(automation?: MarketAutomationSnapshot | null) {
     change: asset.change
   }));
 }
+
