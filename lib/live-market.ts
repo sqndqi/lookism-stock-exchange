@@ -214,7 +214,11 @@ function redditBySymbol() {
 
 function applyRedditSignal(asset: MarketAsset, stock: RedditStock): MarketAsset {
   const priceMultiplier = asset.symbol === "WTJC" ? 1.08 : asset.symbol === "BDL" || asset.symbol === "HSTL" ? 0.82 : 1;
-  const price = Number((stock.price * priceMultiplier).toFixed(2));
+  const cappedChange = clamp(stock.changePercent, -12, 12);
+  const sentimentBias = clamp(stock.sentiment * 0.018, -0.045, 0.045);
+  const mentionBias = clamp(stock.mentions * 0.004, 0, 0.08);
+  const redditBias = clamp(cappedChange / 100 * 0.55 + sentimentBias + mentionBias, -0.14, 0.16);
+  const price = Number((asset.price * priceMultiplier * (1 + redditBias)).toFixed(2));
   const mentionBoost = stock.mentions * 1_250_000;
 
   return {
@@ -229,7 +233,7 @@ function applyRedditSignal(asset: MarketAsset, stock: RedditStock): MarketAsset 
     accent: accentFromTrend(stock, asset.accent),
     image: imageHints[stock.name] ?? asset.image,
     quote: loreCatalyst(stock),
-    catalyst: `${loreCatalyst(stock)} Rumor heat: ${stock.mentions}. Sentiment: ${stock.sentiment}.`,
+    catalyst: `${loreCatalyst(stock)} Rumor heat: ${stock.mentions}. Sentiment: ${stock.sentiment}. Reddit bias: ${(redditBias * 100).toFixed(1)}%.`,
     chart: chartFromSignal(price, stock.changePercent)
   };
 }
