@@ -8,6 +8,7 @@ const charactersPath = path.join(root, "data", "characters.json");
 const outputPath = path.join(root, "public", "data", "reddit-stocks.json");
 
 const subreddit = "lookismcomic";
+const sourceRefreshEnabled = process.env.NEXT_PUBLIC_ENABLE_SOURCE_REFRESH === "true" || process.env.ENABLE_SOURCE_REFRESH === "true";
 const sourceUrls = [
   `https://www.reddit.com/r/${subreddit}/hot.json?limit=50`,
   `https://www.reddit.com/r/${subreddit}/new.json?limit=50`,
@@ -99,6 +100,12 @@ async function readJson(filePath, fallback) {
 }
 
 async function fetchRedditPosts() {
+  if (!sourceRefreshEnabled) {
+    console.warn("WARN source refresh disabled; using cached/manual source fixtures.");
+    console.warn("Set NEXT_PUBLIC_ENABLE_SOURCE_REFRESH=true or ENABLE_SOURCE_REFRESH=true to attempt Reddit refresh.");
+    return [];
+  }
+
   const seen = new Set();
   const posts = [];
   const failures = [];
@@ -151,8 +158,9 @@ async function fetchRedditPosts() {
   }
 
   if (!posts.length && failures.length) {
-    console.warn("Reddit fetch returned no posts. Keeping previous market data.");
-    console.warn(failures.slice(0, 6).join("\n"));
+    console.warn("WARN Reddit refresh returned no posts; cached/manual source fixtures remain active.");
+    console.warn("WARN External adapters can be blocked by 403/rate limits. This is expected and safe.");
+    console.warn(failures.slice(0, 6).map((failure) => `WARN ${failure}`).join("\n"));
   }
 
   return posts;
@@ -238,7 +246,7 @@ async function main() {
   const posts = await fetchRedditPosts();
 
   if (!posts.length) {
-    console.log("No Reddit posts retrieved; previous market data left unchanged.");
+    console.log("Using cached/manual source fixtures; previous market data left unchanged.");
     return;
   }
 

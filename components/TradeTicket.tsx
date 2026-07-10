@@ -8,6 +8,7 @@ import type { MarketAsset } from "@/lib/market-data";
 import { cancelLimitOrder, checkLimitOrders, createLimitOrder, estimateOrder, executeTrade } from "@/lib/portfolio";
 import { formatCurrency, formatQuantity } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { featureFlags } from "@/lib/config";
 
 export function TradeTicket({
   account,
@@ -123,7 +124,7 @@ export function TradeTicket({
         ))}
       </div>
       <div className="grid grid-cols-2 gap-2">
-        {(["MARKET", "LIMIT"] as const).map((item) => (
+        {(["MARKET", "LIMIT"] as const).filter((item) => item === "MARKET" || featureFlags.enableLimitOrders).map((item) => (
           <button key={item} type="button" aria-pressed={mode === item} onClick={() => setMode(item)} className={`rounded-md border px-4 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] ${mode === item ? "border-ice/60 bg-ice/10 text-white" : "border-white/10 bg-black/30 text-slate-400"}`}>
             {item}
           </button>
@@ -171,12 +172,12 @@ export function TradeTicket({
         </div>
       ) : null}
       <div className="grid gap-2 sm:grid-cols-3">
-        <Button onClick={submit} disabled={!account || quantity <= 0}>{mode === "LIMIT" ? "Place Limit" : `${side} Now`}</Button>
+        <Button onClick={submit} disabled={!account || quantity <= 0 || (mode === "LIMIT" && !featureFlags.enableLimitOrders)}>{mode === "LIMIT" ? "Place Limit" : `${side} Now`}</Button>
         <Button variant="ghost" onClick={watch}><Star size={16} className={watched ? "fill-amber text-amber" : ""} /> {watched ? "Watching" : "Watch"}</Button>
         <Button variant="ghost" onClick={checkOrders} disabled={!account}>Check Orders</Button>
       </div>
       <p className="text-sm text-slate-300" aria-live="polite">{message}</p>
-      {account && account.limitOrders.some((order) => order.status === "OPEN") ? (
+      {featureFlags.enableLimitOrders && account && account.limitOrders.some((order) => order.status === "OPEN") ? (
         <div className="grid gap-2 border-t border-white/10 pt-4">
           <p className="terminal-label">Open local limit orders</p>
           {account.limitOrders.filter((order) => order.status === "OPEN").slice(0, 4).map((order) => (
@@ -187,7 +188,7 @@ export function TradeTicket({
           ))}
         </div>
       ) : null}
-      <p className="text-xs leading-5 text-slate-400">Fake local simulator. No real money, no gambling, no investment advice.</p>
+      <p className="text-xs leading-5 text-slate-400">Fake local simulator. No real money, no gambling, no investment advice.{featureFlags.enableLimitOrders ? "" : " Local limit orders are disabled by deployment config."}</p>
     </div>
   );
 }

@@ -23,7 +23,7 @@ Premium underground anime-finance terminal for a fictional Lookism / PTJ-inspire
 - Cosmetic achievements, XP, and progression rank names
 - API endpoints for market/assets/sources/events/seasons/indices/factions/health/snapshot
 - Data validation and image audit scripts
-- Display values use AURA simulation-credit formatting (`₳`) instead of real currency labels
+- Display values use AURA simulation-credit formatting instead of real currency labels
 
 ## Tech Stack
 
@@ -58,6 +58,33 @@ npm run update:all
 npm run check
 ```
 
+`npm run smoke` checks production routes against `SMOKE_BASE_URL` and expects a running server:
+
+```bash
+npm run build
+npm run start
+# in another terminal
+npm run smoke
+```
+
+## Configuration
+
+Copy `.env.example` when configuring a hosted deployment. All flags are optional and missing values are safe.
+
+```text
+NEXT_PUBLIC_ENABLE_DEV_DIAGNOSTICS=false
+NEXT_PUBLIC_ENABLE_DEMO_LEADERBOARD=true
+NEXT_PUBLIC_ENABLE_LIMIT_ORDERS=true
+NEXT_PUBLIC_ENABLE_SOURCE_REFRESH=false
+NEXT_PUBLIC_ENABLE_DONATION_PLACEHOLDER=false
+```
+
+- Dev diagnostics are read-only and non-sensitive. When disabled, `/dev/market` shows a safe disabled shell.
+- Demo leaderboard rows are local/demo only and can be hidden.
+- Limit orders are local-only and can be hidden by deployment config.
+- Source refresh is disabled by default; cached/manual fixtures keep the app working.
+- Donation placeholder is disabled by default. No payment integration exists.
+
 ## Fake Market Model
 
 The market is source-driven but safe by default:
@@ -70,6 +97,16 @@ The market is source-driven but safe by default:
 - `/api/snapshot` returns the generated snapshot file; `/api/market` returns the current app market summary
 
 The engine combines base price, cached Reddit-like source signals, manual catalysts, hype, volatility, confidence, and deterministic fallback movement. The app works without API keys.
+
+## Backend-Ready Architecture
+
+Current account and trading state is local-first. `lib/account.ts` owns local account behavior and `lib/stores.ts` defines the active adapter boundary:
+
+- `localAccountStore` is the current browser/localStorage adapter.
+- Future remote adapters should implement the same store contract.
+- Local mode should remain available as offline/demo fallback.
+
+The future backend plan is documented in `docs/backend-schema.md`.
 
 ## Fake Trading System
 
@@ -125,6 +162,8 @@ npm run update:all
 ```
 
 `update:sources` currently uses the existing Reddit updater and gracefully keeps cached data when fetches fail.
+
+Reddit or external source adapters may return 403/rate-limit responses. That is expected and safe. The script logs warnings and keeps cached/manual source fixtures instead of failing the build. Future official Reddit API credentials can be supplied through environment variables, but they are not required.
 
 Events live in `lib/events.ts`; current season rules live in `lib/seasons.ts`; index baskets live in `lib/indices.ts`; faction sectors are calculated in `lib/factions.ts`.
 
@@ -189,6 +228,18 @@ npm run update:market
 
 These expose static/generated simulation data. Portfolio state remains local-only.
 
+API responses use a stable envelope:
+
+```json
+{ "ok": true, "data": {}, "meta": {} }
+```
+
+Errors use:
+
+```json
+{ "ok": false, "error": { "code": "ASSET_NOT_FOUND", "message": "Asset not found" }, "meta": {} }
+```
+
 ## Diagnostics
 
 `/dev/market` is a safe diagnostics page. It shows asset/source/event/index/faction counts, engine version, generated snapshot timestamp, account schema version, missing image count, stale source count, API links, and QA commands. It does not expose secrets or destructive controls.
@@ -218,6 +269,8 @@ A future tip jar may support hosting and development only. It must never:
 - Create pay-to-win mechanics
 
 No payment integration exists in this MVP.
+
+See `docs/donations-policy.md` for the future support/tip jar safety rules.
 
 ## Roadmap
 

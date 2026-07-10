@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { apiOk } from "@/lib/api-response";
 import { getMarketState } from "@/lib/market-engine";
 
 export function GET() {
   const market = getMarketState();
-  return NextResponse.json({
+  return apiOk({
     generatedAt: market.generatedAt,
     topGainers: market.topGainers,
     topLosers: market.topLosers,
@@ -13,5 +13,5 @@ export function GET() {
     season: market.season,
     events: market.events,
     assetCount: market.assets.length
-  });
+  }, { engineVersion: market.engineVersion, marketStatus: market.marketStatus });
 }

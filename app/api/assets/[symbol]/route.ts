@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { apiError, apiOk } from "@/lib/api-response";
 import { getAssetQuote } from "@/lib/market-engine";
 import { getSourcesForAsset } from "@/lib/sources";
 
@@ -6,7 +6,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ sym
   const { symbol } = await params;
   const asset = getAssetQuote(symbol);
   if (!asset) {
-    return NextResponse.json({ error: "Asset not found" }, { status: 404 });
+    return apiError("ASSET_NOT_FOUND", "Asset not found", 404, { symbol: symbol.toUpperCase() });
   }
-  return NextResponse.json({ asset, sources: getSourcesForAsset(asset.symbol) });
+  return apiOk({ asset, sources: getSourcesForAsset(asset.symbol) }, { symbol: asset.symbol });
 }

@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+import { apiOk } from "@/lib/api-response";
 import { marketEvents } from "@/lib/events";
 
 export function GET() {
-  return NextResponse.json({ events: marketEvents });
+  return apiOk({ events: marketEvents }, { eventCount: marketEvents.length });
 }

@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { getMarketState } from "@/lib/market-engine";
 import { getSourceRecords } from "@/lib/sources";
 import { ACCOUNT_SCHEMA_VERSION } from "@/lib/account";
+import { appConfig, featureFlags } from "@/lib/config";
 import snapshot from "@/public/data/market-snapshot.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -22,7 +23,18 @@ export default function DevMarketPage() {
         <div className="mb-8">
           <p className="terminal-label text-ice">Safe diagnostics</p>
           <h1 className="mt-3 font-display text-6xl font-bold uppercase leading-none">Market Health</h1>
+          {!featureFlags.enableDevDiagnostics ? (
+            <p className="mt-3 max-w-2xl text-sm text-amber">Diagnostics are disabled by deployment config. This read-only shell stays public-safe and exposes no secrets.</p>
+          ) : null}
         </div>
+        {!featureFlags.enableDevDiagnostics ? (
+          <Card>
+            <CardHeader><CardTitle>Diagnostics Disabled</CardTitle></CardHeader>
+            <CardContent className="text-sm text-slate-300">
+              Set <code>NEXT_PUBLIC_ENABLE_DEV_DIAGNOSTICS=true</code> to show read-only diagnostics in a hosted environment.
+            </CardContent>
+          </Card>
+        ) : (
         <div className="grid gap-5 lg:grid-cols-2">
           <Card>
             <CardHeader><CardTitle>Snapshot</CardTitle></CardHeader>
@@ -36,6 +48,7 @@ export default function DevMarketPage() {
               <div><p className="terminal-label">Factions</p><p>{market.factions.length}</p></div>
               <div><p className="terminal-label">Snapshot file</p><p>{snapshot.generatedAt}</p></div>
               <div><p className="terminal-label">Account schema</p><p>v{ACCOUNT_SCHEMA_VERSION}</p></div>
+              <div><p className="terminal-label">App mode</p><p>{appConfig.mode}</p></div>
               <div><p className="terminal-label">Stale sources</p><p>{staleSources.length}</p></div>
               <div><p className="terminal-label">Missing images</p><p>{missingImages.length}</p></div>
             </CardContent>
@@ -59,6 +72,7 @@ export default function DevMarketPage() {
             </CardContent>
           </Card>
         </div>
+        )}
       </section>
       <Footer />
     </main>

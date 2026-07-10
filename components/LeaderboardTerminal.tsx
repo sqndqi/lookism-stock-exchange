@@ -5,18 +5,22 @@ import { readAccount, type Account } from "@/lib/account";
 import { getMarketState } from "@/lib/market-engine";
 import { calculatePortfolio } from "@/lib/portfolio";
 import { formatCurrency, signedPercent } from "@/lib/utils";
+import { featureFlags } from "@/lib/config";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function LeaderboardTerminal() {
   const [account, setAccount] = useState<Account | null>(null);
   const market = useMemo(() => getMarketState(account), [account]);
   const portfolio = account ? calculatePortfolio(account, market.assets) : null;
+  const localRow = { alias: account?.alias ?? "Your Desk", crew: account?.crew ?? "Unclaimed", equity: portfolio?.totalEquity ?? 100000, returnPct: portfolio?.totalReturnPct ?? 0, risk: portfolio?.riskScore ?? 0, label: "local" };
   const rows = [
-    { alias: account?.alias ?? "Your Desk", crew: account?.crew ?? "Unclaimed", equity: portfolio?.totalEquity ?? 100000, returnPct: portfolio?.totalReturnPct ?? 0, risk: portfolio?.riskScore ?? 0, label: "local" },
+    localRow,
+    ...(featureFlags.enableDemoLeaderboard ? [
     { alias: "Cheonliang Quant", crew: "Cheonliang", equity: 124880, returnPct: 24.88, risk: 71, label: "demo" },
     { alias: "Gangseo Tape", crew: "Big Deal", equity: 116420, returnPct: 16.42, risk: 58, label: "demo" },
     { alias: "White Tiger Desk", crew: "White Tiger", equity: 109730, returnPct: 9.73, risk: 64, label: "demo" },
     { alias: "Workers Arb", crew: "Workers", equity: 98440, returnPct: -1.56, risk: 86, label: "demo" }
+    ] : [])
   ].sort((a, b) => b.equity - a.equity);
 
   useEffect(() => {
@@ -33,7 +37,10 @@ export function LeaderboardTerminal() {
       <div className="mb-8">
         <p className="terminal-label text-ice">Local/demo ranking only</p>
         <h1 className="mt-3 font-display text-6xl font-bold uppercase leading-none">Desk Leaderboard</h1>
-        <p className="mt-3 max-w-2xl text-sm text-slate-400">No global users, no rewards, no real-money mechanics. Your browser desk is compared with deterministic demo desks for game feel.</p>
+        <p className="mt-3 max-w-2xl text-sm text-slate-400">
+          No global users, no rewards, no real-money mechanics.
+          {featureFlags.enableDemoLeaderboard ? " Your browser desk is compared with deterministic demo desks for game feel." : " Demo desk rows are disabled by deployment config."}
+        </p>
       </div>
       <Card>
         <CardHeader>
