@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { MarketAsset } from "@/lib/market-data";
 
 export function MarketChart({ asset, height = 190 }: { asset: MarketAsset; height?: number }) {
   const [mounted, setMounted] = useState(false);
-  const gradientId = `gradient-${asset.symbol}`;
+  const id = useId().replace(/:/g, "");
+  const gradientId = `gradient-${asset.symbol}-${id}`;
 
   useEffect(() => {
     setMounted(true);

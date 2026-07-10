@@ -37,11 +37,13 @@ export function CharacterGrid() {
 
         <div className="mb-6 grid gap-3 lg:grid-cols-[1fr_auto]">
           <label className="relative block">
+            <span className="sr-only">Search fighter assets</span>
             <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={17} />
             <input
-              className="h-12 w-full rounded-md border border-white/10 bg-black/40 pl-11 pr-4 text-sm outline-none transition focus:border-ice/60"
+              className="h-12 w-full rounded-md border border-white/10 bg-black/40 pl-11 pr-4 text-sm outline-none transition focus:border-ice/60 focus-visible:ring-2 focus-visible:ring-ice focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               placeholder="Search fighter, symbol, crew..."
               value={query}
+              aria-label="Search fighter assets"
               onChange={(event) => setQuery(event.target.value)}
             />
           </label>
@@ -52,6 +54,7 @@ export function CharacterGrid() {
                 className={`rounded-md border px-4 py-3 font-mono text-xs font-bold uppercase tracking-[0.14em] transition ${
                   filter === item ? "border-crimson/60 bg-crimson/15 text-white" : "border-white/10 bg-white/[0.035] text-slate-400 hover:border-ice/40 hover:text-white"
                 }`}
+                aria-pressed={filter === item}
                 type="button"
                 onClick={() => setFilter(item)}
               >
@@ -66,6 +69,11 @@ export function CharacterGrid() {
             <StockCard key={asset.symbol} asset={asset} index={index} />
           ))}
         </div>
+        {filtered.length === 0 ? (
+          <div className="mt-6 rounded-md border border-white/10 bg-black/35 p-6 text-sm text-slate-300">
+            No assets matched that scan. Clear the search or switch sectors to reopen the board.
+          </div>
+        ) : null}
       </div>
     </section>
   );

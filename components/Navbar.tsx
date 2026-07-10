@@ -72,8 +72,8 @@ export function Navbar() {
         </div>
         <div className="hidden items-center gap-2 sm:flex">
           <span className="status-dot rounded border border-crimson/30 bg-crimson/10 px-3 py-2 font-mono text-[0.64rem] font-bold uppercase tracking-[0.16em] text-crimson">Live</span>
-          <Button aria-label="Search" variant="ghost" size="sm"><Search size={16} /></Button>
-          <Button aria-label="Alerts" variant="ghost" size="sm"><Bell size={16} /></Button>
+          <Button aria-label="Search fighter assets" asChild variant="ghost" size="sm"><a href="#fighters"><Search size={16} /></a></Button>
+          <Button aria-label="Open intelligence alerts" asChild variant="ghost" size="sm"><a href="#intel"><Bell size={16} /></a></Button>
           <Button aria-label="Toggle ambient audio" variant="ghost" size="sm" onClick={() => setAudio((value) => !value)}>
             <Music2 size={16} className={audio ? "text-cyanline" : ""} />
           </Button>
@@ -84,11 +84,19 @@ export function Navbar() {
             <Link href={account ? "/#portfolio" : "/login"}>{account ? "Desk Open" : "Create Desk"}</Link>
           </Button>
         </div>
-        <Button className="sm:hidden" aria-label="Toggle navigation" variant="ghost" size="sm" onClick={() => setOpen((value) => !value)}>
+        <Button
+          className="sm:hidden"
+          aria-controls="mobile-market-nav"
+          aria-expanded={open}
+          aria-label={open ? "Close navigation" : "Open navigation"}
+          variant="ghost"
+          size="sm"
+          onClick={() => setOpen((value) => !value)}
+        >
           {open ? <X size={18} /> : <Menu size={18} />}
         </Button>
         {open && (
-          <div className="absolute inset-x-0 top-[calc(100%+8px)] rounded-lg border border-white/10 bg-black/95 p-3 shadow-panel backdrop-blur-xl sm:hidden">
+          <div id="mobile-market-nav" className="absolute inset-x-0 top-[calc(100%+8px)] rounded-lg border border-white/10 bg-black/95 p-3 shadow-panel backdrop-blur-xl sm:hidden">
             <div className="grid gap-1">
               {links.map(([label, href]) => (
                 <a key={href} className="rounded-md px-3 py-3 text-sm font-bold uppercase tracking-[0.12em] text-slate-200 hover:bg-white/10" href={href} onClick={() => setOpen(false)}>

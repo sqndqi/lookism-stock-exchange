@@ -29,7 +29,7 @@ export function PortfolioSimulator() {
   const [investment, setInvestment] = useState(100);
   const [loading, setLoading] = useState(false);
   const [listing, setListing] = useState(listingDefaults);
-  const [message, setMessage] = useState("Crew basket terminal ready.");
+  const [message, setMessage] = useState("Portfolio terminal ready.");
   const automation = useMarketAutomation();
 
   const tradableAssets = useMemo(() => getTradableAssets(account, automation), [account, automation]);
@@ -239,8 +239,8 @@ export function PortfolioSimulator() {
                 </div>
               </div>
               <div className="mt-6 grid gap-3">
-                <input className="h-12 rounded-md border border-white/10 bg-black/30 px-4 text-sm outline-none" value={account ? `${account.alias}@aura.exchange` : "new-desk@aura.exchange"} readOnly />
-                <input className="h-12 rounded-xl border border-white/10 bg-black/30 px-4 text-sm outline-none" value={account ? `Started with ${formatCurrency(STARTING_CASH)} demo cash` : "Create account to receive demo cash"} readOnly />
+                <input aria-label="Local desk address" className="h-12 rounded-md border border-white/10 bg-black/30 px-4 text-sm outline-none" value={account ? `${account.alias}@aura.exchange` : "new-desk@aura.exchange"} readOnly />
+                <input aria-label="Starting demo cash status" className="h-12 rounded-md border border-white/10 bg-black/30 px-4 text-sm outline-none" value={account ? `Started with ${formatCurrency(STARTING_CASH)} demo cash` : "Create account to receive demo cash"} readOnly />
                 <Button asChild>
                   <Link href="/login">
                     {account ? <Check size={17} /> : null}
@@ -259,39 +259,51 @@ export function PortfolioSimulator() {
           </CardHeader>
           <CardContent>
             <form className="grid gap-3" onSubmit={addListing}>
-              <input
-                className="h-12 rounded-xl border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson"
-                placeholder="Character or crew name"
-                value={listing.name}
-                disabled={!account}
-                onChange={(event) => setListing((current) => ({ ...current, name: event.target.value }))}
-              />
+              <label className="grid gap-2">
+                <span className="terminal-label text-[0.58rem]">Listing name</span>
+                <input
+                  className="h-12 rounded-md border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson focus-visible:ring-2 focus-visible:ring-ice focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                  placeholder="Character or crew name"
+                  value={listing.name}
+                  disabled={!account}
+                  onChange={(event) => setListing((current) => ({ ...current, name: event.target.value }))}
+                />
+              </label>
               <div className="grid grid-cols-[.7fr_1fr] gap-3">
-                <input
-                  className="h-12 rounded-xl border border-white/10 bg-black/40 px-4 text-sm uppercase outline-none transition focus:border-crimson"
-                  placeholder="Ticker"
-                  value={listing.symbol}
-                  disabled={!account}
-                  onChange={(event) => setListing((current) => ({ ...current, symbol: sanitizeTicker(event.target.value) }))}
-                />
-                <input
-                  className="h-12 rounded-xl border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson"
-                  placeholder="Crew / school"
-                  value={listing.faction}
-                  disabled={!account}
-                  onChange={(event) => setListing((current) => ({ ...current, faction: event.target.value }))}
-                />
+                <label className="grid gap-2">
+                  <span className="terminal-label text-[0.58rem]">Ticker</span>
+                  <input
+                    className="h-12 rounded-md border border-white/10 bg-black/40 px-4 text-sm uppercase outline-none transition focus:border-crimson focus-visible:ring-2 focus-visible:ring-ice focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                    placeholder="Ticker"
+                    value={listing.symbol}
+                    disabled={!account}
+                    onChange={(event) => setListing((current) => ({ ...current, symbol: sanitizeTicker(event.target.value) }))}
+                  />
+                </label>
+                <label className="grid gap-2">
+                  <span className="terminal-label text-[0.58rem]">Crew</span>
+                  <input
+                    className="h-12 rounded-md border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson focus-visible:ring-2 focus-visible:ring-ice focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                    placeholder="Crew / school"
+                    value={listing.faction}
+                    disabled={!account}
+                    onChange={(event) => setListing((current) => ({ ...current, faction: event.target.value }))}
+                  />
+                </label>
               </div>
-              <div className="grid grid-cols-[1fr_auto] gap-3">
-                <input
-                  className="h-12 rounded-xl border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson"
-                  min={1}
-                  max={9999}
-                  type="number"
-                  value={listing.price}
-                  disabled={!account}
-                  onChange={(event) => setListing((current) => ({ ...current, price: Number(event.target.value) }))}
-                />
+              <div className="grid grid-cols-[1fr_auto] items-end gap-3">
+                <label className="grid gap-2">
+                  <span className="terminal-label text-[0.58rem]">Opening price</span>
+                  <input
+                    className="h-12 rounded-md border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson focus-visible:ring-2 focus-visible:ring-ice focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                    min={1}
+                    max={9999}
+                    type="number"
+                    value={listing.price}
+                    disabled={!account}
+                    onChange={(event) => setListing((current) => ({ ...current, price: Number(event.target.value) }))}
+                  />
+                </label>
                 <Button type="submit" disabled={!account}><Plus size={17} /> List</Button>
               </div>
             </form>
@@ -300,12 +312,12 @@ export function PortfolioSimulator() {
       </div>
 
       <Card>
-        <CardHeader className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <CardHeader className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div>
             <CardTitle>Portfolio Simulator</CardTitle>
             <p className="text-sm text-slate-400">Back, drop, or short fighter and crew assets using the rumor feed plus your local listings.</p>
           </div>
-          <div className="grid grid-cols-3 gap-2 text-right">
+          <div className="grid gap-2 text-left sm:grid-cols-3 sm:text-right">
             <div className="rounded-md border border-white/10 bg-black/30 p-3">
               <p className="terminal-label text-[0.58rem]">Demo Cash</p>
               <p className="text-2xl font-black">{account ? formatCurrency(cash) : "Locked"}</p>
@@ -327,7 +339,7 @@ export function PortfolioSimulator() {
             </div>
           )}
 
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-white/10 bg-black/25 p-4">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-md border border-white/10 bg-black/25 p-4">
             <div className="flex items-center gap-3 text-sm text-slate-300">
               <RadioTower className="text-ice" size={18} />
               <span>Rumor wire sync: {redditMarketMeta.postsScanned} r/lookismcomic posts scanned</span>
@@ -337,29 +349,35 @@ export function PortfolioSimulator() {
             </span>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-[1fr_150px_auto_auto_auto]">
-            <select
-              className="h-12 rounded-xl border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson"
-              value={selectedAsset?.symbol ?? selected}
-              onChange={(event) => setSelected(event.target.value)}
-              disabled={!account}
-            >
-              {tradableAssets.map((asset) => (
-                <option key={asset.symbol} value={asset.symbol}>{asset.name} ({asset.symbol})</option>
-              ))}
-            </select>
-            <input
-              className="h-12 rounded-xl border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson"
-              min={1}
-              max={Math.max(1, Math.floor(cash))}
-              type="number"
-              value={investment}
-              disabled={!account}
-              onChange={(event) => setInvestment(Number(event.target.value))}
-            />
-            <Button onClick={buy} disabled={!account || cash <= 0 || !selectedAsset}><Plus size={17} /> Back</Button>
-            <Button onClick={() => selectedHolding && sell(selected, 0.25)} disabled={!selectedHolding} variant="ghost"><Minus size={17} /> Drop 25%</Button>
-            <Button onClick={openShort} disabled={!account || cash <= 0 || !selectedAsset} variant="ghost">Open Drop</Button>
+          <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_150px_auto_auto_auto]">
+            <label className="grid gap-2">
+              <span className="terminal-label text-[0.58rem]">Asset</span>
+              <select
+                className="h-12 rounded-md border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson focus-visible:ring-2 focus-visible:ring-ice focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                value={selectedAsset?.symbol ?? selected}
+                onChange={(event) => setSelected(event.target.value)}
+                disabled={!account}
+              >
+                {tradableAssets.map((asset) => (
+                  <option key={asset.symbol} value={asset.symbol}>{asset.name} ({asset.symbol})</option>
+                ))}
+              </select>
+            </label>
+            <label className="grid gap-2">
+              <span className="terminal-label text-[0.58rem]">Stake</span>
+              <input
+                className="h-12 rounded-md border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson focus-visible:ring-2 focus-visible:ring-ice focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                min={1}
+                max={Math.max(1, Math.floor(cash))}
+                type="number"
+                value={investment}
+                disabled={!account}
+                onChange={(event) => setInvestment(Number(event.target.value))}
+              />
+            </label>
+            <Button className="xl:self-end" onClick={buy} disabled={!account || cash <= 0 || !selectedAsset}><Plus size={17} /> Back</Button>
+            <Button className="xl:self-end" onClick={() => selectedHolding && sell(selected, 0.25)} disabled={!selectedHolding} variant="ghost"><Minus size={17} /> Drop 25%</Button>
+            <Button className="xl:self-end" onClick={openShort} disabled={!account || cash <= 0 || !selectedAsset} variant="ghost">Open Drop</Button>
           </div>
 
           {selectedAsset && (
@@ -373,7 +391,7 @@ export function PortfolioSimulator() {
             {loading && <Skeleton className="h-16" />}
             {account && holdings.length === 0 && (
               <div className="rounded-md border border-white/10 bg-black/20 p-5 text-sm text-slate-400">
-                No crew basket positions yet. Pick a fighter or crew asset and back any amount up to your demo cash balance.
+                No positions open. Select an asset, set a stake, and place a back or short order when your desk is active.
               </div>
             )}
             {holdings.map((holding) => {
@@ -390,7 +408,7 @@ export function PortfolioSimulator() {
                     </div>
                     <div>
                       <p className="font-semibold">{asset.name}</p>
-                      <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">
+                      <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-400">
                         {holding.shares.toFixed(4)} units / entry {formatCurrency(holding.averageCost)} / {asset.symbol}
                       </p>
                     </div>

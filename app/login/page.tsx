@@ -136,9 +136,10 @@ export default function LoginPage() {
           <label className="mt-6 block">
             <span className="font-mono text-xs uppercase tracking-[0.18em] text-slate-400">Dealer alias</span>
             <input
-              className="mt-2 h-12 w-full rounded-md border border-white/10 bg-white/[0.04] px-4 text-sm outline-none transition focus:border-crimson"
+              className="mt-2 h-12 w-full rounded-md border border-white/10 bg-white/[0.04] px-4 text-sm outline-none transition focus:border-crimson focus-visible:ring-2 focus-visible:ring-ice focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               value={alias}
               disabled={hasAccount}
+              aria-label="Dealer alias"
               onChange={(event) => setAlias(event.target.value)}
             />
           </label>
@@ -154,14 +155,15 @@ export default function LoginPage() {
                     type="button"
                     disabled={hasAccount}
                     onClick={() => setCrew(option.name)}
-                    className={`rounded-md border p-4 text-left transition ${
+                    aria-pressed={active}
+                    className={`rounded-md border p-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ice focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
                       active
                         ? "border-crimson/50 bg-crimson/12 shadow-[0_0_0_1px_rgba(215,25,32,.18)]"
                         : "border-white/10 bg-white/[0.03] hover:border-white/20"
                     } ${hasAccount ? "cursor-default opacity-80" : ""}`}
                   >
                     <p className="text-base font-black uppercase">{option.name}</p>
-                    <p className="mt-1 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-slate-500">{option.note}</p>
+                    <p className="mt-1 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-slate-400">{option.note}</p>
                   </button>
                 );
               })}
@@ -188,7 +190,7 @@ export default function LoginPage() {
               <RotateCcw size={16} /> Reset local desk
             </Button>
           ) : null}
-          <p className="mt-4 text-xs leading-6 text-slate-500">
+          <p className="mt-4 text-xs leading-6 text-slate-400">
             Local browser account only. No password, no server auth, no real trading.
           </p>
         </form>

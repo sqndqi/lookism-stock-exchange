@@ -9,7 +9,7 @@ export function TickerTape() {
   const tickerTape = getTickerTape(automation);
 
   return (
-    <section className="relative z-20 border-y border-white/10 bg-black/80 py-3 backdrop-blur-xl">
+    <section className="relative z-20 overflow-hidden border-y border-white/10 bg-black/80 py-3 backdrop-blur-xl">
       <div className="flex animate-ticker gap-8 whitespace-nowrap">
         {tickerTape.map((item, index) => (
           <div key={`${item.symbol}-${index}`} className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.14em]">

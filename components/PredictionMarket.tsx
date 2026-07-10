@@ -148,9 +148,10 @@ export function PredictionMarket() {
                     {contract.options.map((option) => (
                       <button
                         key={option.label}
-                        className={`w-full rounded-md border p-3 text-left transition hover:border-cyanline/50 hover:bg-cyanline/10 ${
+                        className={`w-full rounded-md border p-3 text-left transition hover:border-cyanline/50 hover:bg-cyanline/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ice focus-visible:ring-offset-2 focus-visible:ring-offset-black ${
                           selected[contract.question] === option.label ? "border-crimson/60 bg-crimson/10" : "border-white/10 bg-black/25"
                         }`}
+                        aria-pressed={selected[contract.question] === option.label}
                         type="button"
                         onClick={() => setSelected((current) => ({ ...current, [contract.question]: option.label }))}
                       >
@@ -165,16 +166,19 @@ export function PredictionMarket() {
                     ))}
                   </div>
 
-                  <div className="mt-5 grid grid-cols-[1fr_auto] gap-3">
-                    <input
-                      className="h-11 rounded-xl border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson"
-                      min={1}
-                      max={Math.max(1, Math.floor(account?.cash ?? 1))}
-                      type="number"
-                      value={stake}
-                      disabled={!account}
-                      onChange={(event) => setStakeByQuestion((current) => ({ ...current, [contract.question]: Number(event.target.value) }))}
-                    />
+                  <div className="mt-5 grid grid-cols-[1fr_auto] items-end gap-3">
+                    <label className="grid gap-2">
+                      <span className="terminal-label text-[0.58rem]">Stake</span>
+                      <input
+                        className="h-11 rounded-md border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson focus-visible:ring-2 focus-visible:ring-ice focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                        min={1}
+                        max={Math.max(1, Math.floor(account?.cash ?? 1))}
+                        type="number"
+                        value={stake}
+                        disabled={!account}
+                        onChange={(event) => setStakeByQuestion((current) => ({ ...current, [contract.question]: Number(event.target.value) }))}
+                      />
+                    </label>
                     <Button
                       onClick={() => buyFuture(contract.question)}
                       disabled={!account || !selectedOption || (account?.cash ?? 0) <= 0}
@@ -202,12 +206,12 @@ export function PredictionMarket() {
           <CardContent className="grid gap-3">
             {!account && (
               <div className="rounded-md border border-crimson/25 bg-crimson/10 p-4 text-sm text-slate-300">
-                Create an account to receive demo cash and unlock chapter predictions.
+                Create an AURA EXCHANGE desk to receive demo cash and unlock chapter predictions.
               </div>
             )}
             {account && openFutures.length === 0 && (
-              <div className="rounded-md border border-white/10 bg-black/20 p-4 text-sm text-slate-400">
-                No open predictions. Back a side above to create a paper chapter position.
+              <div className="rounded-md border border-white/10 bg-black/25 p-4 text-sm text-slate-300">
+                No open predictions. Select a side, set a stake, and quote a chapter position.
               </div>
             )}
             {openFutures.map((future) => (
