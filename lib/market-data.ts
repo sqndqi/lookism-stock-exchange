@@ -30,6 +30,16 @@ export type MarketAsset = {
   volume: number;
   power: number;
   volatility: number;
+  hype?: number;
+  risk?: number;
+  confidence?: number;
+  liquidity?: number;
+  tags?: string[];
+  related?: string[];
+  lore?: string;
+  bullCase?: string;
+  bearCase?: string;
+  sourceRefs?: string[];
   catalyst?: string;
   affected?: string[];
   signal: "BUY" | "HOLD" | "SHORT";

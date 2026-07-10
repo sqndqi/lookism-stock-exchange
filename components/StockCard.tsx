@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ArrowDownRight, ArrowUpRight, Check, Gauge, Target } from "lucide-react";
+import Link from "next/link";
+import { ArrowDownRight, ArrowUpRight, Check, Gauge, Star, Target } from "lucide-react";
 import type { MarketAsset } from "@/lib/market-data";
 import { formatCompact, formatCurrency, signedPercent } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
@@ -11,17 +12,36 @@ import { Badge } from "@/components/ui/badge";
 import { MarketChart } from "@/components/MarketChart";
 import { Button } from "@/components/ui/button";
 import { assetPath } from "@/lib/site-path";
+import { readAccount, toggleWatchlist, type Account } from "@/lib/account";
 
 export function StockCard({ asset, index }: { asset: MarketAsset; index: number }) {
   const positive = asset.change >= 0;
-  const [expanded, setExpanded] = useState(false);
   const [queued, setQueued] = useState(false);
+  const [account, setAccount] = useState<Account | null>(null);
+  const holding = account?.holdings.find((item) => item.symbol === asset.symbol);
+  const watched = account?.watchlist.includes(asset.symbol) ?? false;
+
+  useEffect(() => {
+    setAccount(readAccount());
+
+    function accountUpdated(event: Event) {
+      setAccount(((event as CustomEvent<Account | null>).detail ?? null));
+    }
+
+    window.addEventListener("ptj-account-updated", accountUpdated);
+    return () => window.removeEventListener("ptj-account-updated", accountUpdated);
+  }, []);
 
   function trade() {
     window.dispatchEvent(new CustomEvent("ptj-select-stock", { detail: asset.symbol }));
     setQueued(true);
     window.setTimeout(() => setQueued(false), 1400);
     document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function watch() {
+    const next = toggleWatchlist(asset.symbol);
+    if (next) setAccount(next);
   }
 
   return (
@@ -46,8 +66,11 @@ export function StockCard({ asset, index }: { asset: MarketAsset; index: number 
           <Image src={assetPath(asset.image)} alt={`${asset.name} stock image`} width={420} height={560} className="h-28 w-24 rounded-md border border-white/10 bg-black object-cover" />
           <div className="min-w-0 flex-1">
             <Badge className="border-white/10 bg-white/5 text-slate-300">{asset.category === "Faction" ? "CREW" : asset.category === "Holding" ? "NETWORK" : "FIGHTER"}</Badge>
-            <h3 className="mt-3 font-display text-3xl font-bold uppercase leading-none tracking-tight">{asset.name}</h3>
+            <h3 className="mt-3 font-display text-3xl font-bold uppercase leading-none tracking-tight">
+              <Link className="transition hover:text-ice" href={`/asset/${asset.symbol}`}>{asset.name}</Link>
+            </h3>
             <p className="terminal-label mt-1 text-[0.58rem]">{asset.symbol} / {asset.faction}</p>
+            {holding ? <p className="mt-2 font-mono text-xs uppercase tracking-[0.14em] text-ice">{holding.shares.toFixed(4)} owned</p> : null}
           </div>
           <div className={`rounded-md border px-3 py-2 font-mono text-xs ${positive ? "border-ice/30 bg-ice/10 text-ice" : "border-crimson/30 bg-crimson/10 text-crimson"}`}>
             {positive ? <ArrowUpRight className="mb-1" size={16} /> : <ArrowDownRight className="mb-1" size={16} />}
@@ -87,23 +110,19 @@ export function StockCard({ asset, index }: { asset: MarketAsset; index: number 
           </div>
         ) : null}
         <p className="relative z-10 mt-4 min-h-12 text-sm leading-6 text-slate-400">{asset.catalyst ?? asset.quote}</p>
-        {expanded && (
-          <div className="relative z-10 mt-4 grid gap-2 rounded-md border border-white/10 bg-black/40 p-3 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-slate-300">
-            <div className="flex justify-between gap-4"><span>Street Call</span><strong className="text-white">{asset.signal === "BUY" ? "BACK" : asset.signal === "SHORT" ? "DROP" : "WATCH"}</strong></div>
-            <div className="flex justify-between gap-4"><span>Crew tie</span><strong className="text-white">{asset.faction}</strong></div>
-            <div className="flex justify-between gap-4"><span>Fight Power</span><strong style={{ color: asset.accent }}>{asset.power}/100</strong></div>
-            <div className="border-t border-white/10 pt-2 normal-case tracking-normal text-slate-400">{asset.catalyst ?? "Rumor wire catalyst pending."}</div>
-          </div>
-        )}
         <div className="relative z-10 mt-5 grid grid-cols-2 gap-3">
-          <Button variant="ghost" size="sm" onClick={() => setExpanded((value) => !value)}>
-            <Target size={16} /> {expanded ? "Hide" : "Details"}
+          <Button asChild variant="ghost" size="sm">
+            <Link href={`/asset/${asset.symbol}`}><Target size={16} /> Dossier</Link>
           </Button>
           <Button size="sm" onClick={trade}>
             {queued ? <Check size={16} /> : null}
             {queued ? `${asset.symbol} loaded` : "Back / Drop"}
           </Button>
         </div>
+        <Button className="relative z-10 mt-3 w-full" variant="ghost" size="sm" onClick={watch} disabled={!account}>
+          <Star size={16} className={watched ? "fill-amber text-amber" : ""} />
+          {watched ? "Watching" : "Add to Watchlist"}
+        </Button>
       </Card>
     </motion.article>
   );

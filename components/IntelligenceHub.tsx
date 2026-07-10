@@ -1,8 +1,8 @@
 import redditStocks from "@/public/data/reddit-stocks.json";
 import { wikiDossiers } from "@/lib/market-data";
-import { formatCurrency, signedPercent } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { getSourceRecords } from "@/lib/sources";
 
 type RedditStock = {
   name: string;
@@ -24,6 +24,7 @@ const citedPosts = redditMarket
   )
   .sort((a, b) => b.ups + b.comments - (a.ups + a.comments))
   .slice(0, 5);
+const sourceRecords = getSourceRecords().slice(0, 8);
 
 export function IntelligenceHub() {
   return (
@@ -42,31 +43,31 @@ export function IntelligenceHub() {
         <Card className="overflow-hidden">
           <CardHeader>
             <div className="flex flex-wrap items-center gap-3">
-              <Badge>Reddit rumors</Badge>
+              <Badge>Source signals</Badge>
               <span className="terminal-label">
-                {redditStocks.postsScanned} posts scanned
+                {sourceRecords.length} active records / {redditStocks.postsScanned} posts scanned
               </span>
             </div>
             <CardTitle className="mt-3">Rumor Catalyst Board</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {redditMarket.slice(0, 6).map((stock) => (
-              <div key={stock.name} className="rounded-md border border-white/10 bg-black/25 p-4">
+            {sourceRecords.map((source) => (
+              <div key={source.id} className="rounded-md border border-white/10 bg-black/25 p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="font-display text-3xl font-bold uppercase leading-none">{stock.name}</p>
-                    <p className="mt-1 text-sm text-slate-400">{stock.reason}</p>
+                    <p className="font-display text-3xl font-bold uppercase leading-none">{source.title}</p>
+                    <p className="mt-1 text-sm text-slate-400">{source.summary}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-mono text-sm">{formatCurrency(stock.price)} street value</p>
-                    <p className={stock.changePercent >= 0 ? "text-ice" : "text-crimson"}>
-                      {signedPercent(stock.changePercent)}
+                    <p className="font-mono text-sm">{source.type}</p>
+                    <p className={source.impact >= 0 ? "text-ice" : "text-crimson"}>
+                      Impact {source.impact}
                     </p>
                   </div>
                 </div>
                 <div className="terminal-label mt-3 grid grid-cols-2 gap-3 text-[0.58rem]">
-                  <span>Rumor Heat {stock.mentions}</span>
-                  <span>Aura Sentiment {stock.sentiment}</span>
+                  <span>Confidence {source.confidence}</span>
+                  <span>Hype {source.hype}</span>
                 </div>
               </div>
             ))}

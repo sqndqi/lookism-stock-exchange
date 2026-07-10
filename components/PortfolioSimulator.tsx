@@ -2,12 +2,13 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { BriefcaseBusiness, Check, LockKeyhole, Minus, Plus, RadioTower, Wallet } from "lucide-react";
+import { BriefcaseBusiness, Check, LockKeyhole, Minus, Plus, RadioTower, Wallet, Star } from "lucide-react";
 import { findTradableAsset, getTradableAssets, redditMarketMeta } from "@/lib/live-market";
 import { useMarketAutomation } from "@/lib/use-market-automation";
-import { formatCurrency } from "@/lib/utils";
-import type { Account, CustomStock, ShortPosition } from "@/lib/account";
-import { readAccount, STARTING_CASH, writeAccount } from "@/lib/account";
+import { formatCurrency, signedPercent } from "@/lib/utils";
+import type { Account, CustomStock } from "@/lib/account";
+import { readAccount, STARTING_CASH, toggleWatchlist, writeAccount } from "@/lib/account";
+import { calculatePortfolio, estimateOrder, executeTrade } from "@/lib/portfolio";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -26,7 +27,7 @@ function sanitizeTicker(value: string) {
 export function PortfolioSimulator() {
   const [account, setAccount] = useState<Account | null>(null);
   const [selected, setSelected] = useState("GUN");
-  const [investment, setInvestment] = useState(100);
+  const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
   const [listing, setListing] = useState(listingDefaults);
   const [message, setMessage] = useState("Portfolio terminal ready.");
@@ -37,6 +38,8 @@ export function PortfolioSimulator() {
   const cash = account?.cash ?? 0;
   const selectedAsset = tradableAssets.find((item) => item.symbol === selected) ?? tradableAssets[0];
   const selectedHolding = holdings.find((holding) => holding.symbol === selected);
+  const orderPreview = selectedAsset ? estimateOrder("BUY", quantity, selectedAsset.price) : null;
+  const portfolio = useMemo(() => account ? calculatePortfolio(account, tradableAssets) : null, [account, tradableAssets]);
   const openShorts = useMemo(() => (account?.shorts ?? []).filter((item) => item.status === "OPEN"), [account]);
   const openFutureMargin = useMemo(
     () => (account?.futures ?? []).filter((future) => future.status === "OPEN").reduce((sum, future) => sum + future.stake, 0),
@@ -62,7 +65,7 @@ export function PortfolioSimulator() {
       if (currentAssets.some((asset) => asset.symbol === symbol)) {
         setSelected(symbol);
         const asset = currentAssets.find((item) => item.symbol === symbol);
-        setMessage(`${asset?.name ?? symbol} loaded into the crew basket order ticket.`);
+        setMessage(`${asset?.name ?? symbol} loaded into the portfolio order ticket.`);
       }
     }
 
@@ -92,32 +95,11 @@ export function PortfolioSimulator() {
 
   function buy() {
     if (!account || !selectedAsset) return;
-    const amount = Math.min(Math.max(Number(investment) || 0, 0), account.cash);
-    if (amount <= 0) {
-      setMessage("Back order rejected. Increase stake or claim account demo cash.");
-      return;
-    }
-
-    const shares = amount / selectedAsset.price;
     setLoading(true);
     window.setTimeout(() => {
-      const existing = account.holdings.find((item) => item.symbol === selectedAsset.symbol);
-      const nextHoldings = (() => {
-        if (existing) {
-          const nextShares = existing.shares + shares;
-          const nextAverageCost = (existing.shares * existing.averageCost + amount) / nextShares;
-          return account.holdings.map((item) =>
-            item.symbol === selectedAsset.symbol ? { ...item, shares: nextShares, averageCost: nextAverageCost } : item
-          );
-        }
-
-        return [...account.holdings, { symbol: selectedAsset.symbol, shares, averageCost: selectedAsset.price }];
-      })();
-
-      save(
-        { ...account, cash: account.cash - amount, holdings: nextHoldings },
-        `Backed ${selectedAsset.name}: ${shares.toFixed(4)} units for ${formatCurrency(amount)}.`
-      );
+      const result = executeTrade(account, { symbol: selectedAsset.symbol, side: "BUY", quantity, reason: "portfolio ticket" }, tradableAssets);
+      if (result.ok) save(result.account, result.message);
+      else setMessage(result.message);
       setLoading(false);
     }, 300);
   }
@@ -125,44 +107,15 @@ export function PortfolioSimulator() {
   function sell(symbol: string, ratio: number) {
     if (!account) return;
     const holding = account.holdings.find((item) => item.symbol === symbol);
-    const sellAsset = findTradableAsset(symbol, account, automation);
-    if (!holding || !sellAsset) {
-      setMessage("Drop rejected. Asset is not listed on the active crew market.");
+    if (!holding) {
+      setMessage("Sell order rejected. No fake shares are held for this asset.");
       return;
     }
 
     const sharesToSell = Math.min(holding.shares, holding.shares * ratio);
-    const proceeds = sharesToSell * sellAsset.price;
-    const nextHoldings = account.holdings
-      .map((item) => (item.symbol === symbol ? { ...item, shares: item.shares - sharesToSell } : item))
-      .filter((item) => item.shares > 0.0001);
-
-    save(
-      { ...account, cash: account.cash + proceeds, holdings: nextHoldings },
-      `Dropped ${sharesToSell.toFixed(4)} ${symbol} for ${formatCurrency(proceeds)}.`
-    );
-  }
-
-  function openShort() {
-    if (!account || !selectedAsset) return;
-    const margin = Math.min(Math.max(Number(investment) || 0, 0), account.cash);
-    if (margin <= 0) {
-      setMessage("Drop order rejected. No demo cash available for margin.");
-      return;
-    }
-    const quantity = margin / selectedAsset.price;
-    const short: ShortPosition = {
-      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-      symbol: selectedAsset.symbol,
-      quantity,
-      entryPrice: selectedAsset.price,
-      openedAt: new Date().toISOString(),
-      status: "OPEN"
-    };
-    save(
-      { ...account, cash: account.cash - margin, shorts: [...account.shorts, short] },
-      `Opened Drop position on ${selectedAsset.name}: ${quantity.toFixed(4)} units at ${formatCurrency(selectedAsset.price)}.`
-    );
+    const result = executeTrade(account, { symbol, side: "SELL", quantity: sharesToSell, reason: `sell ${Math.round(ratio * 100)}%` }, tradableAssets);
+    if (result.ok) save(result.account, result.message);
+    else setMessage(result.message);
   }
 
   function closeShort(id: string) {
@@ -219,13 +172,29 @@ export function PortfolioSimulator() {
     setListing(listingDefaults);
   }
 
+  function setCashPercent(percent: number) {
+    if (!selectedAsset || !account) return;
+    const spend = account.cash * percent;
+    const feeBuffer = 1.002;
+    setQuantity(Number(Math.max(0.0001, spend / selectedAsset.price / feeBuffer).toFixed(4)));
+  }
+
+  function toggleSelectedWatchlist() {
+    if (!account || !selectedAsset) return;
+    const next = toggleWatchlist(selectedAsset.symbol);
+    if (next) {
+      setAccount(next);
+      setMessage(`${selectedAsset.symbol} ${next.watchlist.includes(selectedAsset.symbol) ? "added to" : "removed from"} watchlist.`);
+    }
+  }
+
   return (
     <section id="portfolio" className="section-wrap relative z-10 grid gap-5 py-14 lg:grid-cols-[.78fr_1.22fr]">
       <div className="grid gap-5">
         <Card className="overflow-hidden">
           <CardHeader>
             <CardTitle>Open Trading Desk</CardTitle>
-            <p className="text-sm text-slate-400">One local desk. Demo cash, holdings, short positions, listings, and prediction contracts persist in this browser.</p>
+            <p className="text-sm text-slate-400">One local desk. Simulation credits, holdings, watchlist, trade ledger, and prediction contracts persist in this browser.</p>
           </CardHeader>
           <CardContent>
             <div className="rounded-2xl border border-crimson/25 bg-crimson/10 p-5">
@@ -315,20 +284,20 @@ export function PortfolioSimulator() {
         <CardHeader className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div>
             <CardTitle>Portfolio Simulator</CardTitle>
-            <p className="text-sm text-slate-400">Back, drop, or short fighter and crew assets using the rumor feed plus your local listings.</p>
+            <p className="text-sm text-slate-400">Buy or sell fighter and crew assets with fake simulation credits using the rumor feed plus your local listings.</p>
           </div>
           <div className="grid gap-2 text-left sm:grid-cols-3 sm:text-right">
             <div className="rounded-md border border-white/10 bg-black/30 p-3">
               <p className="terminal-label text-[0.58rem]">Demo Cash</p>
-              <p className="text-2xl font-black">{account ? formatCurrency(cash) : "Locked"}</p>
+              <p className="text-2xl font-black">{account ? formatCurrency(portfolio?.cash ?? cash) : "Locked"}</p>
             </div>
             <div className="rounded-md border border-white/10 bg-black/30 p-3">
               <p className="terminal-label text-[0.58rem]">Asset Value</p>
-              <p className="text-2xl font-black">{account ? formatCurrency(holdingsValue) : "Locked"}</p>
+              <p className="text-2xl font-black">{account ? formatCurrency(portfolio?.holdingsValue ?? holdingsValue) : "Locked"}</p>
             </div>
             <div className="rounded-md border border-white/10 bg-black/30 p-3">
               <p className="terminal-label text-[0.58rem]">Desk Equity</p>
-              <p className="text-2xl font-black">{account ? formatCurrency(holdingsValue + cash) : "Locked"}</p>
+              <p className="text-2xl font-black">{account ? formatCurrency(portfolio?.totalEquity ?? holdingsValue + cash) : "Locked"}</p>
             </div>
           </div>
         </CardHeader>
@@ -364,25 +333,47 @@ export function PortfolioSimulator() {
               </select>
             </label>
             <label className="grid gap-2">
-              <span className="terminal-label text-[0.58rem]">Stake</span>
+              <span className="terminal-label text-[0.58rem]">Fake shares</span>
               <input
                 className="h-12 rounded-md border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson focus-visible:ring-2 focus-visible:ring-ice focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-                min={1}
-                max={Math.max(1, Math.floor(cash))}
+                min={0.0001}
+                step={0.0001}
                 type="number"
-                value={investment}
+                value={quantity}
                 disabled={!account}
-                onChange={(event) => setInvestment(Number(event.target.value))}
+                onChange={(event) => setQuantity(Number(event.target.value))}
               />
             </label>
             <Button className="xl:self-end" onClick={buy} disabled={!account || cash <= 0 || !selectedAsset}><Plus size={17} /> Back</Button>
             <Button className="xl:self-end" onClick={() => selectedHolding && sell(selected, 0.25)} disabled={!selectedHolding} variant="ghost"><Minus size={17} /> Drop 25%</Button>
-            <Button className="xl:self-end" onClick={openShort} disabled={!account || cash <= 0 || !selectedAsset} variant="ghost">Open Drop</Button>
+            <Button className="xl:self-end" onClick={toggleSelectedWatchlist} disabled={!account || !selectedAsset} variant="ghost"><Star size={16} /> Watch</Button>
           </div>
+
+          <div className="mt-3 flex flex-wrap gap-2">
+            {[0.1, 0.25, 0.5, 1].map((percent) => (
+              <Button key={percent} size="sm" variant="ghost" onClick={() => setCashPercent(percent)} disabled={!account || !selectedAsset}>
+                {percent === 1 ? "Max cash" : `${Math.round(percent * 100)}% cash`}
+              </Button>
+            ))}
+            {[1, 5, 10, 25].map((amount) => (
+              <Button key={amount} size="sm" variant="ghost" onClick={() => setQuantity(amount)} disabled={!account}>
+                {amount} shares
+              </Button>
+            ))}
+          </div>
+
+          {orderPreview && (
+            <div className="mt-4 grid gap-2 rounded-md border border-white/10 bg-black/25 p-4 text-sm text-slate-300 sm:grid-cols-4">
+              <span><span className="terminal-label block text-[0.58rem]">Gross</span>{formatCurrency(orderPreview.gross)}</span>
+              <span><span className="terminal-label block text-[0.58rem]">Fake fee</span>{formatCurrency(orderPreview.fee)}</span>
+              <span><span className="terminal-label block text-[0.58rem]">Debit</span>{formatCurrency(orderPreview.net)}</span>
+              <span><span className="terminal-label block text-[0.58rem]">After trade</span>{account ? formatCurrency(account.cash - orderPreview.net) : "Locked"}</span>
+            </div>
+          )}
 
           {selectedAsset && (
             <p className="mt-3 font-mono text-xs uppercase tracking-[0.16em] text-slate-500">
-              Selected: {selectedAsset.name} / {formatCurrency(selectedAsset.price)} street value / {selectedHolding ? `${selectedHolding.shares.toFixed(4)} backed` : "no backing"}
+              Selected: {selectedAsset.name} / {formatCurrency(selectedAsset.price)} street value / {selectedHolding ? `${selectedHolding.shares.toFixed(4)} fake shares held` : "no position"}
             </p>
           )}
           <p className="mt-2 text-sm text-slate-400">{message}</p>
@@ -391,7 +382,7 @@ export function PortfolioSimulator() {
             {loading && <Skeleton className="h-16" />}
             {account && holdings.length === 0 && (
               <div className="rounded-md border border-white/10 bg-black/20 p-5 text-sm text-slate-400">
-                No positions open. Select an asset, set a stake, and place a back or short order when your desk is active.
+                No positions open. Select an asset, set a fake-share quantity, and place a buy order when your desk is active.
               </div>
             )}
             {holdings.map((holding) => {
@@ -415,7 +406,7 @@ export function PortfolioSimulator() {
                   </div>
                   <div className="text-left md:text-right">
                     <p>{formatCurrency(value)}</p>
-                    <p className={`flex items-center gap-1 md:justify-end ${gain >= 0 ? "text-ice" : "text-crimson"}`}><Wallet size={14} /> {gain >= 0 ? "+" : ""}{formatCurrency(gain)}</p>
+                    <p className={`flex items-center gap-1 md:justify-end ${gain >= 0 ? "text-ice" : "text-crimson"}`}><Wallet size={14} /> {gain >= 0 ? "+" : ""}{formatCurrency(gain)} / {signedPercent(cost ? gain / cost * 100 : 0)}</p>
                     <div className="mt-2 flex gap-2 md:justify-end">
                       <Button size="sm" variant="ghost" onClick={() => sell(holding.symbol, 0.25)}>Drop 25%</Button>
                       <Button size="sm" variant="ghost" onClick={() => sell(holding.symbol, 1)}>Drop all</Button>
@@ -427,7 +418,7 @@ export function PortfolioSimulator() {
           </div>
           {account && openShorts.length > 0 && (
             <div className="mt-6 grid gap-3 border-t border-white/10 pt-5">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-crimson">Open Drop Positions</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-crimson">Legacy Drop Positions</p>
               {openShorts.map((short) => {
                 const asset = findTradableAsset(short.symbol, account, automation);
                 if (!asset) return null;
@@ -449,6 +440,18 @@ export function PortfolioSimulator() {
                   </div>
                 );
               })}
+            </div>
+          )}
+          {account && (account.trades ?? []).length > 0 && (
+            <div className="mt-6 grid gap-3 border-t border-white/10 pt-5">
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-ice">Recent Fake-Money Trades</p>
+              {(account.trades ?? []).slice(0, 5).map((trade) => (
+                <div key={trade.id} className="grid gap-2 rounded-md border border-white/10 bg-black/20 p-4 text-sm md:grid-cols-[auto_1fr_auto] md:items-center">
+                  <span className={trade.side === "BUY" ? "text-ice" : "text-crimson"}>{trade.side}</span>
+                  <span>{trade.quantity.toFixed(4)} {trade.symbol} at {formatCurrency(trade.price)}</span>
+                  <span className="font-mono text-xs text-slate-400">{formatCurrency(trade.net)} credits</span>
+                </div>
+              ))}
             </div>
           )}
         </CardContent>

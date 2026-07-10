@@ -22,7 +22,7 @@ export function PredictionMarket() {
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [stakeByQuestion, setStakeByQuestion] = useState<Record<string, number>>({});
   const [account, setAccount] = useState<Account | null>(null);
-  const [message, setMessage] = useState("Paper chapter prediction desk ready.");
+  const [message, setMessage] = useState("Scenario contract desk ready. Fake credits only.");
 
   useEffect(() => {
     setAccount(readAccount());
@@ -47,7 +47,7 @@ export function PredictionMarket() {
 
   function buyFuture(question: string) {
     if (!account) {
-      setMessage("Create an AURA EXCHANGE desk before opening chapter predictions.");
+      setMessage("Create an AURA EXCHANGE desk before opening scenario contracts.");
       return;
     }
 
@@ -61,7 +61,7 @@ export function PredictionMarket() {
 
     const stake = Math.min(Math.max(stakeByQuestion[question] || 25, 1), account.cash);
     if (stake <= 0) {
-      setMessage("No demo cash available for this chapter prediction.");
+      setMessage("No simulation credits available for this scenario contract.");
       return;
     }
 
@@ -82,7 +82,7 @@ export function PredictionMarket() {
           }
         ]
       },
-      `Backed ${selection} for ${formatCurrency(stake)}. Potential paper payout: ${formatCurrency(contractPayout(stake, option.odds))}.`
+      `Allocated ${formatCurrency(stake)} fake credits to ${selection}. Simulated payout: ${formatCurrency(contractPayout(stake, option.odds))}.`
     );
   }
 
@@ -95,7 +95,7 @@ export function PredictionMarket() {
     const futures = account.futures.map((item) => (item.id === id ? { ...item, status: "SETTLED" as const } : item));
     save(
       { ...account, cash: account.cash + proceeds, futures },
-      `Closed ${future.selection} prediction for ${formatCurrency(proceeds)} paper payout.`
+      `Settled ${future.selection} scenario for ${formatCurrency(proceeds)} fake credits.`
     );
   }
 
@@ -104,17 +104,17 @@ export function PredictionMarket() {
       <div className="section-wrap">
         <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <p className="terminal-label text-crimson">Prediction contracts</p>
-            <h2 className="mt-3 font-display text-5xl font-bold uppercase leading-none md:text-7xl">Next Chapter Odds</h2>
+            <p className="terminal-label text-crimson">Scenario contracts</p>
+            <h2 className="mt-3 font-display text-5xl font-bold uppercase leading-none md:text-7xl">Lore Forecast Desk</h2>
           </div>
           <p className="max-w-xl text-sm leading-6 text-slate-400 md:text-base">
-            Quote chapter outcomes like contracts: probability bars, pool size, closing window, catalyst, margin, and paper payout.
+            Explore fictional market expectations with simulation credits only. No real-money betting, gambling, or financial advice.
           </p>
         </div>
 
         <div className="mb-5 grid gap-3 md:grid-cols-3">
           <div className="rounded-md border border-white/10 bg-black/30 p-4">
-            <p className="terminal-label">Demo cash</p>
+            <p className="terminal-label">Simulation credits</p>
             <p className="text-3xl font-black">{account ? formatCurrency(account.cash) : "Locked"}</p>
           </div>
           <div className="rounded-md border border-white/10 bg-black/30 p-4">
@@ -187,7 +187,7 @@ export function PredictionMarket() {
                     </Button>
                   </div>
                   <p className="mt-3 font-mono text-xs uppercase tracking-[0.16em] text-slate-500">
-                    {selectedOption ? `Quoted payout ${formatCurrency(contractPayout(stake, selectedOption.odds))}` : "Select a side to quote chapter odds"}
+                    {selectedOption ? `Simulated payout ${formatCurrency(contractPayout(stake, selectedOption.odds))}` : "Select a side to quote scenario probabilities"}
                   </p>
                 </CardContent>
               </Card>
@@ -206,12 +206,12 @@ export function PredictionMarket() {
           <CardContent className="grid gap-3">
             {!account && (
               <div className="rounded-md border border-crimson/25 bg-crimson/10 p-4 text-sm text-slate-300">
-                Create an AURA EXCHANGE desk to receive demo cash and unlock chapter predictions.
+                Create an AURA EXCHANGE desk to receive simulation credits and unlock scenario contracts.
               </div>
             )}
             {account && openFutures.length === 0 && (
               <div className="rounded-md border border-white/10 bg-black/25 p-4 text-sm text-slate-300">
-                No open predictions. Select a side, set a stake, and quote a chapter position.
+                No open scenarios. Select a side, set fake-credit allocation, and quote a lore forecast.
               </div>
             )}
             {openFutures.map((future) => (
@@ -225,10 +225,10 @@ export function PredictionMarket() {
                   </div>
                   <p className="font-semibold">{future.question}</p>
                   <p className="mt-2 flex items-center gap-2 text-sm text-slate-400">
-                    <TrendingUp size={15} /> Stake {formatCurrency(future.stake)} / chapter odds {future.odds}% / potential payout {formatCurrency(contractPayout(future.stake, future.odds))}
+                    <TrendingUp size={15} /> Allocation {formatCurrency(future.stake)} / scenario probability {future.odds}% / simulated payout {formatCurrency(contractPayout(future.stake, future.odds))}
                   </p>
                 </div>
-                <Button variant="ghost" onClick={() => closeFuture(future.id)}>Settle Paper</Button>
+                <Button variant="ghost" onClick={() => closeFuture(future.id)}>Settle Scenario</Button>
               </div>
             ))}
           </CardContent>

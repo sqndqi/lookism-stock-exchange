@@ -1,0 +1,207 @@
+{
+  "generatedAt": "2026-07-10T01:35:12.842Z",
+  "source": "static assets + cached reddit signal fallback",
+  "assetCount": 20,
+  "assets": [
+    {
+      "symbol": "DAN",
+      "name": "Big Daniel",
+      "faction": "J High",
+      "price": 628.32,
+      "change": 8.62,
+      "volume": 122000000,
+      "volatility": 84,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "LDAN",
+      "name": "Little Daniel",
+      "faction": "J High",
+      "price": 395.75,
+      "change": 6.12,
+      "volume": 67000000,
+      "volatility": 73,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "GUN",
+      "name": "Gun Park",
+      "faction": "White Tiger",
+      "price": 515.26,
+      "change": -6.31,
+      "volume": 106000000,
+      "volatility": 68,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "KTAE",
+      "name": "Gitae Kim",
+      "faction": "Gapryong Line",
+      "price": 505.93,
+      "change": -1.25,
+      "volume": 101000000,
+      "volatility": 89,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "TOM",
+      "name": "Tom Lee",
+      "faction": "White Tiger",
+      "price": 477.93,
+      "change": 3.88,
+      "volume": 83000000,
+      "volatility": 58,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "SGJ",
+      "name": "Seongji Yuk",
+      "faction": "Cheonliang",
+      "price": 435.72,
+      "change": -3.25,
+      "volume": 79000000,
+      "volatility": 74,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "GOO",
+      "name": "Goo Kim",
+      "faction": "Independent",
+      "price": 348,
+      "change": -0.04,
+      "volume": 69000000,
+      "volatility": 91,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "JKE",
+      "name": "Jake Kim",
+      "faction": "Big Deal",
+      "price": 271.45,
+      "change": -0.55,
+      "volume": 54000000,
+      "volatility": 78,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "ELI",
+      "name": "Eli Jang",
+      "faction": "Hostel",
+      "price": 213.19,
+      "change": -3.25,
+      "volume": 31000000,
+      "volatility": 69,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "JHL",
+      "name": "Johan Seong",
+      "faction": "God Dog",
+      "price": 307.09,
+      "change": -3.25,
+      "volume": 49000000,
+      "volatility": 84,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "VAS",
+      "name": "Vasco",
+      "faction": "Burn Knuckles",
+      "price": 246.8,
+      "change": 5.59,
+      "volume": 33000000,
+      "volatility": 55,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "ZACK",
+      "name": "Zack Lee",
+      "faction": "J High",
+      "price": 175.16,
+      "change": -3.25,
+      "volume": 25000000,
+      "volatility": 61,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "SML",
+      "name": "Samuel Seo",
+      "faction": "Workers",
+      "price": 246.35,
+      "change": -3.25,
+      "volume": 53000000,
+      "volatility": 93,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "BDL",
+      "name": "Big Deal",
+      "faction": "Gangbuk",
+      "price": 186.25,
+      "change": 6.11,
+      "volume": 68000000,
+      "volatility": 58,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "WRK",
+      "name": "Workers / Affiliates",
+      "faction": "Workers",
+      "price": 218.52,
+      "change": -7.39,
+      "volume": 154000000,
+      "volatility": 91,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "HSTL",
+      "name": "Hostel",
+      "faction": "Hostel",
+      "price": 143.64,
+      "change": 2.18,
+      "volume": 30000000,
+      "volatility": 52,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "JMS",
+      "name": "James Lee",
+      "faction": "Legend",
+      "price": 555.39,
+      "change": 10.03,
+      "volume": 97000000,
+      "volatility": 63,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "CCH",
+      "name": "Charles Choi Network",
+      "faction": "Elite",
+      "price": 329.49,
+      "change": -11.02,
+      "volume": 183000000,
+      "volatility": 94,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "WTJC",
+      "name": "White Tiger Job Center",
+      "faction": "White Tiger",
+      "price": 299.14,
+      "change": 5.06,
+      "volume": 88000000,
+      "volatility": 62,
+      "generatedBy": "AURA deterministic snapshot v1"
+    },
+    {
+      "symbol": "JHI",
+      "name": "J High Alliance",
+      "faction": "J High",
+      "price": 201.21,
+      "change": 3.92,
+      "volume": 52000000,
+      "volatility": 67,
+      "generatedBy": "AURA deterministic snapshot v1"
+    }
+  ]
+}

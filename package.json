@@ -8,7 +8,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "update:reddit": "node scripts/update-reddit-stocks.mjs"
+    "update:reddit": "node scripts/update-reddit-stocks.mjs",
+    "update:sources": "node scripts/update-reddit-stocks.mjs",
+    "update:market": "node scripts/generate-market-snapshot.mjs",
+    "update:all": "npm run update:sources && npm run update:market",
+    "validate:data": "node scripts/validate-data.mjs",
+    "audit:images": "node scripts/audit-images.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",

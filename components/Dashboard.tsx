@@ -1,21 +1,43 @@
 "use client";
 
 import { marketPulse } from "@/lib/market-data";
-import { getLiveBaseAssets, redditMarketMeta } from "@/lib/live-market";
+import { redditMarketMeta } from "@/lib/live-market";
 import { useMarketAutomation } from "@/lib/use-market-automation";
 import { formatCompact, formatCurrency, signedPercent } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MarketChart } from "@/components/MarketChart";
+import { getMarketState } from "@/lib/market-engine";
+import { readAccount, type Account } from "@/lib/account";
+import { calculatePortfolio } from "@/lib/portfolio";
+import { useEffect, useMemo, useState } from "react";
 
 export function Dashboard() {
   const automation = useMarketAutomation();
-  const assets = getLiveBaseAssets(automation);
+  const [account, setAccount] = useState<Account | null>(null);
+  const market = useMemo(() => getMarketState(account, automation), [account, automation]);
+  const assets = market.assets;
   const lead = [...assets].sort((a, b) => b.price - a.price)[0] ?? assets[0];
   const hypeSpikes = [...assets]
-    .sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
+    .sort((a, b) => b.hype - a.hype)
     .slice(0, 6);
-  const topMovers = [...assets].sort((a, b) => b.change - a.change).slice(0, 5);
-  const stress = [...assets].sort((a, b) => b.volatility - a.volatility).slice(0, 4);
+  const topMovers = market.topGainers.slice(0, 5);
+  const stress = market.mostVolatile.slice(0, 4);
+  const portfolio = account ? calculatePortfolio(account, assets) : null;
+  const demoRankings = [
+    { alias: account?.alias ?? "Your Desk", crew: account?.crew ?? "Unclaimed", equity: portfolio?.totalEquity ?? 100000, returnPct: portfolio ? ((portfolio.totalEquity - (account?.startingCash ?? 100000)) / (account?.startingCash ?? 100000)) * 100 : 0 },
+    { alias: "Cheonliang Quant", crew: "Cheonliang", equity: 124880, returnPct: 24.88 },
+    { alias: "Gangseo Tape", crew: "Big Deal", equity: 116420, returnPct: 16.42 },
+    { alias: "White Tiger Desk", crew: "White Tiger", equity: 109730, returnPct: 9.73 }
+  ].sort((a, b) => b.equity - a.equity);
+
+  useEffect(() => {
+    setAccount(readAccount());
+    function accountUpdated(event: Event) {
+      setAccount(((event as CustomEvent<Account | null>).detail ?? null));
+    }
+    window.addEventListener("ptj-account-updated", accountUpdated);
+    return () => window.removeEventListener("ptj-account-updated", accountUpdated);
+  }, []);
 
   return (
     <section id="market" className="section-wrap relative z-10 py-14">
@@ -44,6 +66,21 @@ export function Dashboard() {
         ))}
       </div>
 
+      {portfolio ? (
+        <Card className="mt-5">
+          <CardHeader>
+            <CardTitle>Your Local Desk</CardTitle>
+            <p className="text-sm text-slate-400">Simulation credits only. Local browser portfolio, not a global ranking.</p>
+          </CardHeader>
+          <CardContent className="grid gap-3 sm:grid-cols-4">
+            <div><p className="terminal-label">Cash</p><p className="font-display text-3xl font-bold">{formatCurrency(portfolio.cash)}</p></div>
+            <div><p className="terminal-label">Equity</p><p className="font-display text-3xl font-bold">{formatCurrency(portfolio.totalEquity)}</p></div>
+            <div><p className="terminal-label">Unrealized</p><p className={portfolio.unrealizedPnl >= 0 ? "font-display text-3xl font-bold text-ice" : "font-display text-3xl font-bold text-crimson"}>{formatCurrency(portfolio.unrealizedPnl)}</p></div>
+            <div><p className="terminal-label">Watchlist</p><p className="font-display text-3xl font-bold">{account?.watchlist.length ?? 0}</p></div>
+          </CardContent>
+        </Card>
+      ) : null}
+
       <div className="mt-5 grid gap-5 xl:grid-cols-[1.35fr_.65fr]">
         <Card className="overflow-hidden">
           <CardHeader>
@@ -63,7 +100,7 @@ export function Dashboard() {
                 {[
                   ["Signal", lead.signal === "BUY" ? "BACK" : lead.signal === "SHORT" ? "SHORT" : "HOLD"],
                   ["Power", lead.power],
-                  ["Vol", lead.volatility]
+                  ["Risk", lead.risk]
                 ].map(([label, value]) => (
                   <div key={label} className="rounded-md border border-white/10 bg-white/[0.035] px-4 py-3">
                     <p className="terminal-label text-[0.58rem]">{label}</p>
@@ -85,7 +122,7 @@ export function Dashboard() {
               <div key={asset.symbol} className="flex items-center justify-between rounded-md border border-white/10 bg-black/25 p-3">
                 <div>
                   <p className="font-semibold leading-tight">{asset.name}</p>
-                  <p className="terminal-label text-[0.58rem]">{asset.symbol} / Heat {formatCompact(asset.volume)}</p>
+                  <p className="terminal-label text-[0.58rem]">{asset.symbol} / Hype {asset.hype} / {formatCompact(asset.volume)}</p>
                 </div>
                 <div className="text-right">
                   <p>{formatCurrency(asset.price)}</p>
@@ -111,7 +148,7 @@ export function Dashboard() {
                   <p className="font-bold">{asset.name}</p>
                   <p className="terminal-label text-[0.58rem]">{asset.symbol} / {asset.faction}</p>
                 </div>
-                <span className={asset.change >= 0 ? "text-ice" : "text-crimson"}>{signedPercent(asset.change)}</span>
+                <span className={asset.changePercent >= 0 ? "text-ice" : "text-crimson"}>{signedPercent(asset.changePercent)}</span>
               </div>
             ))}
           </CardContent>
@@ -130,10 +167,10 @@ export function Dashboard() {
                     <p className="font-display text-2xl font-bold uppercase">{asset.symbol}</p>
                     <p className="text-sm text-slate-400">{asset.name}</p>
                   </div>
-                  <span className="rounded border border-amber/30 bg-amber/10 px-2 py-1 font-mono text-xs text-amber">VOL {asset.volatility}</span>
+                  <span className="rounded border border-amber/30 bg-amber/10 px-2 py-1 font-mono text-xs text-amber">RISK {asset.risk}</span>
                 </div>
                 <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-white/10">
-                  <div className="h-full rounded-full bg-amber" style={{ width: `${asset.volatility}%` }} />
+                  <div className="h-full rounded-full bg-amber" style={{ width: `${asset.risk}%` }} />
                 </div>
                 <p className="mt-3 text-xs leading-5 text-slate-400">{asset.catalyst ?? asset.quote}</p>
               </div>
@@ -141,6 +178,24 @@ export function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <Card className="mt-5">
+        <CardHeader>
+          <CardTitle>Demo Desk Ranking</CardTitle>
+          <p className="text-sm text-slate-400">Local/simulated board for product feel only. No global users, no real-money rewards, no pay-to-win mechanics.</p>
+        </CardHeader>
+        <CardContent className="grid gap-3 md:grid-cols-4">
+          {demoRankings.map((desk, index) => (
+            <div key={`${desk.alias}-${desk.crew}`} className="rounded-md border border-white/10 bg-black/25 p-4">
+              <p className="terminal-label">Rank #{index + 1}</p>
+              <p className="mt-2 font-display text-2xl font-bold uppercase">{desk.alias}</p>
+              <p className="text-sm text-slate-400">{desk.crew}</p>
+              <p className="mt-3">{formatCurrency(desk.equity)}</p>
+              <p className={desk.returnPct >= 0 ? "text-ice" : "text-crimson"}>{signedPercent(desk.returnPct)}</p>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
     </section>
   );
 }
