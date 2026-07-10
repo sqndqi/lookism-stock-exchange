@@ -74,7 +74,7 @@ export default function LoginPage() {
           <p className="mt-5 max-w-xl text-sm leading-7 text-slate-300 md:text-base">
             {hasAccount
               ? "This browser already has an AURA EXCHANGE desk. Jump back into the portfolio simulator or wipe the local desk and start over."
-              : `One-time local account setup. Every desk starts with ${formatCurrency(STARTING_CASH)} demo cash and unlocks backing, drops, chapter predictions, and custom local listings.`}
+              : `One-time local account setup. Every desk starts with ${formatCurrency(STARTING_CASH)} demo cash and unlocks fake orders, watchlists, scenario contracts, and custom local listings.`}
           </p>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-3">

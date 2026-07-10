@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { marketPulse } from "@/lib/market-data";
 import { redditMarketMeta } from "@/lib/live-market";
 import { useMarketAutomation } from "@/lib/use-market-automation";
@@ -173,6 +174,61 @@ export function Dashboard() {
                   <div className="h-full rounded-full bg-amber" style={{ width: `${asset.risk}%` }} />
                 </div>
                 <p className="mt-3 text-xs leading-5 text-slate-400">{asset.catalyst ?? asset.quote}</p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="mt-5 grid gap-5 lg:grid-cols-[1fr_1fr]">
+        <Card>
+          <CardHeader>
+            <CardTitle>Index Board</CardTitle>
+            <p className="terminal-label">fictional composite baskets</p>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            {market.indices.map((index) => (
+              <div key={index.symbol} className="rounded-md border border-white/10 bg-black/25 p-4">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="font-display text-2xl font-bold uppercase">{index.symbol}</p>
+                    <p className="text-sm text-slate-400">{index.name}</p>
+                  </div>
+                  <div className="text-right">
+                    <p>{formatCurrency(index.price)}</p>
+                    <p className={index.change >= 0 ? "text-ice" : "text-crimson"}>{signedPercent(index.change)}</p>
+                  </div>
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {index.components.slice(0, 5).map((component) => (
+                    <Link key={component.symbol} className="rounded border border-white/10 px-2 py-1 text-xs text-ice hover:border-ice/50" href={`/asset/${component.symbol}`}>{component.symbol}</Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Faction Sectors</CardTitle>
+            <p className="terminal-label">crew exposure and instability</p>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            {market.factions.slice(0, 4).map((sector) => (
+              <div key={sector.slug} className="rounded-md border border-white/10 bg-black/25 p-4">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="font-display text-2xl font-bold uppercase">{sector.name}</p>
+                    <p className="text-sm text-slate-400">{sector.members.length} listed assets / influence {sector.influence}</p>
+                  </div>
+                  <span className="rounded border border-amber/30 bg-amber/10 px-2 py-1 font-mono text-xs text-amber">RISK {sector.risk}</span>
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {sector.members.slice(0, 5).map((member) => (
+                    <Link key={member.symbol} className="rounded border border-white/10 px-2 py-1 text-xs text-ice hover:border-ice/50" href={`/asset/${member.symbol}`}>{member.symbol}</Link>
+                  ))}
+                </div>
               </div>
             ))}
           </CardContent>

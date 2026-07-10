@@ -3,7 +3,7 @@
 import { ChangeEvent, useMemo, useState } from "react";
 import { Download, RotateCcw, Upload } from "lucide-react";
 import type { Account } from "@/lib/account";
-import { clearAccount, exportAccountJson, importAccountJson, writeAccount } from "@/lib/account";
+import { clearAccount, exportAccountJson, importAccountJson, readRecoveryState, writeAccount } from "@/lib/account";
 import { calculatePortfolio } from "@/lib/portfolio";
 import type { MarketAsset } from "@/lib/market-data";
 import { formatCurrency } from "@/lib/utils";
@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export function AccountToolsPanel({ account, assets, onAccount }: { account: Account | null; assets: MarketAsset[]; onAccount: (account: Account | null) => void }) {
   const [rawImport, setRawImport] = useState("");
   const [message, setMessage] = useState("Back up or repair the local browser desk.");
+  const recovery = typeof window === "undefined" ? { corrupt: false, backup: null } : readRecoveryState();
   const parsed = useMemo(() => rawImport.trim() ? importAccountJson(rawImport) : null, [rawImport]);
   const portfolio = account ? calculatePortfolio(account, assets) : null;
 
@@ -47,6 +48,17 @@ export function AccountToolsPanel({ account, assets, onAccount }: { account: Acc
     window.dispatchEvent(new CustomEvent("aura-toast", { detail: "Local desk imported and normalized." }));
   }
 
+  function restoreBackup() {
+    if (!recovery.backup) {
+      setMessage("No valid backup account is available in this browser.");
+      return;
+    }
+    writeAccount(recovery.backup);
+    onAccount(recovery.backup);
+    setMessage(`Recovered ${recovery.backup.alias} from the last local backup.`);
+    window.dispatchEvent(new CustomEvent("aura-toast", { detail: "Recovered local desk from backup." }));
+  }
+
   function resetDesk() {
     if (!window.confirm("Reset this local fake-money desk? Export a backup first if you want to keep it.")) return;
     clearAccount();
@@ -68,8 +80,14 @@ export function AccountToolsPanel({ account, assets, onAccount }: { account: Acc
           <div><p className="terminal-label">Holdings</p><p>{account?.holdings.length ?? 0}</p></div>
           <div><p className="terminal-label">Trades</p><p>{account?.trades.length ?? 0}</p></div>
         </div>
+        {recovery.corrupt ? (
+          <div className="rounded-md border border-amber/30 bg-amber/10 p-4 text-sm text-amber">
+            Corrupt local account data was detected and quarantined. Restore the last valid backup or reset the desk.
+          </div>
+        ) : null}
         <div className="grid gap-3 md:grid-cols-[auto_auto_1fr]">
           <Button onClick={exportDesk} disabled={!account}><Download size={16} /> Export JSON</Button>
+          <Button variant="ghost" onClick={restoreBackup} disabled={!recovery.backup}><Upload size={16} /> Restore Backup</Button>
           <Button variant="ghost" onClick={resetDesk} disabled={!account}><RotateCcw size={16} /> Reset Desk</Button>
           <label className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-md border border-white/12 bg-white/[0.045] px-4 text-sm font-black uppercase tracking-[0.12em] text-white transition hover:border-ice/50 hover:bg-white/[0.09]">
             <Upload size={16} /> Upload Backup

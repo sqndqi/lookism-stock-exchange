@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { getMarketState } from "@/lib/market-engine";
+import snapshot from "@/public/data/market-snapshot.json";
 
 export function GET() {
-  return NextResponse.json(getMarketState());
+  return NextResponse.json(snapshot);
 }

@@ -67,13 +67,13 @@ export function Navbar() {
         </a>
         <div className="hidden items-center gap-5 text-xs font-bold uppercase tracking-[0.14em] text-slate-300 lg:flex">
           {links.map(([label, href]) => (
-            <a key={href} className="transition hover:text-ice" href={href}>{label}</a>
+            <Link key={href} className="transition hover:text-ice focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ice" href={href}>{label}</Link>
           ))}
         </div>
         <div className="hidden items-center gap-2 sm:flex">
           <span className="status-dot rounded border border-crimson/30 bg-crimson/10 px-3 py-2 font-mono text-[0.64rem] font-bold uppercase tracking-[0.16em] text-crimson">Live</span>
-          <Button aria-label="Search fighter assets" asChild variant="ghost" size="sm"><a href="#fighters"><Search size={16} /></a></Button>
-          <Button aria-label="Open intelligence alerts" asChild variant="ghost" size="sm"><a href="#intel"><Bell size={16} /></a></Button>
+          <Button aria-label="Search fighter assets" asChild variant="ghost" size="sm"><Link href="/market"><Search size={16} /></Link></Button>
+          <Button aria-label="Open intelligence alerts" asChild variant="ghost" size="sm"><Link href="/intel"><Bell size={16} /></Link></Button>
           <Button aria-label="Toggle ambient audio" variant="ghost" size="sm" onClick={() => setAudio((value) => !value)}>
             <Music2 size={16} className={audio ? "text-cyanline" : ""} />
           </Button>
@@ -99,9 +99,9 @@ export function Navbar() {
           <div id="mobile-market-nav" className="absolute inset-x-0 top-[calc(100%+8px)] rounded-lg border border-white/10 bg-black/95 p-3 shadow-panel backdrop-blur-xl sm:hidden">
             <div className="grid gap-1">
               {links.map(([label, href]) => (
-                <a key={href} className="rounded-md px-3 py-3 text-sm font-bold uppercase tracking-[0.12em] text-slate-200 hover:bg-white/10" href={href} onClick={() => setOpen(false)}>
+                <Link key={href} className="rounded-md px-3 py-3 text-sm font-bold uppercase tracking-[0.12em] text-slate-200 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ice" href={href} onClick={() => setOpen(false)}>
                   {label}
-                </a>
+                </Link>
               ))}
               <Link className="rounded-md bg-crimson px-3 py-3 text-sm font-black uppercase tracking-[0.12em] text-white" href={account ? "/#portfolio" : "/login"} onClick={() => setOpen(false)}>
                 {account ? "Open Desk" : "Create Desk"}

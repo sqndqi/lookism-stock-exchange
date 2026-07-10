@@ -42,6 +42,8 @@ export function AssetDetailTerminal({ symbol }: { symbol: string }) {
   const scenarios = asset ? predictionContracts.filter((contract) => contract.catalyst.toLowerCase().includes(asset.name.toLowerCase()) || contract.question.toLowerCase().includes(asset.name.toLowerCase()) || contract.catalyst.toLowerCase().includes(asset.symbol.toLowerCase())) : [];
   const related = asset ? getRelatedAssets(asset, market.assets) : [];
   const holding = asset ? account?.holdings.find((item) => item.symbol === asset.symbol) : undefined;
+  const symbolTrades = asset ? (account?.trades ?? []).filter((trade) => trade.symbol === asset.symbol).slice(0, 5) : [];
+  const alertCount = asset ? (account?.alerts ?? []).filter((alert) => alert.symbol === asset.symbol).length : 0;
   const portfolio = account ? calculatePortfolio(account, market.assets) : null;
 
   useEffect(() => {
@@ -110,6 +112,7 @@ export function AssetDetailTerminal({ symbol }: { symbol: string }) {
               <div><p className="terminal-label text-[0.58rem]">Equity</p><p>{portfolio ? formatCurrency(portfolio.totalEquity) : "Locked"}</p></div>
               <div><p className="terminal-label text-[0.58rem]">Unrealized</p><p>{portfolio ? formatCurrency(portfolio.unrealizedPnl) : "Locked"}</p></div>
               <div><p className="terminal-label text-[0.58rem]">Owned</p><p>{holding ? holding.shares.toFixed(4) : "0"}</p></div>
+              <div><p className="terminal-label text-[0.58rem]">Alerts</p><p>{alertCount}</p></div>
             </div>
           </CardContent>
         </Card>
@@ -160,6 +163,26 @@ export function AssetDetailTerminal({ symbol }: { symbol: string }) {
                 <p className="mt-2 text-sm leading-6 text-slate-300">{source.summary}</p>
                 <p className="mt-3 terminal-label">{source.attribution}</p>
               </article>
+            ))}
+          </CardContent>
+        </Card>
+      </section>
+
+      <section className="section-wrap pb-5">
+        <Card>
+          <CardHeader>
+            <CardTitle>Local Trade Tape</CardTitle>
+            <p className="text-sm text-slate-400">Recent fake-money trades for this symbol in this browser only.</p>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            {symbolTrades.length === 0 ? (
+              <div className="rounded-md border border-white/10 bg-black/20 p-4 text-sm text-slate-300">No local trades for {asset.symbol} yet.</div>
+            ) : symbolTrades.map((trade) => (
+              <div key={trade.id} className="grid gap-2 rounded-md border border-white/10 bg-black/20 p-4 text-sm md:grid-cols-[auto_1fr_auto] md:items-center">
+                <span className={trade.side === "BUY" ? "text-ice" : "text-crimson"}>{trade.side}</span>
+                <span>{trade.quantity.toFixed(4)} fake shares at {formatCurrency(trade.price)}</span>
+                <span>{trade.realizedPnl !== undefined ? `P/L ${formatCurrency(trade.realizedPnl)}` : formatCurrency(trade.net)}</span>
+              </div>
             ))}
           </CardContent>
         </Card>

@@ -1,12 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, Star } from "lucide-react";
 import type { Account } from "@/lib/account";
 import { toggleWatchlist, writeAccount } from "@/lib/account";
 import type { MarketAsset } from "@/lib/market-data";
 import { cancelLimitOrder, checkLimitOrders, createLimitOrder, estimateOrder, executeTrade } from "@/lib/portfolio";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, formatQuantity } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 export function TradeTicket({
@@ -38,6 +38,12 @@ export function TradeTicket({
   const allOut = side === "SELL" && holding && quantity >= holding.shares;
   const volatile = asset.volatility >= 85 || (asset.risk ?? 0) >= 85;
 
+  useEffect(() => {
+    setTargetPrice(asset.price);
+    setQuantity(1);
+    setMessage("Simulation credits only.");
+  }, [asset.symbol, asset.price]);
+
   function submit() {
     if (!account) {
       setMessage("Open a local desk before placing fake-money orders.");
@@ -46,6 +52,14 @@ export function TradeTicket({
     if (mode === "LIMIT") {
       if (!Number.isFinite(targetPrice) || targetPrice <= 0 || quantity <= 0) {
         setMessage("Limit order rejected. Enter a valid fake-share quantity and target price.");
+        return;
+      }
+      if (side === "BUY" && preview.net > account.cash) {
+        setMessage("Limit order rejected. This browser desk does not have enough simulation credits for that size.");
+        return;
+      }
+      if (side === "SELL" && (!holding || holding.shares + 0.000001 < quantity)) {
+        setMessage("Limit order rejected. You cannot place a local sell limit above the fake shares held.");
         return;
       }
       const next = createLimitOrder(account, {
@@ -145,9 +159,9 @@ export function TradeTicket({
       <div className="grid gap-2 rounded-md border border-white/10 bg-black/25 p-4 text-sm text-slate-300 sm:grid-cols-3">
         <span><span className="terminal-label block text-[0.58rem]">Gross</span>{formatCurrency(preview.gross)}</span>
         <span><span className="terminal-label block text-[0.58rem]">Fake fee</span>{formatCurrency(preview.fee)}</span>
-        <span><span className="terminal-label block text-[0.58rem]">Net</span>{formatCurrency(preview.net)}</span>
+          <span><span className="terminal-label block text-[0.58rem]">Net</span>{formatCurrency(preview.net)}</span>
         <span><span className="terminal-label block text-[0.58rem]">Cash after</span>{account ? formatCurrency(cashAfter) : "Locked"}</span>
-        <span><span className="terminal-label block text-[0.58rem]">Position after</span>{positionAfter.toFixed(4)}</span>
+        <span><span className="terminal-label block text-[0.58rem]">Position after</span>{formatQuantity(positionAfter)}</span>
         <span><span className="terminal-label block text-[0.58rem]">Avg cost</span>{holding ? formatCurrency(holding.averageCost) : "None"}</span>
       </div>
       {(heavyCash || allOut || volatile) ? (
@@ -167,7 +181,7 @@ export function TradeTicket({
           <p className="terminal-label">Open local limit orders</p>
           {account.limitOrders.filter((order) => order.status === "OPEN").slice(0, 4).map((order) => (
             <div key={order.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-white/10 bg-black/25 p-3 text-sm">
-              <span>{order.side} {order.quantity.toFixed(4)} {order.symbol} @ {formatCurrency(order.targetPrice)}</span>
+              <span>{order.side} {formatQuantity(order.quantity)} {order.symbol} @ {formatCurrency(order.targetPrice)} / {order.status}</span>
               <Button size="sm" variant="ghost" onClick={() => cancelOrder(order.id)}>Cancel</Button>
             </div>
           ))}

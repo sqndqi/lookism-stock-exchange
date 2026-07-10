@@ -3,12 +3,16 @@ import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { getMarketState } from "@/lib/market-engine";
 import { getSourceRecords } from "@/lib/sources";
+import { ACCOUNT_SCHEMA_VERSION } from "@/lib/account";
+import snapshot from "@/public/data/market-snapshot.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function DevMarketPage() {
   const market = getMarketState();
   const sources = getSourceRecords();
   const missingImages = market.assets.filter((asset) => !asset.image);
+  const staleSources = sources.filter((source) => source.status !== "active");
+  const apiLinks = ["/api/market", "/api/assets", "/api/sources", "/api/events", "/api/seasons", "/api/indices", "/api/factions", "/api/health", "/api/snapshot"];
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-abyss text-white">
@@ -28,6 +32,11 @@ export default function DevMarketPage() {
               <div><p className="terminal-label">Assets</p><p>{market.assets.length}</p></div>
               <div><p className="terminal-label">Sources</p><p>{sources.length}</p></div>
               <div><p className="terminal-label">Events</p><p>{market.events.length}</p></div>
+              <div><p className="terminal-label">Indices</p><p>{market.indices.length}</p></div>
+              <div><p className="terminal-label">Factions</p><p>{market.factions.length}</p></div>
+              <div><p className="terminal-label">Snapshot file</p><p>{snapshot.generatedAt}</p></div>
+              <div><p className="terminal-label">Account schema</p><p>v{ACCOUNT_SCHEMA_VERSION}</p></div>
+              <div><p className="terminal-label">Stale sources</p><p>{staleSources.length}</p></div>
               <div><p className="terminal-label">Missing images</p><p>{missingImages.length}</p></div>
             </CardContent>
           </Card>
@@ -36,6 +45,16 @@ export default function DevMarketPage() {
             <CardContent className="grid gap-2 text-sm text-slate-300">
               {["npm run validate:data", "npm run audit:images", "npm run update:market", "npm run check"].map((command) => (
                 <code key={command} className="rounded-md border border-white/10 bg-black/30 p-3">{command}</code>
+              ))}
+            </CardContent>
+          </Card>
+          <Card className="lg:col-span-2">
+            <CardHeader><CardTitle>API Links</CardTitle></CardHeader>
+            <CardContent className="flex flex-wrap gap-2 text-sm">
+              {apiLinks.map((href) => (
+                <a key={href} className="rounded-md border border-white/10 bg-black/30 px-3 py-2 text-ice transition hover:border-ice/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ice" href={href}>
+                  {href}
+                </a>
               ))}
             </CardContent>
           </Card>

@@ -15,6 +15,10 @@ export function WatchlistAlertsPanel({ account, assets, onAccount }: { account: 
 
   function addRiskAlert(symbol: string) {
     if (!account) return;
+    if (account.alerts.some((alert) => alert.symbol === symbol && alert.type === "RISK_ABOVE" && alert.threshold === 80)) {
+      window.dispatchEvent(new CustomEvent("aura-toast", { detail: `${symbol} already has a risk alert.` }));
+      return;
+    }
     const next = createAlert(account, { symbol, type: "RISK_ABOVE", threshold: 80 });
     writeAccount(next);
     onAccount(next);
@@ -60,7 +64,7 @@ export function WatchlistAlertsPanel({ account, assets, onAccount }: { account: 
             <p className="terminal-label">Alert rules</p>
             {account.alerts.map((alert) => (
               <div key={alert.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-white/10 bg-black/25 p-3 text-sm">
-                <button className={alert.enabled ? "text-ice" : "text-slate-500"} type="button" onClick={() => { const next = toggleAlert(account, alert.id); writeAccount(next); onAccount(next); }}>{alert.enabled ? "ON" : "OFF"} / {alert.symbol} / {alert.type} {alert.threshold}</button>
+                <button className={`${alert.enabled ? "text-ice" : "text-slate-500"} rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ice`} type="button" aria-label={`${alert.enabled ? "Disable" : "Enable"} ${alert.symbol} alert`} onClick={() => { const next = toggleAlert(account, alert.id); writeAccount(next); onAccount(next); }}>{alert.enabled ? "ON" : "OFF"} / {alert.symbol} / {alert.type} {alert.threshold}</button>
                 <Button size="sm" variant="ghost" onClick={() => { const next = deleteAlert(account, alert.id); writeAccount(next); onAccount(next); }}><Trash2 size={14} /> Delete</Button>
               </div>
             ))}

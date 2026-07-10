@@ -1,6 +1,8 @@
 export const STARTING_CASH = 100000;
 export const ACCOUNT_KEY = "ptj-account";
 export const ACCOUNT_SCHEMA_VERSION = 3;
+export const ACCOUNT_BACKUP_KEY = `${ACCOUNT_KEY}-backup`;
+export const ACCOUNT_CORRUPT_KEY = `${ACCOUNT_KEY}-corrupt`;
 
 const crewAliases: Record<string, string> = {
   "J High School": "J High",
@@ -31,6 +33,7 @@ export type Trade = {
   net: number;
   timestamp: string;
   reason?: string;
+  realizedPnl?: number;
 };
 
 export type LimitOrder = {
@@ -136,6 +139,14 @@ function normalizeCrew(crew?: string) {
   return crewAliases[crew] ?? crew;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value && typeof value === "object" && !Array.isArray(value));
+}
+
+function safeNumber(value: unknown, fallback: number, min = 0) {
+  return Number.isFinite(value) ? Math.max(min, Number(value)) : fallback;
+}
+
 export function createAccount(alias: string, crew: string): Account {
   return {
     schemaVersion: ACCOUNT_SCHEMA_VERSION,
@@ -171,13 +182,17 @@ export function createAccount(alias: string, crew: string): Account {
 function normalizeAccount(account: Partial<Account>): Account {
   const alias = account.alias || "dealer";
   const legacyHoldings = Array.isArray(account.holdings) ? account.holdings : [];
+  const settings = account.settings ?? {
+    showAdvancedTicket: true,
+    riskMode: "standard" as const
+  };
   return {
     schemaVersion: ACCOUNT_SCHEMA_VERSION,
     id: account.id || accountId(alias),
     alias,
     crew: normalizeCrew(account.crew),
-    cash: Number.isFinite(account.cash) ? Number(account.cash) : STARTING_CASH,
-    startingCash: Number.isFinite(account.startingCash) ? Number(account.startingCash) : STARTING_CASH,
+    cash: safeNumber(account.cash, STARTING_CASH),
+    startingCash: safeNumber(account.startingCash, STARTING_CASH, 1),
     watchlist: Array.isArray(account.watchlist) ? account.watchlist : ["DAN", "GUN", "JMS"],
     alerts: Array.isArray(account.alerts) ? account.alerts : [],
     limitOrders: Array.isArray(account.limitOrders) ? account.limitOrders : [],
@@ -189,14 +204,14 @@ function normalizeAccount(account: Partial<Account>): Account {
     trades: Array.isArray(account.trades) ? account.trades : [],
     snapshots: Array.isArray(account.snapshots) ? account.snapshots : [],
     realizedPnl: Number.isFinite(account.realizedPnl) ? Number(account.realizedPnl) : 0,
-    xp: Number.isFinite(account.xp) ? Number(account.xp) : 0,
+    xp: safeNumber(account.xp, 0),
     level: Number.isFinite(account.level) ? Math.max(1, Number(account.level)) : 1,
     achievements: Array.isArray(account.achievements) ? account.achievements : [],
     viewedAssets: Array.isArray(account.viewedAssets) ? account.viewedAssets : [],
     readSources: Array.isArray(account.readSources) ? account.readSources : [],
-    settings: account.settings ?? {
-      showAdvancedTicket: true,
-      riskMode: "standard"
+    settings: {
+      showAdvancedTicket: settings.showAdvancedTicket ?? true,
+      riskMode: settings.riskMode === "aggressive" ? "aggressive" : "standard"
     },
     customStocks: Array.isArray(account.customStocks) ? account.customStocks : [],
     futures: Array.isArray(account.futures) ? account.futures : [],
@@ -207,24 +222,31 @@ function normalizeAccount(account: Partial<Account>): Account {
 }
 
 export function readAccount(): Account | null {
+  if (typeof window === "undefined") return null;
   const raw = window.localStorage.getItem(ACCOUNT_KEY);
   if (!raw) return null;
 
   try {
     if (raw) {
-      window.localStorage.setItem(`${ACCOUNT_KEY}-backup`, raw);
+      window.localStorage.setItem(ACCOUNT_BACKUP_KEY, raw);
     }
-    const account = normalizeAccount(JSON.parse(raw) as Partial<Account>);
+    const parsed = JSON.parse(raw) as unknown;
+    if (!isRecord(parsed)) throw new Error("Account payload is not an object.");
+    const account = normalizeAccount(parsed as Partial<Account>);
     window.localStorage.setItem(ACCOUNT_KEY, JSON.stringify(account));
+    window.localStorage.removeItem(ACCOUNT_CORRUPT_KEY);
     return account;
   } catch {
+    window.localStorage.setItem(ACCOUNT_CORRUPT_KEY, raw);
     window.localStorage.removeItem(ACCOUNT_KEY);
     return null;
   }
 }
 
 export function writeAccount(account: Account) {
+  if (typeof window === "undefined") return;
   window.localStorage.setItem(ACCOUNT_KEY, JSON.stringify(account));
+  window.localStorage.removeItem(ACCOUNT_CORRUPT_KEY);
   window.localStorage.setItem("ptj-session", "active");
   window.localStorage.setItem("ptj-profile", JSON.stringify({ alias: account.alias, crew: account.crew }));
   window.dispatchEvent(new CustomEvent("ptj-account-updated", { detail: account }));
@@ -232,7 +254,9 @@ export function writeAccount(account: Account) {
 
 export function parseAccountBackup(raw: string): Account | null {
   try {
-    return normalizeAccount(JSON.parse(raw) as Partial<Account>);
+    const parsed = JSON.parse(raw) as unknown;
+    if (!isRecord(parsed)) return null;
+    return normalizeAccount(parsed as Partial<Account>);
   } catch {
     return null;
   }
@@ -266,14 +290,24 @@ export function addXp(account: Account, amount: number): Account {
 export function markAssetViewed(symbol: string) {
   const account = readAccount();
   if (!account) return null;
+  if (account.viewedAssets.includes(symbol)) return account;
   const viewedAssets = account.viewedAssets.includes(symbol) ? account.viewedAssets : [...account.viewedAssets, symbol];
   const next = addXp({ ...account, viewedAssets }, 10);
   writeAccount(next);
   return next;
 }
 
+export function readRecoveryState() {
+  if (typeof window === "undefined") return { corrupt: false, backup: null as Account | null };
+  const corrupt = Boolean(window.localStorage.getItem(ACCOUNT_CORRUPT_KEY));
+  const backupRaw = window.localStorage.getItem(ACCOUNT_BACKUP_KEY);
+  return { corrupt, backup: backupRaw ? parseAccountBackup(backupRaw) : null };
+}
+
 export function clearAccount() {
+  if (typeof window === "undefined") return;
   window.localStorage.removeItem(ACCOUNT_KEY);
+  window.localStorage.removeItem(ACCOUNT_CORRUPT_KEY);
   window.localStorage.removeItem("ptj-session");
   window.localStorage.removeItem("ptj-profile");
   window.localStorage.removeItem("ptj-auto-market-v1");

@@ -1,4 +1,5 @@
 import redditStocks from "@/public/data/reddit-stocks.json";
+import Link from "next/link";
 import { wikiDossiers } from "@/lib/market-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -68,6 +69,13 @@ export function IntelligenceHub() {
                 <div className="terminal-label mt-3 grid grid-cols-2 gap-3 text-[0.58rem]">
                   <span>Confidence {source.confidence}</span>
                   <span>Hype {source.hype}</span>
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {[...source.characterSymbols, ...source.crewSymbols].map((symbol) => (
+                    <Link key={symbol} href={`/asset/${symbol}`} className="rounded border border-white/10 px-2 py-1 text-xs text-ice transition hover:border-ice/50">
+                      {symbol}
+                    </Link>
+                  ))}
                 </div>
               </div>
             ))}

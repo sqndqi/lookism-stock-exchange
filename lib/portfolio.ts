@@ -1,5 +1,6 @@
 import type { Account, Holding, LimitOrder, Trade } from "@/lib/account";
 import type { MarketAsset } from "@/lib/market-data";
+import { formatCurrency, formatQuantity } from "@/lib/utils";
 
 export type OrderRequest = {
   symbol: string;
@@ -33,21 +34,25 @@ export type PortfolioSnapshot = {
   concentrationRisk: number;
   cashAllocationPct: number;
   factionExposure: Array<{ faction: string; value: number; allocationPct: number }>;
+  bestTrade?: { symbol: string; pnl: number };
+  worstTrade?: { symbol: string; pnl: number };
 };
 
 const FEE_RATE = 0.0015;
 
 function money(value: number) {
-  return Math.round(value * 100) / 100;
+  if (!Number.isFinite(value)) return 0;
+  const rounded = Math.round(value * 100) / 100;
+  return Object.is(rounded, -0) ? 0 : rounded;
 }
 
-function safeQuantity(value: number) {
+export function sanitizeQuantity(value: number) {
   return Number.isFinite(value) ? Math.max(0, value) : 0;
 }
 
 export function estimateOrder(side: "BUY" | "SELL", quantity: number, price: number) {
-  const gross = money(safeQuantity(quantity) * price);
-  const fee = money(Math.max(0.01, gross * FEE_RATE));
+  const gross = money(sanitizeQuantity(quantity) * Math.max(0, Number.isFinite(price) ? price : 0));
+  const fee = gross > 0 ? money(Math.max(0.01, gross * FEE_RATE)) : 0;
   const net = side === "BUY" ? money(gross + fee) : money(gross - fee);
   return { gross, fee, net };
 }
@@ -76,8 +81,11 @@ export function calculatePortfolio(account: Account, assets: MarketAsset[]): Por
   const realizedPnl = money(account.realizedPnl ?? 0);
   const totalEquity = money(account.cash + holdingsValue);
   const totalReturnPct = account.startingCash ? ((totalEquity - account.startingCash) / account.startingCash) * 100 : 0;
-  const winningTrades = (account.trades ?? []).filter((trade) => trade.side === "SELL" && trade.net > trade.gross * 0.99).length;
+  const realizedTrades = (account.trades ?? []).filter((trade) => trade.side === "SELL" && typeof trade.realizedPnl === "number");
+  const winningTrades = realizedTrades.filter((trade) => (trade.realizedPnl ?? 0) > 0).length;
   const sellTrades = (account.trades ?? []).filter((trade) => trade.side === "SELL").length;
+  const bestTrade = realizedTrades.length ? realizedTrades.reduce((best, trade) => (trade.realizedPnl ?? 0) > (best.realizedPnl ?? 0) ? trade : best) : undefined;
+  const worstTrade = realizedTrades.length ? realizedTrades.reduce((worst, trade) => (trade.realizedPnl ?? 0) < (worst.realizedPnl ?? 0) ? trade : worst) : undefined;
   const largestHolding = holdingPnls.reduce((max, item) => Math.max(max, item.value), 0);
   const concentrationRisk = holdingsValue ? (largestHolding / holdingsValue) * 100 : 0;
   const volatilityExposure = holdingsValue ? holdingPnls.reduce((sum, item) => sum + item.volatility * (item.value / holdingsValue), 0) : 0;
@@ -107,6 +115,8 @@ export function calculatePortfolio(account: Account, assets: MarketAsset[]): Por
     concentrationRisk: money(concentrationRisk),
     cashAllocationPct: totalEquity ? account.cash / totalEquity * 100 : 100,
     factionExposure,
+    bestTrade: bestTrade ? { symbol: bestTrade.symbol, pnl: money(bestTrade.realizedPnl ?? 0) } : undefined,
+    worstTrade: worstTrade ? { symbol: worstTrade.symbol, pnl: money(worstTrade.realizedPnl ?? 0) } : undefined,
     bestHolding: holdingPnls.sort((a, b) => b.pnlPercent - a.pnlPercent)[0],
     worstHolding: [...holdingPnls].sort((a, b) => a.pnlPercent - b.pnlPercent)[0]
   };
@@ -165,7 +175,7 @@ export function executeTrade(account: Account, order: OrderRequest, assets: Mark
   const asset = assets.find((item) => item.symbol === order.symbol);
   if (!asset) return { ok: false, account, message: "Order rejected. Asset is not listed on AURA EXCHANGE." };
 
-  const quantity = safeQuantity(order.quantity);
+  const quantity = sanitizeQuantity(order.quantity);
   if (quantity <= 0) return { ok: false, account, message: "Order rejected. Enter a valid fake-share quantity." };
 
   const estimate = estimateOrder(order.side, quantity, asset.price);
@@ -209,7 +219,9 @@ export function executeTrade(account: Account, order: OrderRequest, assets: Mark
       : [...holdings, { symbol: asset.symbol, shares: quantity, averageCost: asset.price, updatedAt: now }];
   } else {
     cash = money(cash + estimate.net);
-    realizedPnl += existing ? (asset.price - existing.averageCost) * quantity - estimate.fee : 0;
+    const tradePnl = existing ? money((asset.price - existing.averageCost) * quantity - estimate.fee) : 0;
+    trade.realizedPnl = tradePnl;
+    realizedPnl += tradePnl;
     holdings = holdings
       .map((holding) => holding.symbol === asset.symbol ? { ...holding, shares: holding.shares - quantity, updatedAt: now } : holding)
       .filter((holding) => holding.shares > 0.000001);
@@ -228,6 +240,6 @@ export function executeTrade(account: Account, order: OrderRequest, assets: Mark
     ok: true,
     account: next,
     trade,
-    message: `${order.side === "BUY" ? "Bought" : "Sold"} ${quantity.toFixed(4)} ${asset.symbol} for ${estimate.net.toLocaleString()} simulation credits.`
+    message: `${order.side === "BUY" ? "Bought" : "Sold"} ${formatQuantity(quantity)} ${asset.symbol} for ${formatCurrency(estimate.net)} simulation credits.`
   };
 }

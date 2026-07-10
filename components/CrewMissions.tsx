@@ -3,9 +3,8 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { missions } from "@/lib/market-data";
-import { formatCurrency } from "@/lib/utils";
 import type { Account } from "@/lib/account";
-import { readAccount, writeAccount } from "@/lib/account";
+import { addXp, readAccount, writeAccount } from "@/lib/account";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -86,13 +85,13 @@ export function CrewMissions() {
     if (!account) return;
     const checkedIn = account.claimedMissions.includes("Daily check-in");
     if (checkedIn) return;
-    const next = {
+    const next = addXp({
       ...account,
-      cash: account.cash + 300,
       claimedMissions: [...account.claimedMissions, "Daily check-in"]
-    };
+    }, 25);
     setAccount(next);
     writeAccount(next);
+    window.dispatchEvent(new CustomEvent("aura-toast", { detail: "Daily desk sync logged. Cosmetic XP only." }));
   }
 
   const checkedIn = account?.claimedMissions.includes("Daily check-in") ?? false;
@@ -104,18 +103,18 @@ export function CrewMissions() {
         <CardHeader>
           <div className="flex items-center justify-between gap-4">
             <div>
-              <Badge>Desk incentives</Badge>
+              <Badge>Desk missions</Badge>
               <CardTitle className="mt-4">Trading Desk Access</CardTitle>
             </div>
             <div className="rounded-md border border-white/10 bg-black/35 p-3 text-right">
               <p className="terminal-label text-[0.58rem]">Demo Cash</p>
-              <p className="text-3xl font-black">{account ? formatCurrency(cash) : "Locked"}</p>
+              <p className="text-3xl font-black">{account ? `₳${cash.toLocaleString()}` : "Locked"}</p>
             </div>
           </div>
         </CardHeader>
         <CardContent>
           <Button className="mb-5 w-full" onClick={checkIn} variant={checkedIn ? "ghost" : "default"} disabled={!account}>
-            {!account ? "Create desk to unlock incentives" : checkedIn ? "Daily desk credit claimed" : "Claim desk credit (+$300)"}
+            {!account ? "Create desk to unlock missions" : checkedIn ? "Daily sync logged" : "Log daily desk sync"}
           </Button>
           <div className="space-y-3">
             {missions.map((mission) => (
@@ -127,9 +126,7 @@ export function CrewMissions() {
                     </div>
                     <div>
                       <p className="font-semibold">{mission.title}</p>
-                      <p className="terminal-label text-[0.58rem]">
-                        Demo reward {formatCurrency(mission.reward)}
-                      </p>
+                      <p className="terminal-label text-[0.58rem]">Cosmetic XP track / no credit reward</p>
                     </div>
                   </div>
                   <span className="font-mono text-ice">{mission.progress}%</span>
