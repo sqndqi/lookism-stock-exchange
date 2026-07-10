@@ -3,24 +3,25 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ShieldAlert, Star } from "lucide-react";
+import { ArrowLeft, ShieldAlert } from "lucide-react";
 import { getMarketState, getRelatedAssets } from "@/lib/market-engine";
 import { getSourcesForAsset } from "@/lib/sources";
+import { getEventsForSymbol } from "@/lib/events";
+import { predictionContracts } from "@/lib/market-data";
 import { useMarketAutomation } from "@/lib/use-market-automation";
-import { readAccount, toggleWatchlist, writeAccount, type Account } from "@/lib/account";
-import { calculatePortfolio, estimateOrder, executeTrade } from "@/lib/portfolio";
+import { markAssetViewed, readAccount, type Account } from "@/lib/account";
+import { calculatePortfolio } from "@/lib/portfolio";
 import { formatCurrency, signedPercent } from "@/lib/utils";
 import { assetPath } from "@/lib/site-path";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MarketChart } from "@/components/MarketChart";
+import { TradeTicket } from "@/components/TradeTicket";
 
 export function AssetDetailTerminal({ symbol }: { symbol: string }) {
   const automation = useMarketAutomation();
   const [account, setAccount] = useState<Account | null>(null);
-  const [quantity, setQuantity] = useState(1);
-  const [message, setMessage] = useState("Asset dossier ready. Simulation credits only.");
 
   useEffect(() => {
     setAccount(readAccount());
@@ -35,12 +36,19 @@ export function AssetDetailTerminal({ symbol }: { symbol: string }) {
 
   const market = useMemo(() => getMarketState(account, automation), [account, automation]);
   const asset = market.assets.find((item) => item.symbol === symbol.toUpperCase());
+  const assetSymbol = asset?.symbol;
   const sources = asset ? getSourcesForAsset(asset.symbol) : [];
+  const events = asset ? getEventsForSymbol(asset.symbol, asset.faction) : [];
+  const scenarios = asset ? predictionContracts.filter((contract) => contract.catalyst.toLowerCase().includes(asset.name.toLowerCase()) || contract.question.toLowerCase().includes(asset.name.toLowerCase()) || contract.catalyst.toLowerCase().includes(asset.symbol.toLowerCase())) : [];
   const related = asset ? getRelatedAssets(asset, market.assets) : [];
   const holding = asset ? account?.holdings.find((item) => item.symbol === asset.symbol) : undefined;
-  const watched = asset ? account?.watchlist.includes(asset.symbol) ?? false : false;
-  const preview = asset ? estimateOrder("BUY", quantity, asset.price) : null;
   const portfolio = account ? calculatePortfolio(account, market.assets) : null;
+
+  useEffect(() => {
+    if (!assetSymbol) return;
+    const next = markAssetViewed(assetSymbol);
+    if (next) setAccount(next);
+  }, [assetSymbol]);
 
   if (!asset) {
     return (
@@ -56,30 +64,6 @@ export function AssetDetailTerminal({ symbol }: { symbol: string }) {
         </div>
       </main>
     );
-  }
-
-  function submit(side: "BUY" | "SELL") {
-    if (!account || !asset) {
-      setMessage("Open a local AURA EXCHANGE desk before placing fake-money orders.");
-      return;
-    }
-    const result = executeTrade(account, { symbol: asset.symbol, side, quantity, reason: "asset dossier ticket" }, market.assets);
-    setMessage(result.message);
-    if (result.ok) {
-      setAccount(result.account);
-      writeAccount(result.account);
-    }
-  }
-
-  function watch() {
-    if (!asset) return;
-    const next = toggleWatchlist(asset.symbol);
-    if (!next) {
-      setMessage("Open a local desk before adding assets to the watchlist.");
-      return;
-    }
-    setAccount(next);
-    setMessage(`${asset.symbol} ${next.watchlist.includes(asset.symbol) ? "added to" : "removed from"} watchlist.`);
   }
 
   return (
@@ -116,37 +100,16 @@ export function AssetDetailTerminal({ symbol }: { symbol: string }) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Fake-Money Order Ticket</CardTitle>
-            <p className="text-sm text-slate-400">Simulation credits only. No real money, no gambling, no investment advice.</p>
+            <CardTitle>Trading Desk 2.0</CardTitle>
+            <p className="text-sm text-slate-400">Market and local limit orders. Simulation credits only.</p>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <label className="grid gap-2">
-                <span className="terminal-label text-[0.58rem]">Fake shares</span>
-                <input className="h-12 rounded-md border border-white/10 bg-black/40 px-4 outline-none focus-visible:ring-2 focus-visible:ring-ice" min={0.0001} step={0.0001} type="number" value={quantity} onChange={(event) => setQuantity(Number(event.target.value))} />
-              </label>
-              <div className="rounded-md border border-white/10 bg-black/30 p-3">
-                <p className="terminal-label text-[0.58rem]">Owned</p>
-                <p className="mt-1 font-display text-3xl font-bold">{holding ? holding.shares.toFixed(4) : "0"}</p>
-              </div>
-            </div>
-            {preview ? (
-              <div className="mt-4 grid gap-2 rounded-md border border-white/10 bg-black/25 p-4 text-sm text-slate-300 sm:grid-cols-3">
-                <span><span className="terminal-label block text-[0.58rem]">Gross</span>{formatCurrency(preview.gross)}</span>
-                <span><span className="terminal-label block text-[0.58rem]">Fake fee</span>{formatCurrency(preview.fee)}</span>
-                <span><span className="terminal-label block text-[0.58rem]">Debit</span>{formatCurrency(preview.net)}</span>
-              </div>
-            ) : null}
-            <div className="mt-4 grid gap-3 sm:grid-cols-3">
-              <Button onClick={() => submit("BUY")} disabled={!account}>Buy</Button>
-              <Button onClick={() => submit("SELL")} disabled={!account || !holding} variant="ghost">Sell</Button>
-              <Button onClick={watch} variant="ghost"><Star size={16} className={watched ? "fill-amber text-amber" : ""} /> Watch</Button>
-            </div>
-            <p className="mt-4 text-sm text-slate-300">{message}</p>
-            <div className="mt-5 grid gap-3 border-t border-white/10 pt-5 sm:grid-cols-3">
+            <TradeTicket account={account} asset={asset} assets={market.assets} onAccount={setAccount} />
+            <div className="mt-5 grid gap-3 border-t border-white/10 pt-5 sm:grid-cols-4">
               <div><p className="terminal-label text-[0.58rem]">Cash</p><p>{portfolio ? formatCurrency(portfolio.cash) : "Locked"}</p></div>
               <div><p className="terminal-label text-[0.58rem]">Equity</p><p>{portfolio ? formatCurrency(portfolio.totalEquity) : "Locked"}</p></div>
               <div><p className="terminal-label text-[0.58rem]">Unrealized</p><p>{portfolio ? formatCurrency(portfolio.unrealizedPnl) : "Locked"}</p></div>
+              <div><p className="terminal-label text-[0.58rem]">Owned</p><p>{holding ? holding.shares.toFixed(4) : "0"}</p></div>
             </div>
           </CardContent>
         </Card>
@@ -203,6 +166,7 @@ export function AssetDetailTerminal({ symbol }: { symbol: string }) {
       </section>
 
       <section className="section-wrap pb-16">
+        <div className="grid gap-5 lg:grid-cols-[1.1fr_.9fr]">
         <Card>
           <CardHeader>
             <CardTitle>Related Assets</CardTitle>
@@ -217,6 +181,31 @@ export function AssetDetailTerminal({ symbol }: { symbol: string }) {
             ))}
           </CardContent>
         </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Events & Scenarios</CardTitle>
+            <p className="text-sm text-slate-400">Scheduled catalysts and fictional lore forecasts linked to this asset.</p>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            {events.length === 0 && scenarios.length === 0 ? (
+              <div className="rounded-md border border-white/10 bg-black/20 p-4 text-sm text-slate-300">No linked events or scenario contracts yet.</div>
+            ) : null}
+            {events.map((event) => (
+              <Link key={event.id} href="/calendar" className="rounded-md border border-white/10 bg-black/25 p-4 transition hover:border-ice/50">
+                <p className="terminal-label">{event.status} / impact {event.expectedImpact}</p>
+                <p className="mt-2 font-display text-2xl font-bold uppercase">{event.title}</p>
+                <p className="mt-2 text-sm text-slate-400">{event.description}</p>
+              </Link>
+            ))}
+            {scenarios.map((contract) => (
+              <Link key={contract.question} href="/#predictions" className="rounded-md border border-white/10 bg-black/25 p-4 transition hover:border-ice/50">
+                <p className="terminal-label">Scenario contract / pool {formatCurrency(contract.pool)}</p>
+                <p className="mt-2 font-display text-2xl font-bold uppercase">{contract.question}</p>
+              </Link>
+            ))}
+          </CardContent>
+        </Card>
+        </div>
         <div className="mt-5 flex items-start gap-3 rounded-md border border-amber/25 bg-amber/10 p-4 text-sm text-amber">
           <ShieldAlert size={18} />
           <p>AURA EXCHANGE is a fan-made fictional market game using fake simulation credits only. It is not gambling, investing, crypto, or financial advice.</p>

@@ -7,12 +7,12 @@ import { Button } from "@/components/ui/button";
 import { readAccount, type Account } from "@/lib/account";
 
 const links = [
-  ["Market", "#market"],
-  ["Fighters", "#fighters"],
-  ["Crews", "#crews"],
-  ["Predictions", "#predictions"],
-  ["Portfolio", "#portfolio"],
-  ["Intel", "#intel"]
+  ["Market", "/market"],
+  ["Fighters", "/#fighters"],
+  ["Crews", "/#crews"],
+  ["Calendar", "/calendar"],
+  ["Portfolio", "/#portfolio"],
+  ["Intel", "/intel"]
 ];
 
 export function Navbar() {

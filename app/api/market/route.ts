@@ -9,6 +9,9 @@ export function GET() {
     topLosers: market.topLosers,
     mostVolatile: market.mostVolatile,
     mostWatched: market.mostWatched,
+    indices: market.indices,
+    season: market.season,
+    events: market.events,
     assetCount: market.assets.length
   });
 }

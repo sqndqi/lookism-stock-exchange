@@ -13,7 +13,8 @@
     "update:market": "node scripts/generate-market-snapshot.mjs",
     "update:all": "npm run update:sources && npm run update:market",
     "validate:data": "node scripts/validate-data.mjs",
-    "audit:images": "node scripts/audit-images.mjs"
+    "audit:images": "node scripts/audit-images.mjs",
+    "check": "npm run lint && npm run validate:data && npm run audit:images && npm run build && npm audit --audit-level=high"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",

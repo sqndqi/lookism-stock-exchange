@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const marketDataPath = path.join(root, "lib", "market-data.ts");
 const redditPath = path.join(root, "public", "data", "reddit-stocks.json");
+const eventsPath = path.join(root, "lib", "events.ts");
+const sourcesPath = path.join(root, "lib", "sources.ts");
 
 function fail(message) {
   console.error(`DATA ERROR: ${message}`);
@@ -48,6 +50,25 @@ try {
   fail(`Unable to parse reddit-stocks.json: ${error instanceof Error ? error.message : String(error)}`);
 }
 
+const eventsSource = await readFile(eventsPath, "utf8");
+const eventSymbolRefs = [...eventsSource.matchAll(/affectedSymbols:\s*\[([^\]]*)\]/g)]
+  .flatMap((match) => [...match[1].matchAll(/"([^"]+)"/g)].map((item) => item[1]));
+for (const symbol of eventSymbolRefs) {
+  if (!symbols.has(symbol)) fail(`Event references unknown symbol ${symbol}.`);
+}
+
+const sourceRecords = await readFile(sourcesPath, "utf8");
+const sourceSymbolRefs = [...sourceRecords.matchAll(/(?:characterSymbols|crewSymbols):\s*\[([^\]]*)\]/g)]
+  .flatMap((match) => [...match[1].matchAll(/"([^"]+)"/g)].map((item) => item[1]));
+for (const symbol of sourceSymbolRefs) {
+  if (!symbols.has(symbol)) fail(`Source references unknown symbol ${symbol}.`);
+}
+
+const summaries = [...sourceRecords.matchAll(/summary:\s*"([^"]+)"/g)].map((match) => match[1]);
+for (const summary of summaries) {
+  if (summary.split(/\s+/).length > 48) fail(`Source summary is too long: ${summary.slice(0, 64)}...`);
+}
+
 if (!process.exitCode) {
-  console.log(`Validated ${assets.length} assets and source fixtures.`);
+  console.log(`Validated ${assets.length} assets, ${eventSymbolRefs.length} event refs, and ${sourceSymbolRefs.length} source refs.`);
 }

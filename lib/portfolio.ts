@@ -1,4 +1,4 @@
-import type { Account, Holding, Trade } from "@/lib/account";
+import type { Account, Holding, LimitOrder, Trade } from "@/lib/account";
 import type { MarketAsset } from "@/lib/market-data";
 
 export type OrderRequest = {
@@ -24,6 +24,15 @@ export type PortfolioSnapshot = {
   unrealizedPnl: number;
   bestHolding?: { symbol: string; pnl: number; pnlPercent: number };
   worstHolding?: { symbol: string; pnl: number; pnlPercent: number };
+  totalReturnPct: number;
+  tradeCount: number;
+  winRate: number;
+  riskScore: number;
+  volatilityExposure: number;
+  hypeExposure: number;
+  concentrationRisk: number;
+  cashAllocationPct: number;
+  factionExposure: Array<{ faction: string; value: number; allocationPct: number }>;
 };
 
 const FEE_RATE = 0.0015;
@@ -46,12 +55,16 @@ export function estimateOrder(side: "BUY" | "SELL", quantity: number, price: num
 export function calculatePortfolio(account: Account, assets: MarketAsset[]): PortfolioSnapshot {
   const assetBySymbol = new Map(assets.map((asset) => [asset.symbol, asset]));
   const holdingPnls = account.holdings.map((holding) => {
-    const price = assetBySymbol.get(holding.symbol)?.price ?? holding.averageCost;
+    const asset = assetBySymbol.get(holding.symbol);
+    const price = asset?.price ?? holding.averageCost;
     const value = price * holding.shares;
     const cost = holding.averageCost * holding.shares;
     const pnl = value - cost;
     return {
       symbol: holding.symbol,
+      faction: asset?.faction ?? "Unknown",
+      volatility: asset?.volatility ?? 50,
+      hype: asset?.hype ?? Math.min(100, (asset?.volume ?? 0) / 1_700_000),
       value,
       pnl,
       pnlPercent: cost ? (pnl / cost) * 100 : 0
@@ -61,17 +74,91 @@ export function calculatePortfolio(account: Account, assets: MarketAsset[]): Por
   const holdingsValue = money(holdingPnls.reduce((sum, item) => sum + item.value, 0));
   const unrealizedPnl = money(holdingPnls.reduce((sum, item) => sum + item.pnl, 0));
   const realizedPnl = money(account.realizedPnl ?? 0);
+  const totalEquity = money(account.cash + holdingsValue);
+  const totalReturnPct = account.startingCash ? ((totalEquity - account.startingCash) / account.startingCash) * 100 : 0;
+  const winningTrades = (account.trades ?? []).filter((trade) => trade.side === "SELL" && trade.net > trade.gross * 0.99).length;
+  const sellTrades = (account.trades ?? []).filter((trade) => trade.side === "SELL").length;
+  const largestHolding = holdingPnls.reduce((max, item) => Math.max(max, item.value), 0);
+  const concentrationRisk = holdingsValue ? (largestHolding / holdingsValue) * 100 : 0;
+  const volatilityExposure = holdingsValue ? holdingPnls.reduce((sum, item) => sum + item.volatility * (item.value / holdingsValue), 0) : 0;
+  const hypeExposure = holdingsValue ? holdingPnls.reduce((sum, item) => sum + item.hype * (item.value / holdingsValue), 0) : 0;
+  const factionMap = new Map<string, number>();
+  for (const item of holdingPnls) {
+    factionMap.set(item.faction, (factionMap.get(item.faction) ?? 0) + item.value);
+  }
+  const factionExposure = [...factionMap.entries()]
+    .map(([faction, value]) => ({ faction, value: money(value), allocationPct: holdingsValue ? (value / holdingsValue) * 100 : 0 }))
+    .sort((a, b) => b.value - a.value);
+  const riskScore = Math.min(100, Math.round(volatilityExposure * 0.45 + hypeExposure * 0.25 + concentrationRisk * 0.3));
 
   return {
     timestamp: new Date().toISOString(),
     cash: money(account.cash),
     holdingsValue,
-    totalEquity: money(account.cash + holdingsValue),
+    totalEquity,
     realizedPnl,
     unrealizedPnl,
+    totalReturnPct,
+    tradeCount: account.trades?.length ?? 0,
+    winRate: sellTrades ? winningTrades / sellTrades * 100 : 0,
+    riskScore,
+    volatilityExposure: money(volatilityExposure),
+    hypeExposure: money(hypeExposure),
+    concentrationRisk: money(concentrationRisk),
+    cashAllocationPct: totalEquity ? account.cash / totalEquity * 100 : 100,
+    factionExposure,
     bestHolding: holdingPnls.sort((a, b) => b.pnlPercent - a.pnlPercent)[0],
     worstHolding: [...holdingPnls].sort((a, b) => a.pnlPercent - b.pnlPercent)[0]
   };
+}
+
+export function createLimitOrder(account: Account, order: Omit<LimitOrder, "id" | "createdAt" | "status">): Account {
+  const limitOrder: LimitOrder = {
+    ...order,
+    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    createdAt: new Date().toISOString(),
+    status: "OPEN"
+  };
+  return { ...account, limitOrders: [limitOrder, ...(account.limitOrders ?? [])].slice(0, 50) };
+}
+
+export function cancelLimitOrder(account: Account, id: string): Account {
+  return {
+    ...account,
+    limitOrders: (account.limitOrders ?? []).map((order) => order.id === id && order.status === "OPEN" ? { ...order, status: "CANCELLED" as const } : order)
+  };
+}
+
+export function checkLimitOrders(account: Account, assets: MarketAsset[]): { account: Account; messages: string[] } {
+  let next = account;
+  const messages: string[] = [];
+  const now = Date.now();
+
+  for (const order of account.limitOrders ?? []) {
+    if (order.status !== "OPEN") continue;
+    if (order.expiresAt && new Date(order.expiresAt).getTime() < now) {
+      next = {
+        ...next,
+        limitOrders: next.limitOrders.map((item) => item.id === order.id ? { ...item, status: "EXPIRED" } : item)
+      };
+      messages.push(`${order.symbol} limit order expired.`);
+      continue;
+    }
+
+    const asset = assets.find((item) => item.symbol === order.symbol);
+    if (!asset) continue;
+    const canFill = order.side === "BUY" ? asset.price <= order.targetPrice : asset.price >= order.targetPrice;
+    if (!canFill) continue;
+
+    const result = executeTrade(next, { symbol: order.symbol, side: order.side, quantity: order.quantity, reason: "local limit order fill" }, assets);
+    next = {
+      ...result.account,
+      limitOrders: result.account.limitOrders.map((item) => item.id === order.id ? { ...item, status: result.ok ? "FILLED" : item.status, filledAt: result.ok ? new Date().toISOString() : item.filledAt } : item)
+    };
+    messages.push(result.ok ? `Filled ${order.side} limit for ${order.symbol}.` : result.message);
+  }
+
+  return { account: next, messages };
 }
 
 export function executeTrade(account: Account, order: OrderRequest, assets: MarketAsset[]): OrderResult {

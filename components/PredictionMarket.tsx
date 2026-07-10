@@ -108,7 +108,7 @@ export function PredictionMarket() {
             <h2 className="mt-3 font-display text-5xl font-bold uppercase leading-none md:text-7xl">Lore Forecast Desk</h2>
           </div>
           <p className="max-w-xl text-sm leading-6 text-slate-400 md:text-base">
-            Explore fictional market expectations with simulation credits only. No real-money betting, gambling, or financial advice.
+            Explore fictional market expectations with simulation credits only. No real-money markets, gambling, or financial advice.
           </p>
         </div>
 
@@ -118,7 +118,7 @@ export function PredictionMarket() {
             <p className="text-3xl font-black">{account ? formatCurrency(account.cash) : "Locked"}</p>
           </div>
           <div className="rounded-md border border-white/10 bg-black/30 p-4">
-            <p className="terminal-label">Staked</p>
+            <p className="terminal-label">Allocated</p>
             <p className="text-3xl font-black">{formatCurrency(totalMargin)}</p>
           </div>
           <div className="rounded-md border border-white/10 bg-black/30 p-4">
@@ -168,7 +168,7 @@ export function PredictionMarket() {
 
                   <div className="mt-5 grid grid-cols-[1fr_auto] items-end gap-3">
                     <label className="grid gap-2">
-                      <span className="terminal-label text-[0.58rem]">Stake</span>
+                      <span className="terminal-label text-[0.58rem]">Allocation</span>
                       <input
                         className="h-11 rounded-md border border-white/10 bg-black/40 px-4 text-sm outline-none transition focus:border-crimson focus-visible:ring-2 focus-visible:ring-ice focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                         min={1}

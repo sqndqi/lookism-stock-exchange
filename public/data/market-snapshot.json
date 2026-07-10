@@ -1,7 +1,97 @@
 {
-  "generatedAt": "2026-07-10T01:35:12.842Z",
-  "source": "static assets + cached reddit signal fallback",
+  "generatedAt": "2026-07-10T02:04:14.553Z",
+  "engineVersion": "aura-engine-2.0",
+  "marketStatus": "open",
+  "season": "season-1-seoul-opening-bell",
+  "source": "static assets + cached reddit signal fallback + manual events",
   "assetCount": 20,
+  "indices": [
+    {
+      "symbol": "AURA100",
+      "components": [
+        "DAN",
+        "JMS",
+        "GUN",
+        "KTAE",
+        "TOM",
+        "SGJ",
+        "GOO"
+      ],
+      "price": 495.22,
+      "change": 1.67
+    },
+    {
+      "symbol": "CREWWAR",
+      "components": [
+        "WRK",
+        "BDL",
+        "WTJC",
+        "JHI",
+        "HSTL"
+      ],
+      "price": 209.75,
+      "change": 1.98
+    },
+    {
+      "symbol": "JHIGH",
+      "components": [
+        "DAN",
+        "LDAN",
+        "JHI",
+        "VAS",
+        "ZACK"
+      ],
+      "price": 329.45,
+      "change": 4.2
+    }
+  ],
+  "movers": {
+    "gainers": [
+      "JMS",
+      "DAN",
+      "LDAN",
+      "BDL",
+      "VAS"
+    ],
+    "losers": [
+      "CCH",
+      "WRK",
+      "GUN",
+      "SGJ",
+      "ELI"
+    ],
+    "volatile": [
+      "CCH",
+      "SML",
+      "GOO",
+      "WRK",
+      "KTAE"
+    ]
+  },
+  "events": [
+    {
+      "id": "event-chapter-window-ui",
+      "title": "Chapter Window: UI Body Thesis",
+      "status": "live"
+    },
+    {
+      "id": "event-crew-war-rebalance",
+      "title": "Crew War Rebalance",
+      "status": "upcoming"
+    },
+    {
+      "id": "event-season-close",
+      "title": "Season Close: Seoul Opening Bell",
+      "status": "upcoming"
+    }
+  ],
+  "sourcesSummary": {
+    "cachedRedditGeneratedAt": "2026-05-22T21:33:39.115Z",
+    "cachedPostsScanned": 118,
+    "warnings": [
+      "No external API key required; cached/fallback data is safe for offline builds."
+    ]
+  },
   "assets": [
     {
       "symbol": "DAN",

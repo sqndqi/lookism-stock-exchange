@@ -12,6 +12,10 @@ import { calculatePortfolio, estimateOrder, executeTrade } from "@/lib/portfolio
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AccountToolsPanel } from "@/components/AccountToolsPanel";
+import { PortfolioAnalytics } from "@/components/PortfolioAnalytics";
+import { ProgressionPanel } from "@/components/ProgressionPanel";
+import { WatchlistAlertsPanel } from "@/components/WatchlistAlertsPanel";
 
 const listingDefaults = {
   name: "",
@@ -456,6 +460,13 @@ export function PortfolioSimulator() {
           )}
         </CardContent>
       </Card>
+
+      <div className="grid gap-5 lg:col-span-2">
+        {account ? <PortfolioAnalytics account={account} assets={tradableAssets} onSell={(symbol) => sell(symbol, 0.25)} /> : null}
+        <WatchlistAlertsPanel account={account} assets={tradableAssets} onAccount={setAccount} />
+        <ProgressionPanel account={account} assets={tradableAssets} onAccount={setAccount} />
+        <AccountToolsPanel account={account} assets={tradableAssets} onAccount={setAccount} />
+      </div>
     </section>
   );
 }

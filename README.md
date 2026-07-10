@@ -15,7 +15,13 @@ Premium underground anime-finance terminal for a fictional Lookism / PTJ-inspire
 - Source/catalyst records that explain fictional price movement
 - Deterministic fallback market engine for offline/static operation
 - Scenario contracts framed as fake-credit lore forecasts
-- API endpoints for market/assets/sources
+- Local limit order simulator with open/filled/cancelled/expired states
+- Watchlist plus browser-local alert rules
+- Portfolio analytics, risk exposure, faction exposure, and equity timeline
+- Market calendar, Season 1 metadata, index baskets, faction sectors, and simulated leaderboard
+- Import/export/reset tools for local desk backups
+- Cosmetic achievements, XP, and progression rank names
+- API endpoints for market/assets/sources/events/seasons/indices/factions/health/snapshot
 - Data validation and image audit scripts
 
 ## Tech Stack
@@ -46,6 +52,9 @@ npm audit --audit-level=high
 npm audit
 npm run validate:data
 npm run audit:images
+npm run update:market
+npm run update:all
+npm run check
 ```
 
 ## Fake Market Model
@@ -55,7 +64,7 @@ The market is source-driven but safe by default:
 - Core assets live in `lib/market-data.ts`
 - Source/catalyst records live in `lib/sources.ts`
 - Live-looking client ticks come from `lib/use-market-automation.ts`
-- Quote, ranking, and explanation utilities live in `lib/market-engine.ts`
+- Quote, ranking, event, index, sector, and explanation utilities live in `lib/market-engine.ts`
 - Generated static fallback snapshot is written to `public/data/market-snapshot.json`
 
 The engine combines base price, cached Reddit-like source signals, manual catalysts, hype, volatility, confidence, and deterministic fallback movement. The app works without API keys.
@@ -71,9 +80,24 @@ Rules:
 - No selling more shares than held
 - Fake fee is applied to buy/sell previews
 - Trades update holdings, average cost, realized P/L, snapshots, and ledger
+- Limit orders are local-only: buy if price is at/below target, sell if price is at/above target
+- Limit orders can be checked manually from the ticket and are never sent to a backend
+- Portfolio analytics calculate total return, win rate, risk, volatility exposure, hype exposure, concentration, and faction allocation
 - Account state is local browser state, not a backend account
 
 Account types live in `lib/account.ts`.
+The account schema is versioned. `readAccount()` normalizes older localStorage desks and writes a backup copy to `ptj-account-backup` before migration. Export/import tools validate and normalize JSON before overwriting the active local desk.
+
+## Routes
+
+- `/` homepage terminal
+- `/login` local desk creation
+- `/market` screener and quick ticket
+- `/asset/[symbol]` asset dossier and advanced trade ticket
+- `/intel` catalyst/source terminal
+- `/calendar` market events and season panel
+- `/leaderboard` local/demo desk ranking
+- `/dev/market` safe diagnostics, counts, and QA commands
 
 ## Sources And Catalysts
 
@@ -99,9 +123,21 @@ npm run update:all
 
 `update:sources` currently uses the existing Reddit updater and gracefully keeps cached data when fetches fail.
 
+Events live in `lib/events.ts`; current season rules live in `lib/seasons.ts`; index baskets live in `lib/indices.ts`; faction sectors are calculated in `lib/factions.ts`.
+
+## Alerts, Progression, And Seasons
+
+- Alerts are browser-local rules for price, change, hype, risk, or source count
+- Achievements and XP are cosmetic only and never grant fake credits
+- Seasons never reset the desk automatically
+- Manual season reset should be done only after exporting a backup
+- Demo leaderboard rows are deterministic local/demo entries, not real global users
+
 ## Images
 
-Use local files only. Existing images are in `public/images`.
+Use local files only. Existing PNGs are in `public/images`.
+
+If you want to use PNGs from the wiki, download them yourself, verify you have the right to use them, and store them locally. Do not hotlink wiki files and do not scrape manga panels.
 
 Recommended future convention:
 
@@ -141,6 +177,12 @@ npm run update:market
 - `/api/assets/[symbol]`
 - `/api/market`
 - `/api/sources`
+- `/api/events`
+- `/api/seasons`
+- `/api/indices`
+- `/api/factions`
+- `/api/health`
+- `/api/snapshot`
 
 These expose static/generated simulation data. Portfolio state remains local-only.
 
@@ -178,5 +220,7 @@ No payment integration exists in this MVP.
 - Scheduled source refresh with spam-safe commits
 - User-submitted catalysts with moderation
 - Richer portfolio history charts
-- Import/export local desks
 - Donation/tip jar for hosting support only
+- PWA/offline service worker
+- Backend-authenticated global leaderboard
+- Admin source CMS
