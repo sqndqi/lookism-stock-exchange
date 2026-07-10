@@ -3,9 +3,8 @@
 import { marketPulse } from "@/lib/market-data";
 import { getLiveBaseAssets, redditMarketMeta } from "@/lib/live-market";
 import { useMarketAutomation } from "@/lib/use-market-automation";
-import { formatCurrency, signedPercent } from "@/lib/utils";
+import { formatCompact, formatCurrency, signedPercent } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { StockCard } from "@/components/StockCard";
 import { MarketChart } from "@/components/MarketChart";
 
 export function Dashboard() {
@@ -15,51 +14,60 @@ export function Dashboard() {
   const hypeSpikes = [...assets]
     .sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
     .slice(0, 6);
+  const topMovers = [...assets].sort((a, b) => b.change - a.change).slice(0, 5);
+  const stress = [...assets].sort((a, b) => b.volatility - a.volatility).slice(0, 4);
 
   return (
-    <section id="market" className="relative z-10 mx-auto w-[min(1180px,calc(100%-32px))] py-16">
+    <section id="market" className="section-wrap relative z-10 py-14">
       <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-ice">Crew market board</p>
-          <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Seoul Underground Exchange</h2>
+          <p className="terminal-label text-ice">Market command center</p>
+          <h2 className="mt-3 font-display text-5xl font-bold uppercase leading-none md:text-7xl">Generation War Index</h2>
         </div>
-        <p className="max-w-xl text-slate-400">
-          Street value, fight power, rumor heat, crew influence, and instability now auto-tick from the local rumor engine.
+        <p className="max-w-xl text-sm leading-6 text-slate-400 md:text-base">
+          A scan-first terminal for street value, power premium, rumor velocity, instability, and crew-sector pressure.
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-3 md:grid-cols-4">
         {marketPulse.map((item) => (
           <Card key={item.label} className="p-5">
-            <item.icon className="mb-5 text-crimson" size={22} />
-            <p className="font-mono text-xs uppercase tracking-[0.22em] text-slate-500">{item.label}</p>
+            <div className="relative z-10 flex items-center justify-between">
+              <item.icon className="text-crimson" size={20} />
+              <span className={item.delta.startsWith("+") ? "font-mono text-xs text-ice" : "font-mono text-xs text-crimson"}>{item.delta}</span>
+            </div>
+            <p className="terminal-label relative z-10 mt-6">{item.label}</p>
             <div className="mt-2 flex items-end justify-between">
-              <strong className="text-3xl font-black">{item.value}</strong>
-              <span className={item.delta.startsWith("+") ? "text-profit" : "text-danger"}>{item.delta}</span>
+              <strong className="relative z-10 font-display text-4xl font-bold">{item.value}</strong>
             </div>
           </Card>
         ))}
       </div>
 
-      <div className="mt-5 grid gap-5 lg:grid-cols-[1.3fr_.7fr]">
+      <div className="mt-5 grid gap-5 xl:grid-cols-[1.35fr_.65fr]">
         <Card className="overflow-hidden">
           <CardHeader>
             <CardTitle>Generation War Index</CardTitle>
-            <p className="font-mono text-xs uppercase tracking-[0.22em] text-slate-500">
+            <p className="terminal-label">
               {lead.symbol} composite / {redditMarketMeta.postsScanned} posts scanned
               {automation ? ` / live tick ${automation.tick}` : ""}
             </p>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
-                <p className="text-5xl font-black">{formatCurrency(lead.price)}</p>
-                <p className="text-ice">{signedPercent(lead.change)} street value shift</p>
+                <p className="font-display text-6xl font-bold">{formatCurrency(lead.price)}</p>
+                <p className="mt-2 text-ice">{signedPercent(lead.change)} street value shift</p>
               </div>
-              <div className="grid grid-cols-3 gap-3 text-center">
-                {[lead.signal === "BUY" ? "BACK" : lead.signal === "SHORT" ? "DROP" : "WATCH", `POWER ${lead.power}`, `INSTABILITY ${lead.volatility}`].map((text) => (
-                  <div key={text} className="rounded-md border border-white/10 bg-white/[0.035] px-4 py-3 font-mono text-xs uppercase tracking-[0.16em] text-slate-300">
-                    {text}
+              <div className="grid grid-cols-3 gap-2 text-center">
+                {[
+                  ["Signal", lead.signal === "BUY" ? "BACK" : lead.signal === "SHORT" ? "SHORT" : "HOLD"],
+                  ["Power", lead.power],
+                  ["Vol", lead.volatility]
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-md border border-white/10 bg-white/[0.035] px-4 py-3">
+                    <p className="terminal-label text-[0.58rem]">{label}</p>
+                    <p className="mt-1 font-display text-2xl font-bold text-white">{value}</p>
                   </div>
                 ))}
               </div>
@@ -70,14 +78,14 @@ export function Dashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Biggest Hype Spikes</CardTitle>
+            <CardTitle>Hype Spikes</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {hypeSpikes.map((asset) => (
-              <div key={asset.symbol} className="flex items-center justify-between rounded-md border border-white/10 bg-black/20 p-3">
+              <div key={asset.symbol} className="flex items-center justify-between rounded-md border border-white/10 bg-black/25 p-3">
                 <div>
-                  <p className="font-semibold">{asset.name}</p>
-                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">{asset.symbol}</p>
+                  <p className="font-semibold leading-tight">{asset.name}</p>
+                  <p className="terminal-label text-[0.58rem]">{asset.symbol} / Heat {formatCompact(asset.volume)}</p>
                 </div>
                 <div className="text-right">
                   <p>{formatCurrency(asset.price)}</p>
@@ -89,10 +97,49 @@ export function Dashboard() {
         </Card>
       </div>
 
-      <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {assets.map((asset, index) => (
-          <StockCard key={asset.symbol} asset={asset} index={index} />
-        ))}
+      <div className="mt-5 grid gap-5 lg:grid-cols-[.8fr_1.2fr]">
+        <Card>
+          <CardHeader>
+            <CardTitle>Top Movers</CardTitle>
+            <p className="terminal-label">highest positive flow</p>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {topMovers.map((asset, index) => (
+              <div key={asset.symbol} className="grid grid-cols-[36px_1fr_auto] items-center gap-3 rounded-md border border-white/10 bg-white/[0.03] p-3">
+                <span className="font-mono text-xs text-slate-500">0{index + 1}</span>
+                <div>
+                  <p className="font-bold">{asset.name}</p>
+                  <p className="terminal-label text-[0.58rem]">{asset.symbol} / {asset.faction}</p>
+                </div>
+                <span className={asset.change >= 0 ? "text-ice" : "text-crimson"}>{signedPercent(asset.change)}</span>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Risk & Rumor Heat</CardTitle>
+            <p className="terminal-label">volatility leaders under active catalyst pressure</p>
+          </CardHeader>
+          <CardContent className="grid gap-3 md:grid-cols-2">
+            {stress.map((asset) => (
+              <div key={asset.symbol} className="rounded-md border border-white/10 bg-black/25 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="font-display text-2xl font-bold uppercase">{asset.symbol}</p>
+                    <p className="text-sm text-slate-400">{asset.name}</p>
+                  </div>
+                  <span className="rounded border border-amber/30 bg-amber/10 px-2 py-1 font-mono text-xs text-amber">VOL {asset.volatility}</span>
+                </div>
+                <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-white/10">
+                  <div className="h-full rounded-full bg-amber" style={{ width: `${asset.volatility}%` }} />
+                </div>
+                <p className="mt-3 text-xs leading-5 text-slate-400">{asset.catalyst ?? asset.quote}</p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
       </div>
     </section>
   );

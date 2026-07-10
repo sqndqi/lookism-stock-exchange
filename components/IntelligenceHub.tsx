@@ -27,14 +27,14 @@ const citedPosts = redditMarket
 
 export function IntelligenceHub() {
   return (
-    <section id="intel" className="relative z-10 mx-auto w-[min(1180px,calc(100%-32px))] py-16">
+    <section id="intel" className="section-wrap relative z-10 py-14">
       <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-ice">Rumor wire</p>
-          <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Why Did This Move?</h2>
+          <p className="terminal-label text-ice">Live intelligence feed</p>
+          <h2 className="mt-3 font-display text-5xl font-bold uppercase leading-none md:text-7xl">Catalyst Desk</h2>
         </div>
-        <p className="max-w-xl text-slate-400">
-          Reddit catalysts, chapter theories, and Lookism Wiki context converted into fighter and crew movement.
+        <p className="max-w-xl text-sm leading-6 text-slate-400 md:text-base">
+          Chapter catalysts, Reddit rumors, power-scaling disputes, and crew movement translated into market impact.
         </p>
       </div>
 
@@ -42,8 +42,8 @@ export function IntelligenceHub() {
         <Card className="overflow-hidden">
           <CardHeader>
             <div className="flex flex-wrap items-center gap-3">
-              <Badge>r/lookismcomic</Badge>
-              <span className="font-mono text-xs uppercase tracking-[0.2em] text-slate-500">
+              <Badge>Reddit rumors</Badge>
+              <span className="terminal-label">
                 {redditStocks.postsScanned} posts scanned
               </span>
             </div>
@@ -54,7 +54,7 @@ export function IntelligenceHub() {
               <div key={stock.name} className="rounded-md border border-white/10 bg-black/25 p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-2xl font-black leading-none">{stock.name}</p>
+                    <p className="font-display text-3xl font-bold uppercase leading-none">{stock.name}</p>
                     <p className="mt-1 text-sm text-slate-400">{stock.reason}</p>
                   </div>
                   <div className="text-right">
@@ -64,7 +64,7 @@ export function IntelligenceHub() {
                     </p>
                   </div>
                 </div>
-                <div className="mt-3 grid grid-cols-2 gap-3 font-mono text-xs uppercase tracking-[0.16em] text-slate-500">
+                <div className="terminal-label mt-3 grid grid-cols-2 gap-3 text-[0.58rem]">
                   <span>Rumor Heat {stock.mentions}</span>
                   <span>Aura Sentiment {stock.sentiment}</span>
                 </div>
@@ -77,7 +77,7 @@ export function IntelligenceHub() {
           <Card>
             <CardHeader>
               <div className="flex flex-wrap items-center gap-3">
-                <Badge>Lookism Wikia</Badge>
+                <Badge>Chapter context</Badge>
                 <a
                   className="font-mono text-xs uppercase tracking-[0.2em] text-slate-500 transition hover:text-cyanline"
                   href="https://lookism.fandom.com/wiki/Lookism_Wikia"
@@ -87,7 +87,7 @@ export function IntelligenceHub() {
                   source map
                 </a>
               </div>
-              <CardTitle className="mt-3">Wikia Dossiers</CardTitle>
+              <CardTitle className="mt-3">Fight Dossiers</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-3 md:grid-cols-2">
               {wikiDossiers.map((dossier) => (

@@ -4,12 +4,12 @@ import { Badge } from "@/components/ui/badge";
 
 export function MarketNews() {
   return (
-    <section id="news" className="relative z-10 border-t border-white/10 bg-black/25 py-16">
-      <div className="mx-auto grid w-[min(1180px,calc(100%-32px))] gap-5 lg:grid-cols-[1.25fr_.75fr]">
+    <section id="news" className="relative z-10 border-t border-white/10 bg-black/25 py-14">
+      <div className="section-wrap grid gap-5 lg:grid-cols-[1.25fr_.75fr]">
         <Card>
           <CardHeader>
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-crimson">PTJ rumor wire</p>
-            <CardTitle className="text-4xl md:text-5xl">Underground Intel</CardTitle>
+            <p className="terminal-label text-crimson">AURA wire</p>
+            <CardTitle className="text-4xl md:text-5xl">Market Dispatch</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4">
             {news.map((item) => (
@@ -18,7 +18,7 @@ export function MarketNews() {
                   <Badge>{item.tag}</Badge>
                   <span className="font-mono text-xs uppercase tracking-[0.2em] text-slate-500">{item.time}</span>
                 </div>
-                <h3 className="mt-4 text-2xl font-black uppercase leading-tight transition group-hover:text-ice">{item.title}</h3>
+                <h3 className="mt-4 font-display text-3xl font-bold uppercase leading-tight transition group-hover:text-ice">{item.title}</h3>
                 <p className="mt-4 font-mono text-sm uppercase tracking-[0.18em] text-ice">{item.impact}</p>
               </article>
             ))}

@@ -47,7 +47,7 @@ export function PredictionMarket() {
 
   function buyFuture(question: string) {
     if (!account) {
-      setMessage("Create a PTJ account before opening chapter predictions.");
+      setMessage("Create an AURA EXCHANGE desk before opening chapter predictions.");
       return;
     }
 
@@ -100,29 +100,29 @@ export function PredictionMarket() {
   }
 
   return (
-    <section id="predictions" className="relative z-10 border-y border-white/10 bg-white/[0.02] py-16">
-      <div className="mx-auto w-[min(1180px,calc(100%-32px))]">
+    <section id="predictions" className="relative z-10 border-y border-white/10 bg-white/[0.018] py-14">
+      <div className="section-wrap">
         <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-crimson">Paper prediction market</p>
-            <h2 className="mt-3 text-4xl font-black uppercase leading-none md:text-6xl">Next Chapter Odds</h2>
+            <p className="terminal-label text-crimson">Prediction contracts</p>
+            <h2 className="mt-3 font-display text-5xl font-bold uppercase leading-none md:text-7xl">Next Chapter Odds</h2>
           </div>
-          <p className="max-w-xl text-slate-400">
-            Back chapter outcomes with demo cash. Stake, potential payout, open positions, and settlement all persist in your local account.
+          <p className="max-w-xl text-sm leading-6 text-slate-400 md:text-base">
+            Quote chapter outcomes like contracts: probability bars, pool size, closing window, catalyst, margin, and paper payout.
           </p>
         </div>
 
         <div className="mb-5 grid gap-3 md:grid-cols-3">
           <div className="rounded-md border border-white/10 bg-black/30 p-4">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Demo cash</p>
+            <p className="terminal-label">Demo cash</p>
             <p className="text-3xl font-black">{account ? formatCurrency(account.cash) : "Locked"}</p>
           </div>
           <div className="rounded-md border border-white/10 bg-black/30 p-4">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Staked</p>
+            <p className="terminal-label">Staked</p>
             <p className="text-3xl font-black">{formatCurrency(totalMargin)}</p>
           </div>
           <div className="rounded-md border border-white/10 bg-black/30 p-4">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Potential payout</p>
+            <p className="terminal-label">Potential payout</p>
             <p className="text-3xl font-black">{formatCurrency(markedValue)}</p>
           </div>
         </div>
@@ -136,8 +136,8 @@ export function PredictionMarket() {
                 <CardHeader>
                   <div className="flex items-center justify-between gap-3">
                     <Badge>{contract.closes}</Badge>
-                    <span className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">
-                      Chapter pool {formatCurrency(contract.pool)}
+                    <span className="terminal-label">
+                      Pool {formatCurrency(contract.pool)}
                     </span>
                   </div>
                   <CardTitle className="mt-4 leading-none">{contract.question}</CardTitle>
@@ -176,7 +176,6 @@ export function PredictionMarket() {
                       onChange={(event) => setStakeByQuestion((current) => ({ ...current, [contract.question]: Number(event.target.value) }))}
                     />
                     <Button
-                      variant="ghost"
                       onClick={() => buyFuture(contract.question)}
                       disabled={!account || !selectedOption || (account?.cash ?? 0) <= 0}
                     >
@@ -184,7 +183,7 @@ export function PredictionMarket() {
                     </Button>
                   </div>
                   <p className="mt-3 font-mono text-xs uppercase tracking-[0.16em] text-slate-500">
-                    {selectedOption ? `Potential payout ${formatCurrency(contractPayout(stake, selectedOption.odds))}` : "Select a side to quote chapter odds"}
+                    {selectedOption ? `Quoted payout ${formatCurrency(contractPayout(stake, selectedOption.odds))}` : "Select a side to quote chapter odds"}
                   </p>
                 </CardContent>
               </Card>
@@ -195,7 +194,7 @@ export function PredictionMarket() {
         <Card className="mt-5">
           <CardHeader className="flex flex-row items-start justify-between gap-4">
             <div>
-              <CardTitle>Open Chapter Predictions</CardTitle>
+              <CardTitle>Open Prediction Book</CardTitle>
               <p className="text-sm text-slate-400">{message}</p>
             </div>
             <Landmark className="text-crimson" size={24} />

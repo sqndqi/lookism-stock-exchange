@@ -185,7 +185,7 @@ export function PortfolioSimulator() {
   function addListing(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!account) {
-      setMessage("Create a PTJ account before listing new fighter or crew assets.");
+      setMessage("Create an AURA EXCHANGE desk before listing new fighter or crew assets.");
       return;
     }
 
@@ -199,7 +199,7 @@ export function PortfolioSimulator() {
     }
 
     if (tradableAssets.some((asset) => asset.symbol === symbol)) {
-      setMessage(`${symbol} already exists on the PTJ market.`);
+      setMessage(`${symbol} already exists on AURA EXCHANGE.`);
       return;
     }
 
@@ -220,12 +220,12 @@ export function PortfolioSimulator() {
   }
 
   return (
-    <section id="portfolio" className="relative z-10 mx-auto grid w-[min(1180px,calc(100%-32px))] gap-5 py-16 lg:grid-cols-[.78fr_1.22fr]">
+    <section id="portfolio" className="section-wrap relative z-10 grid gap-5 py-14 lg:grid-cols-[.78fr_1.22fr]">
       <div className="grid gap-5">
         <Card className="overflow-hidden">
           <CardHeader>
-            <CardTitle>Underground Access</CardTitle>
-            <p className="text-sm text-slate-400">One local account. Demo cash, crew basket, custom listings, and chapter predictions save in this browser.</p>
+            <CardTitle>Open Trading Desk</CardTitle>
+            <p className="text-sm text-slate-400">One local desk. Demo cash, holdings, short positions, listings, and prediction contracts persist in this browser.</p>
           </CardHeader>
           <CardContent>
             <div className="rounded-2xl border border-crimson/25 bg-crimson/10 p-5">
@@ -234,12 +234,12 @@ export function PortfolioSimulator() {
                   <LockKeyhole size={22} />
                 </div>
                 <div>
-                  <p className="text-3xl font-black">{account ? account.alias : "VIP Desk"}</p>
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-slate-400">{account ? `${account.crew} account` : "Create account to unlock trading"}</p>
+                  <p className="font-display text-4xl font-bold uppercase">{account ? account.alias : "VIP Desk"}</p>
+                  <p className="terminal-label">{account ? `${account.crew} desk` : "Create account to unlock trading"}</p>
                 </div>
               </div>
               <div className="mt-6 grid gap-3">
-                <input className="h-12 rounded-xl border border-white/10 bg-black/30 px-4 text-sm outline-none" value={account ? `${account.alias}@ptj.black` : "new-dealer@ptj.black"} readOnly />
+                <input className="h-12 rounded-md border border-white/10 bg-black/30 px-4 text-sm outline-none" value={account ? `${account.alias}@aura.exchange` : "new-desk@aura.exchange"} readOnly />
                 <input className="h-12 rounded-xl border border-white/10 bg-black/30 px-4 text-sm outline-none" value={account ? `Started with ${formatCurrency(STARTING_CASH)} demo cash` : "Create account to receive demo cash"} readOnly />
                 <Button asChild>
                   <Link href="/login">
@@ -254,8 +254,8 @@ export function PortfolioSimulator() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Underground Listing</CardTitle>
-            <p className="text-sm text-slate-400">Add missing fighters, schools, crews, or meme assets to your local crew market.</p>
+            <CardTitle>Private Listing</CardTitle>
+            <p className="text-sm text-slate-400">List missing fighters, schools, crews, or theory assets to your local market.</p>
           </CardHeader>
           <CardContent>
             <form className="grid gap-3" onSubmit={addListing}>
@@ -302,20 +302,20 @@ export function PortfolioSimulator() {
       <Card>
         <CardHeader className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <CardTitle>Crew Basket</CardTitle>
-            <p className="text-sm text-slate-400">Back or drop fighter and crew assets using the Reddit-backed rumor feed plus your local listings.</p>
+            <CardTitle>Portfolio Simulator</CardTitle>
+            <p className="text-sm text-slate-400">Back, drop, or short fighter and crew assets using the rumor feed plus your local listings.</p>
           </div>
           <div className="grid grid-cols-3 gap-2 text-right">
             <div className="rounded-md border border-white/10 bg-black/30 p-3">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Demo Cash</p>
+              <p className="terminal-label text-[0.58rem]">Demo Cash</p>
               <p className="text-2xl font-black">{account ? formatCurrency(cash) : "Locked"}</p>
             </div>
             <div className="rounded-md border border-white/10 bg-black/30 p-3">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Crew Value</p>
+              <p className="terminal-label text-[0.58rem]">Asset Value</p>
               <p className="text-2xl font-black">{account ? formatCurrency(holdingsValue) : "Locked"}</p>
             </div>
             <div className="rounded-md border border-white/10 bg-black/30 p-3">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Total Pull</p>
+              <p className="terminal-label text-[0.58rem]">Desk Equity</p>
               <p className="text-2xl font-black">{account ? formatCurrency(holdingsValue + cash) : "Locked"}</p>
             </div>
           </div>
@@ -323,7 +323,7 @@ export function PortfolioSimulator() {
         <CardContent>
           {!account && (
             <div className="mb-5 rounded-xl border border-crimson/30 bg-crimson/10 p-4 text-sm text-slate-200">
-              Create your one-time PTJ account to receive {formatCurrency(STARTING_CASH)} demo cash and unlock trading.
+              Create your AURA EXCHANGE desk to receive {formatCurrency(STARTING_CASH)} demo cash and unlock trading.
             </div>
           )}
 

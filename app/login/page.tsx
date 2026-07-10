@@ -61,38 +61,38 @@ export default function LoginPage() {
       <Image src={assetPath("/images/seoul-night.svg")} alt="Seoul night background" fill priority className="object-cover opacity-25" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_14%_12%,rgba(215,25,32,.22),transparent_26%),radial-gradient(circle_at_82%_20%,rgba(125,211,252,.18),transparent_24%),linear-gradient(180deg,rgba(3,4,5,.86),rgba(3,4,5,.97))]" />
 
-      <section className="relative z-10 mx-auto grid min-h-screen w-[min(1160px,calc(100%-32px))] items-center gap-8 py-10 lg:grid-cols-[1.02fr_.98fr]">
-        <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-black/45 p-6 shadow-2xl backdrop-blur md:p-8">
+      <section className="section-wrap relative z-10 grid min-h-screen items-center gap-8 py-10 lg:grid-cols-[1.02fr_.98fr]">
+        <div className="terminal-shell relative overflow-hidden rounded-lg p-6 backdrop-blur md:p-8">
           <Button asChild variant="ghost" size="sm">
             <Link href="/"><ArrowLeft size={16} /> Back to market</Link>
           </Button>
 
-          <p className="mt-8 font-mono text-xs uppercase tracking-[0.22em] text-crimson">PTJ desk access</p>
-          <h1 className="mt-4 font-comic text-[clamp(3rem,7vw,6.3rem)] font-black uppercase leading-[0.9] tracking-tight">
+          <p className="terminal-label mt-8 text-crimson">AURA EXCHANGE desk access</p>
+          <h1 className="mt-4 font-display text-[clamp(3.5rem,8vw,7rem)] font-bold uppercase leading-[0.82] tracking-normal">
             {hasAccount ? "Local desk active" : "Open your desk"}
           </h1>
           <p className="mt-5 max-w-xl text-sm leading-7 text-slate-300 md:text-base">
             {hasAccount
-              ? "This browser already has a PTJ-Stocks account. Jump back into the crew basket or wipe the local desk and start over."
+              ? "This browser already has an AURA EXCHANGE desk. Jump back into the portfolio simulator or wipe the local desk and start over."
               : `One-time local account setup. Every desk starts with ${formatCurrency(STARTING_CASH)} demo cash and unlocks backing, drops, chapter predictions, and custom local listings.`}
           </p>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 bg-black/45 p-4">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Demo Cash</p>
-              <p className="mt-2 text-3xl font-black">{formatCurrency(STARTING_CASH)}</p>
+            <div className="rounded-md border border-white/10 bg-black/45 p-4">
+              <p className="terminal-label">Demo Cash</p>
+              <p className="mt-2 font-display text-4xl font-bold">{formatCurrency(STARTING_CASH)}</p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-black/45 p-4">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Account Type</p>
-              <p className="mt-2 text-3xl font-black">{hasAccount ? "Local" : "New"}</p>
+            <div className="rounded-md border border-white/10 bg-black/45 p-4">
+              <p className="terminal-label">Account Type</p>
+              <p className="mt-2 font-display text-4xl font-bold">{hasAccount ? "Local" : "New"}</p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-black/45 p-4">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Storage</p>
-              <p className="mt-2 text-3xl font-black">Browser</p>
+            <div className="rounded-md border border-white/10 bg-black/45 p-4">
+              <p className="terminal-label">Storage</p>
+              <p className="mt-2 font-display text-4xl font-bold">Browser</p>
             </div>
           </div>
 
-          <div className="relative mt-8 h-[340px] overflow-hidden rounded-[24px] border border-white/10 bg-black">
+          <div className="dossier-panel relative mt-8 h-[340px] rounded-lg bg-black">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_12%,rgba(215,25,32,.22),transparent_24%),linear-gradient(90deg,rgba(0,0,0,.88),rgba(0,0,0,.42),rgba(0,0,0,.08))]" />
             <Image
               src={assetPath("/images/fighter-daniel.png")}
@@ -103,18 +103,18 @@ export default function LoginPage() {
               className="absolute bottom-0 right-[-8px] h-full w-auto object-contain object-bottom"
             />
             <div className="relative z-10 flex h-full max-w-sm flex-col justify-between p-5">
-              <div className="rounded-2xl border border-white/10 bg-black/55 px-4 py-3">
-                <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Desk Feature</p>
-                <p className="mt-1 text-2xl font-black uppercase">Big Daniel</p>
+              <div className="rounded-md border border-white/10 bg-black/55 px-4 py-3">
+                <p className="terminal-label">Desk Feature</p>
+                <p className="mt-1 font-display text-3xl font-bold uppercase">Big Daniel</p>
               </div>
               <div className="space-y-3">
-                <div className="rounded-2xl border border-white/10 bg-black/55 p-4">
-                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Why the desk exists</p>
+                <div className="rounded-md border border-white/10 bg-black/55 p-4">
+                  <p className="terminal-label">Why the desk exists</p>
                   <p className="mt-2 text-sm leading-6 text-slate-300">
                     Keep your one-time local account, crew basket, and chapter positions in the browser without a backend login flow.
                   </p>
                 </div>
-                <div className="inline-flex rounded-full border border-crimson/30 bg-crimson/10 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-crimson">
+                <div className="inline-flex rounded-md border border-crimson/30 bg-crimson/10 px-4 py-2 font-mono text-xs uppercase tracking-[0.18em] text-crimson">
                   No password / no real money
                 </div>
               </div>
@@ -122,13 +122,13 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <form onSubmit={submit} className="rounded-[28px] border border-white/10 bg-black/55 p-6 shadow-2xl backdrop-blur md:p-8">
+        <form onSubmit={submit} className="terminal-shell rounded-lg p-6 backdrop-blur md:p-8">
           <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-5">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Status</p>
-              <p className="mt-1 text-3xl font-black uppercase">{hasAccount ? "Account active" : "Create account"}</p>
+              <p className="terminal-label">Status</p>
+              <p className="mt-1 font-display text-4xl font-bold uppercase">{hasAccount ? "Desk active" : "Create desk"}</p>
             </div>
-            <div className="grid h-14 w-14 place-items-center rounded-2xl border border-crimson/30 bg-crimson/10 text-crimson">
+            <div className="grid h-14 w-14 place-items-center rounded-md border border-crimson/30 bg-crimson/10 text-crimson">
               {hasAccount ? <Check size={24} /> : <Shield size={24} />}
             </div>
           </div>
@@ -136,7 +136,7 @@ export default function LoginPage() {
           <label className="mt-6 block">
             <span className="font-mono text-xs uppercase tracking-[0.18em] text-slate-400">Dealer alias</span>
             <input
-              className="mt-2 h-12 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-sm outline-none transition focus:border-crimson"
+              className="mt-2 h-12 w-full rounded-md border border-white/10 bg-white/[0.04] px-4 text-sm outline-none transition focus:border-crimson"
               value={alias}
               disabled={hasAccount}
               onChange={(event) => setAlias(event.target.value)}
@@ -154,7 +154,7 @@ export default function LoginPage() {
                     type="button"
                     disabled={hasAccount}
                     onClick={() => setCrew(option.name)}
-                    className={`rounded-2xl border p-4 text-left transition ${
+                    className={`rounded-md border p-4 text-left transition ${
                       active
                         ? "border-crimson/50 bg-crimson/12 shadow-[0_0_0_1px_rgba(215,25,32,.18)]"
                         : "border-white/10 bg-white/[0.03] hover:border-white/20"
@@ -168,20 +168,20 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <div className="mt-6 rounded-2xl border border-white/10 bg-black/35 p-4">
+          <div className="mt-6 rounded-md border border-white/10 bg-black/35 p-4">
             <div className="flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-2xl bg-black/45 text-crimson">
+              <div className="grid h-10 w-10 place-items-center rounded-md bg-black/45 text-crimson">
                 <Wallet size={18} />
               </div>
               <div>
-                <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Account Package</p>
+                <p className="terminal-label">Desk Package</p>
                 <p className="text-sm text-slate-300">{hasAccount ? "This desk is already loaded and ready." : `${formatCurrency(STARTING_CASH)} demo cash on creation.`}</p>
               </div>
             </div>
           </div>
 
           <Button className="mt-7 w-full" size="lg" type="submit">
-            {hasAccount ? "Enter crew basket" : "Create local account"}
+            {hasAccount ? "Enter portfolio" : "Create local desk"}
           </Button>
           {hasAccount ? (
             <Button className="mt-3 w-full" size="lg" type="button" variant="ghost" onClick={reset}>

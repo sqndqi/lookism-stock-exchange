@@ -2,14 +2,24 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Bell, Moon, Music2, Search, Sun } from "lucide-react";
+import { Bell, Menu, Moon, Music2, Search, Sun, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { readAccount, type Account } from "@/lib/account";
+
+const links = [
+  ["Market", "#market"],
+  ["Fighters", "#fighters"],
+  ["Crews", "#crews"],
+  ["Predictions", "#predictions"],
+  ["Portfolio", "#portfolio"],
+  ["Intel", "#intel"]
+];
 
 export function Navbar() {
   const [light, setLight] = useState(false);
   const [audio, setAudio] = useState(false);
   const [account, setAccount] = useState<Account | null>(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     document.body.classList.toggle("light", light);
@@ -44,24 +54,24 @@ export function Navbar() {
   }, [audio]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-abyss/90 backdrop-blur-md">
-      <nav className="mx-auto flex h-16 w-[min(1180px,calc(100%-32px))] items-center justify-between">
-        <a href="#top" className="flex items-center gap-3">
-          <span className="grid h-9 w-9 place-items-center rounded-xl border border-crimson/40 bg-crimson/10 text-sm font-black text-crimson">
-            PTJ
+    <header className="sticky top-0 z-50 px-3 pt-3">
+      <nav className="section-wrap terminal-shell relative flex h-16 items-center justify-between rounded-lg px-3 backdrop-blur-xl md:px-4">
+        <a href="#top" className="flex items-center gap-3" onClick={() => setOpen(false)}>
+          <span className="grid h-10 w-10 place-items-center rounded-md border border-crimson/40 bg-crimson/10 font-display text-lg font-black text-crimson shadow-[0_0_28px_rgba(239,35,60,.18)]">
+            AX
           </span>
-          <span className="hidden text-xl font-black tracking-tight sm:block">PTJ-Stocks</span>
+          <span className="leading-none">
+            <span className="block font-display text-xl font-bold tracking-wide">AURA EXCHANGE</span>
+            <span className="terminal-label hidden text-[0.56rem] sm:block">Seoul fighter market terminal</span>
+          </span>
         </a>
         <div className="hidden items-center gap-5 text-xs font-bold uppercase tracking-[0.14em] text-slate-300 lg:flex">
-          <a className="transition hover:text-cyanline" href="#top">Landing</a>
-          <a className="transition hover:text-cyanline" href="#intel">Intel</a>
-          <a className="transition hover:text-cyanline" href="#market">Market</a>
-          <a className="transition hover:text-cyanline" href="#characters">Characters</a>
-          <a className="transition hover:text-cyanline" href="#predictions">Predictions</a>
-          <a className="transition hover:text-cyanline" href="#crews">Crews</a>
-          <a className="transition hover:text-cyanline" href="#portfolio">Crew Basket</a>
+          {links.map(([label, href]) => (
+            <a key={href} className="transition hover:text-ice" href={href}>{label}</a>
+          ))}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="hidden items-center gap-2 sm:flex">
+          <span className="status-dot rounded border border-crimson/30 bg-crimson/10 px-3 py-2 font-mono text-[0.64rem] font-bold uppercase tracking-[0.16em] text-crimson">Live</span>
           <Button aria-label="Search" variant="ghost" size="sm"><Search size={16} /></Button>
           <Button aria-label="Alerts" variant="ghost" size="sm"><Bell size={16} /></Button>
           <Button aria-label="Toggle ambient audio" variant="ghost" size="sm" onClick={() => setAudio((value) => !value)}>
@@ -71,9 +81,26 @@ export function Navbar() {
             {light ? <Moon size={16} /> : <Sun size={16} />}
           </Button>
           <Button asChild size="sm" className="hidden sm:inline-flex">
-            <Link href={account ? "/#portfolio" : "/login"}>{account ? "Crew Basket" : "Account"}</Link>
+            <Link href={account ? "/#portfolio" : "/login"}>{account ? "Desk Open" : "Create Desk"}</Link>
           </Button>
         </div>
+        <Button className="sm:hidden" aria-label="Toggle navigation" variant="ghost" size="sm" onClick={() => setOpen((value) => !value)}>
+          {open ? <X size={18} /> : <Menu size={18} />}
+        </Button>
+        {open && (
+          <div className="absolute inset-x-0 top-[calc(100%+8px)] rounded-lg border border-white/10 bg-black/95 p-3 shadow-panel backdrop-blur-xl sm:hidden">
+            <div className="grid gap-1">
+              {links.map(([label, href]) => (
+                <a key={href} className="rounded-md px-3 py-3 text-sm font-bold uppercase tracking-[0.12em] text-slate-200 hover:bg-white/10" href={href} onClick={() => setOpen(false)}>
+                  {label}
+                </a>
+              ))}
+              <Link className="rounded-md bg-crimson px-3 py-3 text-sm font-black uppercase tracking-[0.12em] text-white" href={account ? "/#portfolio" : "/login"} onClick={() => setOpen(false)}>
+                {account ? "Open Desk" : "Create Desk"}
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
     </header>
   );

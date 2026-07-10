@@ -99,23 +99,23 @@ export function CrewMissions() {
   const cash = account?.cash ?? 0;
 
   return (
-    <section id="crews" className="relative z-10 mx-auto grid w-[min(1180px,calc(100%-32px))] gap-5 py-16 lg:grid-cols-[.95fr_1.05fr]">
+    <section id="crews" className="section-wrap relative z-10 grid gap-5 py-14 lg:grid-cols-[.82fr_1.18fr]">
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between gap-4">
             <div>
-              <Badge>Daily crew tasks</Badge>
-              <CardTitle className="mt-4">Underground Missions</CardTitle>
+              <Badge>Desk incentives</Badge>
+              <CardTitle className="mt-4">Trading Desk Access</CardTitle>
             </div>
-            <div className="rounded-md border border-white/10 bg-black/25 p-3 text-right">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">Demo Cash</p>
+            <div className="rounded-md border border-white/10 bg-black/35 p-3 text-right">
+              <p className="terminal-label text-[0.58rem]">Demo Cash</p>
               <p className="text-3xl font-black">{account ? formatCurrency(cash) : "Locked"}</p>
             </div>
           </div>
         </CardHeader>
         <CardContent>
           <Button className="mb-5 w-full" onClick={checkIn} variant={checkedIn ? "ghost" : "default"} disabled={!account}>
-            {!account ? "Create account to unlock missions" : checkedIn ? "Daily check-in claimed" : "Daily crew check-in (+$300)"}
+            {!account ? "Create desk to unlock incentives" : checkedIn ? "Daily desk credit claimed" : "Claim desk credit (+$300)"}
           </Button>
           <div className="space-y-3">
             {missions.map((mission) => (
@@ -127,7 +127,7 @@ export function CrewMissions() {
                     </div>
                     <div>
                       <p className="font-semibold">{mission.title}</p>
-                      <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">
+                      <p className="terminal-label text-[0.58rem]">
                         Demo reward {formatCurrency(mission.reward)}
                       </p>
                     </div>
@@ -145,21 +145,21 @@ export function CrewMissions() {
 
       <Card>
         <CardHeader>
-          <Badge>Crew War</Badge>
-          <CardTitle className="mt-4">Crew War Map</CardTitle>
-          <p className="text-sm text-slate-400">Lore-aware crew profiles based on leaders, territory, threat level, enemies, and current arc pressure.</p>
+          <Badge>Sector board</Badge>
+          <CardTitle className="mt-4">Crew / Faction Market</CardTitle>
+          <p className="text-sm text-slate-400">Crews behave like sector funds: leaders, territory, influence, betrayal risk, and active catalysts change the price.</p>
         </CardHeader>
         <CardContent className="space-y-3">
           {crews.map((crew, index) => (
             <div key={crew.name} className="grid gap-4 rounded-md border border-white/10 bg-white/[0.035] p-4 md:grid-cols-[auto_1fr_auto] md:items-center">
-              <div className="text-3xl font-black text-crimson">#{index + 1}</div>
+              <div className="font-display text-4xl font-bold text-crimson">#{index + 1}</div>
               <div>
-                <p className="text-2xl font-black">{crew.name}</p>
-                <p className="font-mono text-xs uppercase tracking-[0.18em] text-slate-500">
+                <p className="font-display text-3xl font-bold uppercase">{crew.name}</p>
+                <p className="terminal-label text-[0.58rem]">
                   Leader {crew.leader} / {crew.members} / {crew.territory}
                 </p>
                 <p className="mt-2 text-sm text-slate-400">{crew.status}</p>
-                <p className="mt-2 font-mono text-xs uppercase tracking-[0.14em] text-slate-500">
+                <p className="terminal-label mt-2 text-[0.58rem]">
                   Enemies: {crew.pressure} / Betrayal risk: {crew.betrayalRisk}
                 </p>
               </div>

@@ -1,8 +1,8 @@
-# PTJ-Stocks
+# AURA EXCHANGE
 
-Lowkey Lookism-inspired stocks for PTJ universe characters and crews.
+Premium underground anime-finance terminal for fictional Lookism-inspired fighter assets, crew sectors, rumor heat, and chapter prediction contracts.
 
-This is a Vercel-ready Next.js 15 dashboard for a fictional Lookism-inspired faction and character market. It ships with cinematic UI, typed mock finance data, animated stock cards, generated silhouette art, prediction contracts, crew missions, a portfolio simulator, Lookism Wiki dossiers, and a Reddit-powered updater script for market signals.
+This is a Vercel-ready Next.js 15 dashboard for a fictional Lookism-inspired faction and character market. It ships with a cinematic terminal UI, typed mock finance data, animated asset dossiers, prediction contracts, crew-sector boards, a portfolio simulator, Lookism Wiki dossiers, and a Reddit-powered updater script for market signals.
 
 > Fan-made project. Character and faction names are used as fictional market labels.
 

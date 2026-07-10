@@ -20,6 +20,8 @@ const config: Config = {
         ink: "#090a0d",
         graphite: "#121216",
         chrome: "#c7ccd4",
+        platinum: "#edf0f3",
+        amber: "#f5b84b",
         silver: "#c7ccd4",
         electric: "#93b7d8",
         ice: "#93b7d8",
@@ -34,7 +36,7 @@ const config: Config = {
         panel: "0 32px 120px rgba(0, 0, 0, 0.76)"
       },
       backgroundImage: {
-        grid: "linear-gradient(rgba(147,183,216,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(147,183,216,.07) 1px, transparent 1px)",
+        grid: "linear-gradient(rgba(216,222,233,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(216,222,233,.055) 1px, transparent 1px)",
         scanline: "repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 4px)"
       },
       keyframes: {

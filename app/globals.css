@@ -1,22 +1,26 @@
-@import url("https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Bebas+Neue&family=Black+Han+Sans&family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700;900&family=Orbitron:wght@500;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-display: "Anime Sans 2.0", "Anime Ace 2.0 BB", "Black Han Sans", "Anton", "Bebas Neue", "Impact", sans-serif;
-  --font-comic: "Anime Sans 2.0", "Anime Ace 2.0 BB", "Bangers", "Do Hyeon", "Black Han Sans", fantasy;
-  --font-sans: "Noto Sans KR", "Pretendard", "Inter", system-ui, sans-serif;
-  --font-mono: "SFMono-Regular", Consolas, monospace;
-  --background: #040405;
-  --foreground: #f4f6f8;
-  --crimson: #d71920;
-  --blood: #7a0b13;
-  --ice: #93b7d8;
-  --silver: #c7ccd4;
-  --graphite: #121216;
-  --panel: #090a0d;
+  --font-display: "Rajdhani", "Archivo", sans-serif;
+  --font-comic: "Rajdhani", "Archivo", sans-serif;
+  --font-sans: "Archivo", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", Consolas, monospace;
+  --background: #030407;
+  --foreground: #f3f6f8;
+  --crimson: #ef233c;
+  --blood: #7d111d;
+  --ice: #8ab4f8;
+  --silver: #d8dee9;
+  --platinum: #edf0f3;
+  --amber: #f5b84b;
+  --graphite: #11141a;
+  --panel: #090b10;
+  --panel-soft: #0d1118;
+  --line: rgba(216, 222, 233, 0.12);
 }
 
 * {
@@ -30,11 +34,7 @@ html {
 body {
   min-height: 100vh;
   overflow-x: hidden;
-  background:
-    radial-gradient(circle at 12% 4%, rgba(215, 25, 32, 0.11), transparent 27%),
-    radial-gradient(circle at 78% 10%, rgba(147, 183, 216, 0.08), transparent 32%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.035), transparent 16%, rgba(215, 25, 32, 0.045) 52%, transparent 72%),
-    var(--background);
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
 }
@@ -49,82 +49,90 @@ body.light {
   color: white;
 }
 
-.font-outline {
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(244, 246, 248, 0.56);
-}
-
-.font-comic {
-  font-family: var(--font-comic);
-}
-
-.panel-cut {
-  clip-path: none;
-}
-
-.manga-border {
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-    inset 0 0 0 2px rgba(0, 0, 0, 0.72),
-    0 20px 60px rgba(0, 0, 0, 0.55);
-}
-
-.manhwa-panel {
+.luxury-panel {
+  position: relative;
+  border: 1px solid var(--line);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.09), transparent 18%),
-    radial-gradient(circle at 70% 20%, rgba(215, 25, 32, 0.18), transparent 32%),
-    rgba(8, 9, 12, 0.9);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018) 32%, rgba(239, 35, 60, 0.035) 100%),
+    rgba(9, 11, 16, 0.9);
+  box-shadow:
+    0 28px 90px rgba(0, 0, 0, 0.52),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(16px);
 }
 
-.manhwa-panel::after {
+.luxury-panel::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 9px),
-    linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.42));
-  mix-blend-mode: screen;
-  opacity: 0.22;
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08), transparent 12%, transparent 88%, rgba(255, 255, 255, 0.04)),
+    repeating-linear-gradient(0deg, transparent 0 9px, rgba(255, 255, 255, 0.018) 10px);
+  opacity: 0.42;
 }
 
-.ink-scratch {
-  background-image:
-    linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.08) 43% 44%, transparent 45% 100%),
-    linear-gradient(76deg, transparent 0 58%, rgba(215, 25, 32, 0.18) 59% 60%, transparent 61% 100%);
+.terminal-shell {
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015)),
+    rgba(7, 9, 13, 0.84);
+  box-shadow: 0 32px 120px rgba(0, 0, 0, 0.54);
 }
 
-.city-mask {
-  mask-image: linear-gradient(to bottom, black 64%, transparent 100%);
-}
-
-.noise {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 38px 38px;
-}
-
-.luxury-panel {
+.dossier-panel {
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(9, 10, 13, 0.88);
-  box-shadow:
-    0 16px 55px rgba(0, 0, 0, 0.36),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
+  overflow: hidden;
+  border: 1px solid rgba(216, 222, 233, 0.12);
+  background:
+    radial-gradient(circle at 72% 0%, rgba(138, 180, 248, 0.13), transparent 28%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.018) 34%, rgba(239, 35, 60, 0.045)),
+    #080a0f;
 }
 
-.luxury-panel::before {
-  content: none;
+.dossier-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 0 49%, rgba(255, 255, 255, 0.09) 49.2% 49.4%, transparent 49.6% 100%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 12px);
+  opacity: 0.32;
 }
 
-.aura-ring {
-  display: none;
+.section-wrap {
+  width: min(1240px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.terminal-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(216, 222, 233, 0.56);
+}
+
+.status-dot {
+  position: relative;
+}
+
+.status-dot::before {
+  content: "";
+  display: inline-block;
+  width: 0.44rem;
+  height: 0.44rem;
+  margin-right: 0.48rem;
+  border-radius: 999px;
+  background: var(--crimson);
+  box-shadow: 0 0 18px rgba(239, 35, 60, 0.86);
 }
 
 .text-shadow-red {
-  text-shadow: 0 0 22px rgba(215, 25, 32, 0.38);
+  text-shadow: 0 0 36px rgba(239, 35, 60, 0.34);
 }
 
 .text-shadow-ice {

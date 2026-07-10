@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "PTJ-Stocks",
-  description: "A lowkey Lookism-inspired Seoul underground crew market for PTJ universe fighters and crews.",
+  title: "AURA EXCHANGE | Seoul Fighter Market Terminal",
+  description: "A premium fictional Lookism-inspired exchange for fighter assets, crew sectors, chapter odds, and rumor-driven market movement.",
   openGraph: {
-    title: "PTJ-Stocks",
-    description: "Lookism-inspired fighter and crew market",
+    title: "AURA EXCHANGE",
+    description: "Seoul underground fighter market terminal",
     type: "website"
   }
 };
